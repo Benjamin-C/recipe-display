@@ -2,17 +2,16 @@
 
 /* display.cpp
  *
- * Display driver for RecipOS
+ * Display module for RecipOS
  * Uses the display driver to handle the display hardware
  *
  * Author: Benjamin Crall
  */
 
-#include "display.h"
-
 #include "../drivers/display/DisplayBackend.h"
 #include <string.h>
 #include <stdio.h>
+#include "Display.h"
 
 #define MEGA_DEBUG_LOG
 

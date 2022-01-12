@@ -2,11 +2,11 @@
 #define RECIPOS_H
 
 #include "drivers/display/bitmapdrawer.h"
+#include "modules/Buttons.h"
 
-#include "modules/buttons.h"
-#include "modules/display.h"
-#include "modules/printer.h"
-#include "modules/speaker.h"
+#include "modules/Display.h"
+#include "modules/Printer.h"
+#include "modules/Speaker.h"
 
 #define XOFST 0
 #define YOFST 32

@@ -1,6 +1,6 @@
 /* buttons.h
  *
- * Button driver for RecipOS
+ * Button module for RecipOS
  * Makes it easy for software to get the current state of the buttons.
  * Uses the hardware button driver to interface with the buttons
  *

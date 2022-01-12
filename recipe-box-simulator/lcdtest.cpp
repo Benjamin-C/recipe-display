@@ -2,7 +2,7 @@
 #include "lcdtest.h"
 #include "arduinostandin.h"
 #include "recipos/drivers/display/bitmapdrawer.h"
-#include "recipos/modules/display.h"
+#include "recipos/modules/Display.h"
 
 #define PACMAN_W 7
 #define PCAMAN_H 7

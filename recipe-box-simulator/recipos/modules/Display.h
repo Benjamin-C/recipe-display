@@ -1,6 +1,6 @@
 /* display.h
  *
- * Display driver for RecipOS
+ * Display module for RecipOS
  * Uses the display driver to handle the display hardware
  *
  * Author: Benjamin Crall

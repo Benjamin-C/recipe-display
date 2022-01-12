@@ -3,7 +3,7 @@
 #include "arduinostandin.h"
 #include <stdbool.h>
 
-#include "recipos/modules/display.h"
+#include "recipos/modules/Display.h"
 
 //  public:
 //    TextTerminal(TouchLCD screen);

@@ -1,6 +1,6 @@
 /* speaker.h
  *
- * Speaker driver for RecipOS
+ * Speaker module for RecipOS
  * Uses the speaker driver to handle audio playback
  *
  * Author: Benjamin Crall

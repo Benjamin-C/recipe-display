@@ -4,7 +4,7 @@
 #include "arduinostandin.h"
 #include "lcdtest.h"
 #include "recipos/drivers/display/bitmapdrawer.h"
-#include "recipos/modules/display.h"
+#include "recipos/modules/Display.h"
 
 int main(void) {
 	printf("Hello World %ld\n", sizeof(char));
@@ -16,7 +16,7 @@ int main(void) {
 
 //	delay(5000);
 
-	lcd.clear(0xFFFF);
+	lcd.fill(0xFFFF);
 	lcd.displayString(50, 257, "Thank you", 4, lcd.RGB(255, 0, 0), BLACK);
 	lcd.displayString(50, 82, "for watching", 4, lcd.RGB(255, 0, 0), BLACK);
 

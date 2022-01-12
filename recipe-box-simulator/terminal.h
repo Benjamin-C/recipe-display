@@ -3,7 +3,7 @@
 
 #include "recipos/drivers/display/bitmapdrawer.h"
 #include "recipos/drivers/display/font.h"
-#include "recipos/modules/display.h"
+#include "recipos/modules/Display.h"
 
 #define TEXT_TERMINAL_SCALE 2 // Minimum scale. Higher scales allowed, but will not save memory
 #define MAX_TEXT_LINES (DISPLAY_HEIGHT/CHAR_SIZE)/TEXT_TERMINAL_SCALE

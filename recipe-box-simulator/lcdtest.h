@@ -11,7 +11,7 @@ void demoScreen();
 void setup();
 void loop();
 
-#include "recipos/modules/display.h"
+#include "recipos/modules/Display.h"
 
 extern Display lcd;
 
