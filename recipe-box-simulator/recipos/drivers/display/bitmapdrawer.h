@@ -9,10 +9,6 @@
 #define DISPLAY_WIDTH 480
 #define DISPLAY_HEIGHT 320
 
-// LCD Bit format
-// RRRRRGGGGGGBBBBB
-// 1111100000011111
-
 struct Pixel {
 	uint8_t b;
 	uint8_t g;

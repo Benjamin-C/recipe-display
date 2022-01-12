@@ -2,6 +2,7 @@
 #include "lcdtest.h"
 #include "arduinostandin.h"
 #include "recipos/drivers/display/bitmapdrawer.h"
+#include "recipos/modules/display.h"
 
 #define PACMAN_W 7
 #define PCAMAN_H 7
@@ -18,6 +19,8 @@ int pacman[PCAMAN_H*PACMAN_W] = {
 //TouchLCD lcd;
 
 int h = 0;
+
+Display lcd(NULL, 0, 0, 0, 0);
 
 void testText() {
   lcd.clear(BLACK);

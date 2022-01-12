@@ -8,6 +8,7 @@
 #ifndef RECIPOS_MODULES_PRINTER_H_
 #define RECIPOS_MODULES_PRINTER_H_
 
+// TODO implement printer
 class Printer {
 	Printer(void);
 	// TODO add whatever Kyle actually needs

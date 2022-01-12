@@ -6,12 +6,6 @@
 #include "recipos/drivers/display/bitmapdrawer.h"
 #include "recipos/modules/display.h"
 
-#define XOFST 0
-#define YOFST 32
-
-BitmapDrawer tlcd;
-Display lcd(&tlcd, XOFST, YOFST, 480, 320);
-
 int main(void) {
 	printf("Hello World %ld\n", sizeof(char));
 

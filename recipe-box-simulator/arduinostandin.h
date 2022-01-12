@@ -1,3 +1,10 @@
+/* arduinostandin.h
+ *
+ * Creates standin versions of several Arduino functions that you may want to use.
+ *
+ * Author: Benjamin Crall
+ */
+
 #ifndef ARDUINO_STANDIN_H
 #define ARDUINO_STANDIN_H
 

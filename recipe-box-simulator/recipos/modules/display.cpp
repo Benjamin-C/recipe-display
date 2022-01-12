@@ -1,3 +1,13 @@
+// TODO add comments
+
+/* display.cpp
+ *
+ * Display driver for RecipOS
+ * Uses the display driver to handle the display hardware
+ *
+ * Author: Benjamin Crall
+ */
+
 #include "display.h"
 
 #include "../drivers/display/DisplayBackend.h"
@@ -12,6 +22,7 @@ Display::Display(DisplayBackend* dbe, int xmin, int ymin, int xmax, int ymax) {
 	this->xmax = xmax;
 	this->ymin = ymin;
 	this->ymax = ymax;
+	enabled = false;
 	printf("Bounds are %d < x < %d & %d < y < %d? ", xmin, xmax, ymin, ymax);
 }
 
@@ -25,17 +36,22 @@ int Display::height(void) {
 
 // private
 bool Display::inBounds(int x, int y, int w, int h) {
-	if(x >= 0 && y >= 0 && x < xmax && y < ymax) {
-		if(xmin+x+w <= xmax && ymin+y+h <= ymax) {
-			return true;
+	if(enabled) {
+		if(x >= 0 && y >= 0 && x < xmax && y < ymax) {
+			if(xmin+x+w <= xmax && ymin+y+h <= ymax) {
+				return true;
+			} else {
+				printf("Is %d,%d (%dx%d) within %d < x < %d & %d < %d? ", x, y, w, h, xmin, xmax, ymin, ymax);
+				printf("No! Too big\n");
+				return false;
+			}
 		} else {
 			printf("Is %d,%d (%dx%d) within %d < x < %d & %d < %d? ", x, y, w, h, xmin, xmax, ymin, ymax);
-			printf("No! Too big\n");
+			printf("No! Out of bounds\n");
 			return false;
 		}
 	} else {
-		printf("Is %d,%d (%dx%d) within %d < x < %d & %d < %d? ", x, y, w, h, xmin, xmax, ymin, ymax);
-		printf("No! Out of bounds\n");
+		printf("Drawing is disabled for this drawer");
 		return false;
 	}
 }
@@ -58,12 +74,17 @@ bool Display::drawPoint(int x, int y, int c) {
 	}
 }
 
-bool Display::clear(int j) {
+bool Display::fill(int c) {
 #ifdef MEGA_DEBUG_LOG
-	printf("clear(%d) %d %d\n", j, width(), height());
+	printf("clear(%d) %d %d\n", c, width(), height());
 #endif
-	fillRect(0, 0, width(), height(), j);
-	return true;
+	if(enabled) {
+		fillRect(0, 0, width(), height(), c);
+		return true;
+	} else {
+		printf("Drawing is disabled");
+		return false;
+	}
 }
 bool Display::drawVline(int x, int y, int l, int c) {
 #ifdef MEGA_DEBUG_LOG
@@ -109,6 +130,13 @@ bool Display::fillRect(int x,int y,int w,int h,int c) {
 		return false;
 	}
 }
+
+/* DisplaySprite()
+ *
+ * Don't use this, it will change.
+ * I don't like how much memory it uses right now
+ */
+// TODO fix sprite drawing
 bool Display::displaySprite(int xpos, int ypos, int* img, int w, int h, int scaleW, int scaleH) {
 #ifdef MEGA_DEBUG_LOG
 	printf("displaySprite(%d, %d, x, %d, %d, %d, %d)\n", xpos, ypos, w, h, scaleW, scaleH);
@@ -148,5 +176,13 @@ bool Display::displayString(int xstart, int ystart, const char* str, int scale, 
 bool Display::screenshot(void) {
 	dbe->screenshot();
 	return true;
+}
+
+bool Display::isEnabled(void) {
+	return enabled;
+}
+
+void Display::setEnabled(bool en) {
+	this->enabled = en;
 }
 

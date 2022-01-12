@@ -1,3 +1,10 @@
+/* arduinostandin.cpp
+ *
+ * Creates standin versions of several Arduino functions that you may want to use.
+ *
+ * Author: Benjamin Crall
+ */
+
 #include "arduinostandin.h"
 
 #include <stdio.h>
