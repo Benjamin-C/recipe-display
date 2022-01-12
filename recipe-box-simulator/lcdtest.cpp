@@ -23,7 +23,7 @@ int h = 0;
 Display lcd(NULL, 0, 0, 0, 0);
 
 void testText() {
-  lcd.clear(BLACK);
+  lcd.fill(BLACK);
   lcd.displayString(280, 50, "Hello world", 2, MAGENTA, BLUE);
 
   int xs = 10;
@@ -73,7 +73,7 @@ void testText() {
 //}
 
 void drawMenu() {
-  lcd.clear(BLACK);
+  lcd.fill(BLACK);
 
   lcd.displayString(0, 0, "This is some text for the top ", 2, BLACK, GREEN);
 
@@ -226,13 +226,13 @@ void runDemo() {
 
   // Solid colors
   for(int i = 0; i < 5; i++) {
-    lcd.clear(0xf800);
+    lcd.fill(0xf800);
     lcd.screenshot();
     delay(333);
-    lcd.clear(0x07E0);
+    lcd.fill(0x07E0);
     lcd.screenshot();
     delay(333);
-    lcd.clear(0x001F);
+    lcd.fill(0x001F);
     lcd.screenshot();
     delay(333);
   }
@@ -276,7 +276,7 @@ void demoScreen() {
 }
 
 void setup() {
-  lcd.clear(BLACK);
+  lcd.fill(BLACK);
   terminal.foo = &runDemo;
 //  demoScreen();
 
