@@ -7,3 +7,9 @@
 
 // TODO write methods
 // TODO add comments
+
+#include "Buttons.h"
+
+Buttons::Buttons(void) {
+
+}

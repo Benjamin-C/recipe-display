@@ -5,4 +5,10 @@
  *      Author: benjamin
  */
 
+#include "Printer.h"
+
+Printer::Printer(void) {
+
+}
+
 // TODO write methods

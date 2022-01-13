@@ -11,6 +11,7 @@
 
 // TODO implement speaker
 class Speaker {
+public:
 	Speaker(void);
 	// Beep at frequency for duration ms
 	void beep(int frequency, int duration);
