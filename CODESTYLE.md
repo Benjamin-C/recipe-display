@@ -78,7 +78,7 @@ Condense blocks of code any time it makes the overall code easier to read. This 
 * Variable names should be named in camel case with no underscores. (ex: skittleCount)
 * Constant or #define names should be in all caps with underscores as needed to separate words (ex: MAX_SKITTLES)
 * Single letter names are allowed as long as they have a common usage and/or are used in a small scope (ex: i,j,x,y,c are usually fine)
-* Variable names must be unique in their scope. Thins includes different capitalization and punctuation, (ex: if you have numCows, you should not also have NumCows, num_cows, NUM_COWS, or _numCows).
+* Variable names must be unique in their scope. Thins includes different capitalization and punctuation, (ex: if you have numCows, you should not also have NumCows, num_cows, NUM_COWS, or _numCows). The only exception is that an instance of a class may share the name of a class (but in camel case rather than pascal case) if it is the only instance of that class in that scope.
 
 ### File names are lower case unless they are for a class
 Files should be given detailed names, ending in .h for headers or .cpp for c++ source files. If the file is primarily for a c++ class, it should be named to match, in pascal case. If the file is not primarily for a class, it should be named in all lower case.
