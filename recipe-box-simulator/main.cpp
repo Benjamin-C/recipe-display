@@ -34,11 +34,13 @@ int main(void) {
 			d->fill(egaColors[color]);
 			d->displayString(0,0,name,2,WHITE,egaColors[color]);
 			return;
-		};
-		void setColor(int color) {
-			this->color = color;
 		}
-
+		void load(void) {
+			printf("App loaded! %d\n", color);
+		}
+		void onButtonPress(uint16_t pressed, Buttons* buttons) {
+			printf("Someone pushed my button!\n");
+		}
 	};
 
 	int testCount = 6;
@@ -57,6 +59,7 @@ int main(void) {
 
 	for(int i = 0; i < testCount; i++) {
 		ros.switchApp(i);
+		ros.checkButtonPress();
 		delay(3000);
 		ros.mainDisplay->screenshot();
 		printf("Should have saved screenshot\n");

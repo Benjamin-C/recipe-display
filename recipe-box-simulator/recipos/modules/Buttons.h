@@ -10,7 +10,6 @@
 #ifndef RECIPOS_MODULES_BUTTONS_H_
 #define RECIPOS_MODULES_BUTTONS_H_
 
-#include <stdint.h>
 
 #include "../drivers/buttons/ButtonBackend.h"
 

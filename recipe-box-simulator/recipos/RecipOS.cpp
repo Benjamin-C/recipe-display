@@ -63,6 +63,7 @@ bool RecipOS::switchApp(int appid) {
 				app->running = true;
 			}
 
+			app->load();
 			app->paint(appDisplays[appid]);
 			currentApp = appid;
 			drawTabs();
@@ -157,5 +158,19 @@ bool RecipOS::boot(void) {
 	} else {
 		printf("Can't boot, already booted!");
 		return false;
+	}
+}
+
+void RecipOS::checkButtonPress(void) {
+	printf("Press button?\n");
+
+	uint16_t pressed = buttons->checkButtons();
+	if(pressed > 0) {
+		for(int i = 0; i < MAX_APPLICATIONS; i++) {
+			if(apps[i] != NULL) {
+				apps[i]->onButtonPress(pressed, buttons);
+				printf("APPPPPP\n");
+			}
+		}
 	}
 }

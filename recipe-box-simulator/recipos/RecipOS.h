@@ -35,6 +35,7 @@ public:
 	bool switchApp(int appid);
 	bool tabLeft(void);
 	bool tabRight(void);
+	bool drawTabs(void);
 
 	// Widgets
 	Application* widgets[MAX_WIDGETS];
@@ -43,10 +44,12 @@ public:
 	bool drawWidgets(void);
 	int currentWidget = -1;
 
+	// Boot
 	bool boot(void);
 	bool booted = false;
 
-	bool drawTabs(void);
+	// Events
+	void checkButtonPress(void);
 
 private:
 	int nothing = 2;
