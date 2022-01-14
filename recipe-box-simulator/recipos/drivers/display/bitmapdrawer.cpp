@@ -2,6 +2,10 @@
 
 #include "../display/font.h"
 
+#include <stdio.h>
+#include <iostream>
+#include <fstream>
+
 /*
  * ███████ ███████ ████████ ██    ██ ██████  
  * ██      ██         ██    ██    ██ ██   ██ 

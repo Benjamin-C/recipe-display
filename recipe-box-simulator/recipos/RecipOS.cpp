@@ -100,6 +100,28 @@ bool RecipOS::drawTabs(void) {
 			x += dx;
 		}
 	}
+	drawWidgets();
+	return true;
+}
+
+bool RecipOS::tabLeft(void) {
+	if(currentApp > 0) {
+		switchApp(currentApp-1);
+		return true;
+	}
+	return false;
+}
+
+bool RecipOS::tabRight(void) {
+	if(apps[currentApp+1] != NULL) {
+		switchApp(currentApp+1);
+		return true;
+	}
+	return false;
+}
+
+bool RecipOS::drawWidgets(void) {
+	mainDisplay->displayString(0, 0, "WIDGETS GO HERE", 4, BRIGHT_GREEN, BLACK);
 	return true;
 }
 

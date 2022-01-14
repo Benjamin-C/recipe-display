@@ -32,6 +32,7 @@ int main(void) {
 		void paint(Display* d) {
 			printf("color: %d %s\n", color, abriv);
 			d->fill(egaColors[color]);
+			d->displayString(0,0,name,2,WHITE,egaColors[color]);
 			return;
 		};
 		void setColor(int color) {
@@ -50,7 +51,7 @@ int main(void) {
 		MyApp* app = new MyApp();
 		sprintf(app->abriv, "Tab%01d ", i);
 //		app->abriv[2] = '\0';
-		app->color = i+2;
+		app->color = i+3;
 		ros.addApplication(app);
 	}
 

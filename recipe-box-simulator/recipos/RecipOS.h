@@ -40,6 +40,7 @@ public:
 	Application* widgets[MAX_WIDGETS];
 	Display* widgetDisplays[MAX_WIDGETS];
 	int addWidget(Application* widget);
+	bool drawWidgets(void);
 	int currentWidget = -1;
 
 	bool boot(void);
