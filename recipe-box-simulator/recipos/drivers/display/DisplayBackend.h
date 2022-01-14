@@ -27,6 +27,8 @@ public:
     virtual void displayChar(int xpos, int ypos, uint8_t c, int scale, int fontcolor, int backgroundcolor) = 0;
     virtual void displayString(int xstart, int ystart, const char* str, int scale, int fontcolor, int backgroundcolor) = 0;
     virtual void screenshot(void) = 0; // Not implemented yet
+    int width;
+    int height;
 };
 
 #endif /* RECIPOS_DRIVERS_DISPLAYBACKEND_H_ */

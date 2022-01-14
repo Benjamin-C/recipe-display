@@ -13,3 +13,11 @@
 Buttons::Buttons(void) {
 
 }
+
+bool Buttons::checkButton(int id) {
+	return false;
+}
+
+uint16_t Buttons::checkButtons() {
+	return 7;
+}

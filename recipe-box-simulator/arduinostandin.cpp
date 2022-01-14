@@ -53,6 +53,10 @@ int random(int max) {
 	return rand() % max;
 }
 
+int analogRead(int a) {
+	return 0;
+}
+
 void SerialClass::print(const char* msg) {
 	printf("%s", msg);
 }

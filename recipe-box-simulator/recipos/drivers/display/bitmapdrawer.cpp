@@ -17,6 +17,8 @@ BitmapDrawer::BitmapDrawer(void) {
   x = 0;
   y = 0;
   clear(RGB(0x00, 0x00, 0x00));
+  width = DISPLAY_WIDTH;
+  height = DISPLAY_HEIGHT;
 }
 
 BitmapDrawer::~BitmapDrawer(void) {

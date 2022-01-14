@@ -21,7 +21,10 @@ unsigned long micros(void);
 int random(int max);
 void pinMode(int a, int b);
 void digitalWrite(int a, int b);
+// Always returns 0
 int digitalRead(int a);
+// Always returns 0
+int analogRead(int a);
 
 class SerialClass {
 public:

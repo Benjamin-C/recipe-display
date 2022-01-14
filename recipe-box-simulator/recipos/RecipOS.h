@@ -13,8 +13,9 @@
 #define MAX_APPLICATIONS 16
 #define MAX_WIDGETS 16
 
-#define WIDGET_HEIGHT
-#define TAB_HEIGHT
+#define WIDGET_HEIGHT 32
+#define TAB_HEIGHT 16
+#define NUM_TABS 6
 
 class RecipOS {
 public:
@@ -28,6 +29,7 @@ public:
 
 	// Applications
 	Application* apps[MAX_APPLICATIONS];
+	Display* appDisplays[MAX_APPLICATIONS];
 	int addApplication(Application* app);
 	int currentApp = -1;
 	bool switchApp(int appid);
@@ -36,14 +38,18 @@ public:
 
 	// Widgets
 	Application* widgets[MAX_WIDGETS];
+	Display* widgetDisplays[MAX_WIDGETS];
 	int addWidget(Application* widget);
 	int currentWidget = -1;
 
 	bool boot(void);
 	bool booted = false;
 
+	bool drawTabs(void);
+
 private:
 	int nothing = 2;
+	Display* createAppDisplay(void);
 };
 
 #endif

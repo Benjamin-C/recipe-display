@@ -9,22 +9,7 @@
 #define MAX_TEXT_LINES (DISPLAY_HEIGHT/CHAR_SIZE)/TEXT_TERMINAL_SCALE
 #define MAX_TEXT_LINE_LENGTH (DISPLAY_WIDTH/CHAR_SIZE)/TEXT_TERMINAL_SCALE
 
-#define EGA_BLACK           0x0
-#define EGA_BLUE            0x1
-#define EGA_GREEN           0x2
-#define EGA_CYAN            0x3
-#define EGA_RED             0x4
-#define EGA_MAGENTA         0x5
-#define EGA_YELLOW          0x6
-#define EGA_LIGHT_GREY      0x7
-#define EGA_DARK_GREY       0x8
-#define EGA_BRIGHT_BLUE     0x9
-#define EGA_BRIGHT_GREEN    0xA
-#define EGA_BRIGHT_CYAN     0xB
-#define EGA_BRIGHT_RED      0xC
-#define EGA_BRIGHT_MAGENTA  0xD
-#define EGA_BRIGHT_YELLOW   0xE
-#define EGA_WHITE           0xF
+#include "recipos/colors.h"
 
 #define DEFAULT_FOREGROUND EGA_WHITE
 #define DEFAULT_BACKGORUND EGA_BLACK

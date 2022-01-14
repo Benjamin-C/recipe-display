@@ -12,15 +12,7 @@
 
 #include <stdint.h>
 
-// The IDs of the buttons to use with checkButtons.
-// All buttons except super may be mutually exclusive.
-#define BUTTON_NULL 0 // No button
-#define BUTTON_UP 1 // up arrow
-#define BUTTON_DOWN 2 // down arrow
-#define BUTTON_LEFT 3 // left arrow
-#define BUTTON_RIGHT 4 // right arrow
-#define BUTTON_ENTER 5 // enter button
-#define BUTTON_SUPER 6 // special button for whatever you want.
+#include "../drivers/buttons/ButtonBackend.h"
 
 // TODO implement buttons
 // WARNIGN this is not yet implemented

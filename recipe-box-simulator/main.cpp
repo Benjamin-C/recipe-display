@@ -8,6 +8,10 @@
 #include "recipos/RecipOS.h"
 #include "recipos/Application.h"
 
+#include "recipos/colors.h"
+
+#include <string.h>
+
 int main(void) {
 	printf("Hello World %ld\n", sizeof(char));
 
@@ -19,23 +23,47 @@ int main(void) {
 	public:
 		~MyApp() { };
 		void startup() {
-			name = "Test Application";
-			abriv = "TSTAPP";
+			strcpy((char*) name, "Test Application");
+//			abriv[4] = '\0';
+//			strcpy((char*) abriv, "qqqq");
+			// Make sure it looks good on black
+//			color = EGA_BRIGHT_RED;
 		}
 		void paint(Display* d) {
-			d->fill(0xFF00);
+			printf("color: %d %s\n", color, abriv);
+			d->fill(egaColors[color]);
 			return;
 		};
+		void setColor(int color) {
+			this->color = color;
+		}
 
 	};
 
-	MyApp* myapp = new MyApp();
-
-	ros.addApplication(myapp);
+	int testCount = 6;
 
 	ros.boot();
 
 	ros.mainDisplay->screenshot();
+
+	for(int i = 0; i < testCount; i++) {
+		MyApp* app = new MyApp();
+		sprintf(app->abriv, "Tab%01d ", i);
+//		app->abriv[2] = '\0';
+		app->color = i+2;
+		ros.addApplication(app);
+	}
+
+	for(int i = 0; i < testCount; i++) {
+		ros.switchApp(i);
+		delay(3000);
+		ros.mainDisplay->screenshot();
+		printf("Should have saved screenshot\n");
+	}
+
+	printf("Done!");
+
+
 //	runDemo();
 
 //	lcd.screenshot();

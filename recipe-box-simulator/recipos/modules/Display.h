@@ -27,23 +27,7 @@
 // | Range | [15:11] | [10:5]  | [4:0]   |
 // +-------+---------+---------+---------+
 
-// Color values for easy use.
-#define BLACK           0x0000 // 0
-#define BLUE            0x0015 // 1
-#define GREEN           0x0540 // 2
-#define CYAN            0x0555 // 3
-#define RED             0xA800 // 4
-#define MAGENTA         0xA815 // 5
-#define YELLOW          0xFBC1 //0xAAA0 // 6
-#define LIGHT_GREY      0xAD55 // 7
-#define DARK_GREY       0x52AA // 8
-#define BRIGHT_BLUE     0x52BF // 9
-#define BRIGHT_GREEN    0x57EA // A
-#define BRIGHT_CYAN     0x57FF // B
-#define BRIGHT_RED      0xFAAA // C
-#define BRIGHT_MAGENTA  0xFABF // D
-#define BRIGHT_YELLOW   0xFFEA // E
-#define WHITE           0xFFFF // F
+#include "../colors.h"
 
 class Display {
 public:
@@ -94,7 +78,7 @@ private:
     int xmax;
     int ymin;
     int ymax;
-    bool enabled;
+    bool enabled = false;
 };
 
 #endif /* RECIPOS_MODULES_DISPLAY_H_ */

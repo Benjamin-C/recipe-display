@@ -21,8 +21,8 @@ Display::Display(DisplayBackend* dbe, int xmin, int ymin, int xmax, int ymax) {
 	this->xmax = xmax;
 	this->ymin = ymin;
 	this->ymax = ymax;
-	enabled = false;
-	printf("Bounds are %d < x < %d & %d < y < %d? ", xmin, xmax, ymin, ymax);
+	this->enabled = false;
+	printf("Bounds are %d < x < %d & %d < y < %d? \n", xmin, xmax, ymin, ymax);
 }
 
 int Display::width(void) {
@@ -40,17 +40,17 @@ bool Display::inBounds(int x, int y, int w, int h) {
 			if(xmin+x+w <= xmax && ymin+y+h <= ymax) {
 				return true;
 			} else {
-				printf("Is %d,%d (%dx%d) within %d < x < %d & %d < %d? ", x, y, w, h, xmin, xmax, ymin, ymax);
+				printf("[Display] ERR: Is %d,%d (%dx%d) within %d < x < %d & %d < %d? ", x, y, w, h, xmin, xmax, ymin, ymax);
 				printf("No! Too big\n");
 				return false;
 			}
 		} else {
-			printf("Is %d,%d (%dx%d) within %d < x < %d & %d < %d? ", x, y, w, h, xmin, xmax, ymin, ymax);
+			printf("[Display] ERR: Is %d,%d (%dx%d) within %d < x < %d & %d < %d? ", x, y, w, h, xmin, xmax, ymin, ymax);
 			printf("No! Out of bounds\n");
 			return false;
 		}
 	} else {
-		printf("Drawing is disabled for this drawer");
+		printf("Drawing is disabled for this drawer\n");
 		return false;
 	}
 }
@@ -81,7 +81,7 @@ bool Display::fill(int c) {
 		fillRect(0, 0, width(), height(), c);
 		return true;
 	} else {
-		printf("Drawing is disabled");
+		printf("Drawing is disabled\n");
 		return false;
 	}
 }
@@ -164,11 +164,18 @@ bool Display::displayString(int xstart, int ystart, const char* str, int scale, 
 #ifdef MEGA_DEBUG_LOG
 	printf("displayString(%d, %d, \"%s\", %d, %d, %d)\n", xstart, ystart, str, scale, fontcolor, backgroundcolor);
 #endif
-	if(inBounds(xstart, ystart,8*strlen(str)*scale,8*scale)) {
+	if(str != NULL) {
+#ifdef MEGA_DEBUG_LOG
 		printf("datas: %d %d %d %d %d %d\n", xstart, ystart, (int) (8*strlen(str)*scale), 8*scale, (int) (xstart+xmin+(8*strlen(str)*scale)), ystart+ymin+(8*scale));
-		dbe->displayString(xstart+xmin,ystart+ymin, str, scale, fontcolor, backgroundcolor);
-		return true;
+#endif
+		if(inBounds(xstart, ystart,8*strlen(str)*scale,8*scale)) {
+			dbe->displayString(xstart+xmin,ystart+ymin, str, scale, fontcolor, backgroundcolor);
+			return true;
+		} else {
+			return false;
+		}
 	} else {
+		printf("Nope, string was null\n");
 		return false;
 	}
 }
@@ -182,6 +189,6 @@ bool Display::isEnabled(void) {
 }
 
 void Display::setEnabled(bool en) {
-	this->enabled = en;
+	enabled = en;
 }
 

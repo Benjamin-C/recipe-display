@@ -19,7 +19,7 @@ struct Pixel {
 
 #include "../display/DisplayBackend.h"
 
-class BitmapDrawer : public DisplayBackend{
+class BitmapDrawer : public DisplayBackend {
   public:
   // Setup
     BitmapDrawer(void);
