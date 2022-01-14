@@ -22,6 +22,7 @@
 #define BUTTON_SUPER 6 // special button for whatever you want.
 
 class ButtonBackend {
+public:
 	virtual ~ButtonBackend() { };
 	// Gets the current state of all the buttons packed into a word
 	virtual uint16_t checkButtons(void) = 0;
