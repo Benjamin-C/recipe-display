@@ -10,8 +10,9 @@
 #ifndef RECIPOS_MODULES_BUTTONS_H_
 #define RECIPOS_MODULES_BUTTONS_H_
 
-
 #include "../drivers/buttons/ButtonBackend.h"
+
+extern const char* directions[7];
 
 // TODO implement buttons
 // WARNIGN this is not yet implemented

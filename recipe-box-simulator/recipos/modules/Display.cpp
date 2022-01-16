@@ -13,7 +13,7 @@
 #include <stdio.h>
 #include "Display.h"
 
-#define MEGA_DEBUG_LOG
+//#define MEGA_DEBUG_LOG
 
 Display::Display(DisplayBackend* dbe, int xmin, int ymin, int xmax, int ymax) {
 	this->dbe = dbe;

@@ -49,7 +49,7 @@ public:
 	bool booted = false;
 
 	// Events
-	void checkButtonPress(void);
+	bool checkButtonPress(void);
 
 private:
 	int nothing = 2;

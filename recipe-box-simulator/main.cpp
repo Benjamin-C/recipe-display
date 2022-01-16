@@ -12,12 +12,14 @@
 
 #include <string.h>
 
+RecipOS ros;
+
 int main(void) {
 	printf("Hello World %ld\n", sizeof(char));
 
 	setup();
 
-	RecipOS ros = RecipOS();
+	ros = RecipOS();
 
 	class MyApp : public Application {
 	public:
@@ -39,6 +41,13 @@ int main(void) {
 			printf("App loaded! %d\n", color);
 		}
 		void onButtonPress(uint16_t pressed, Buttons* buttons) {
+			if((pressed & BUTTON_RIGHT_MASK) > 0) {
+				ros.tabRight();
+				printf("Right\n");
+			} else if((pressed & BUTTON_LEFT_MASK) > 0) {
+				ros.tabLeft();
+				printf("Left\n");
+			}
 			printf("Someone pushed my button!\n");
 		}
 	};
@@ -47,14 +56,22 @@ int main(void) {
 
 	ros.boot();
 
-	ros.mainDisplay->screenshot();
-
 	for(int i = 0; i < testCount; i++) {
 		MyApp* app = new MyApp();
 		sprintf(app->abriv, "Tab%01d ", i);
 //		app->abriv[2] = '\0';
 		app->color = i+3;
 		ros.addApplication(app);
+	}
+
+	ros.switchApp(0);
+
+	ros.mainDisplay->screenshot();
+
+	while(true) {
+		if(ros.checkButtonPress()) {
+			ros.mainDisplay->screenshot();
+		}
 	}
 
 	for(int i = 0; i < testCount; i++) {

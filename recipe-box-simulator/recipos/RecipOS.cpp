@@ -102,11 +102,12 @@ bool RecipOS::drawTabs(void) {
 		}
 	}
 	drawWidgets();
-	return true;
+	return true;printf("Was %d, now is %d\n", currentApp, currentApp-1);
 }
 
 bool RecipOS::tabLeft(void) {
 	if(currentApp > 0) {
+		printf(" < Was %d, now is %d\n", currentApp, currentApp-1);
 		switchApp(currentApp-1);
 		return true;
 	}
@@ -115,6 +116,7 @@ bool RecipOS::tabLeft(void) {
 
 bool RecipOS::tabRight(void) {
 	if(apps[currentApp+1] != NULL) {
+		printf(" > Was %d, now is %d\n", currentApp, currentApp+1);
 		switchApp(currentApp+1);
 		return true;
 	}
@@ -161,16 +163,19 @@ bool RecipOS::boot(void) {
 	}
 }
 
-void RecipOS::checkButtonPress(void) {
+bool RecipOS::checkButtonPress(void) {
 	printf("Press button?\n");
 
 	uint16_t pressed = buttons->checkButtons();
 	if(pressed > 0) {
-		for(int i = 0; i < MAX_APPLICATIONS; i++) {
-			if(apps[i] != NULL) {
-				apps[i]->onButtonPress(pressed, buttons);
-				printf("APPPPPP\n");
-			}
+		int i = currentApp;
+//		for(int i = 0; i < MAX_APPLICATIONS; i++) {
+		if(apps[i] != NULL) {
+			apps[i]->onButtonPress(pressed, buttons);
 		}
+//		}
+		return true;
+	} else {
+		return false;
 	}
 }

@@ -21,6 +21,13 @@
 #define BUTTON_ENTER 5 // enter button
 #define BUTTON_SUPER 6 // special button for whatever you want.
 
+#define BUTTON_UP_MASK (1<<0)
+#define BUTTON_DOWN_MASK (1<<1)
+#define BUTTON_LEFT_MASK (1<<2)
+#define BUTTON_RIGHT_MASK (1<<3)
+#define BUTTON_ENTER_MASK (1<<4)
+#define BUTTON_SUPER_MASK (1<<5)
+
 class ButtonBackend {
 public:
 	virtual ~ButtonBackend() { };
