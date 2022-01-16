@@ -12,44 +12,46 @@
 
 #include <string.h>
 
-RecipOS ros;
-
 int main(void) {
 	printf("Hello World %ld\n", sizeof(char));
 
 	setup();
 
-	ros = RecipOS();
+	RecipOS ros = RecipOS();
 
 	class MyApp : public Application {
 	public:
 		~MyApp() { };
-		void startup() {
+		void startup(RecipOS* os) {
+			this->os = os;
 			strcpy((char*) name, "Test Application");
 //			abriv[4] = '\0';
 //			strcpy((char*) abriv, "qqqq");
 			// Make sure it looks good on black
 //			color = EGA_BRIGHT_RED;
 		}
-		void paint(Display* d) {
+		void paintTab(Display* d) {
 			printf("color: %d %s\n", color, abriv);
 			d->fill(egaColors[color]);
 			d->displayString(0,0,name,2,WHITE,egaColors[color]);
 			return;
 		}
-		void load(void) {
+		void runTab(void) {
 			printf("App loaded! %d\n", color);
 		}
 		void onButtonPress(uint16_t pressed, Buttons* buttons) {
 			if((pressed & BUTTON_RIGHT_MASK) > 0) {
-				ros.tabRight();
+				os->tabRight();
 				printf("Right\n");
 			} else if((pressed & BUTTON_LEFT_MASK) > 0) {
-				ros.tabLeft();
+				os->tabLeft();
 				printf("Left\n");
 			}
 			printf("Someone pushed my button!\n");
 		}
+
+		void runService(void) { }
+		void paintWidget(Display* d) { }
 	};
 
 	int testCount = 6;
@@ -58,13 +60,13 @@ int main(void) {
 
 	for(int i = 0; i < testCount; i++) {
 		MyApp* app = new MyApp();
-		sprintf(app->abriv, "Tab%01d ", i);
+		sprintf(app->abriv, "Tab%01d", i);
 //		app->abriv[2] = '\0';
 		app->color = i+3;
-		ros.addApplication(app);
+		ros.addTab(app);
 	}
 
-	ros.switchApp(0);
+	ros.switchTab(0);
 
 	ros.mainDisplay->screenshot();
 
@@ -75,7 +77,7 @@ int main(void) {
 	}
 
 	for(int i = 0; i < testCount; i++) {
-		ros.switchApp(i);
+		ros.switchTab(i);
 		ros.checkButtonPress();
 		delay(3000);
 		ros.mainDisplay->screenshot();

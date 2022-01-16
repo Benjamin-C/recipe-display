@@ -10,8 +10,10 @@
 #include "modules/Storage.h"
 
 #include "Application.h"
-#define MAX_APPLICATIONS 16
+
+#define MAX_TABS 16
 #define MAX_WIDGETS 16
+#define MAX_SERVICES 16
 
 #define WIDGET_HEIGHT 32
 #define TAB_HEIGHT 16
@@ -28,14 +30,14 @@ public:
 	Storage* storage;
 
 	// Applications
-	Application* apps[MAX_APPLICATIONS];
-	Display* appDisplays[MAX_APPLICATIONS];
-	int addApplication(Application* app);
-	int currentApp = -1;
-	bool switchApp(int appid);
+	Application* tabs[MAX_TABS];
+	Display* tabDisplays[MAX_TABS];
+	int addTab(Application* app);
+	int currentTab = -1;
+	bool switchTab(int appid);
 	bool tabLeft(void);
 	bool tabRight(void);
-	bool drawTabs(void);
+	bool drawTabList(void);
 
 	// Widgets
 	Application* widgets[MAX_WIDGETS];
@@ -49,7 +51,11 @@ public:
 	bool booted = false;
 
 	// Events
+	void main(void);
 	bool checkButtonPress(void);
+
+	// Services
+
 
 private:
 	int nothing = 2;

@@ -16,20 +16,20 @@ RecipOS::RecipOS() {
 	printer = new Printer();
 	speaker = new Speaker();
 	storage = new Storage();
-	for(int i = 0; i < MAX_APPLICATIONS; i++) {
-		apps[i] = NULL;
+	for(int i = 0; i < MAX_TABS; i++) {
+		tabs[i] = NULL;
 	}
 	for(int i = 0; i < MAX_WIDGETS; i++) {
 		widgets[i] = NULL;
 	}
 }
 
-int RecipOS::addApplication(Application* app) {
-	for(int i = 0; i < MAX_APPLICATIONS; i++) {
-		if(apps[i] == NULL) {
-			apps[i] = app;
+int RecipOS::addTab(Application* tab) {
+	for(int i = 0; i < MAX_TABS; i++) {
+		if(tabs[i] == NULL) {
+			tabs[i] = tab;
 			Display* display = createAppDisplay();
-			appDisplays[i] = display;
+			tabDisplays[i] = display;
 			return i;
 		}
 	}
@@ -40,34 +40,34 @@ Display* RecipOS::createAppDisplay(void) {
 	return new Display(displayBackend, 0, WIDGET_HEIGHT, displayBackend->width, displayBackend->height - TAB_HEIGHT);
 }
 
-bool RecipOS::switchApp(int appid) {
+bool RecipOS::switchTab(int appid) {
 	// send old app to backgorund, can't do yet
-	if(appid >= 0 && appid < MAX_APPLICATIONS) {
-		Application* app = apps[appid];
+	if(appid >= 0 && appid < MAX_TABS) {
+		Application* app = tabs[appid];
 		if(app != NULL) {
-			if(currentApp >= 0 && currentApp < MAX_APPLICATIONS) {
-				appDisplays[currentApp]->setEnabled(false);
+			if(currentTab >= 0 && currentTab < MAX_TABS) {
+				tabDisplays[currentTab]->setEnabled(false);
 			}
 
-			Display* display = appDisplays[appid];
+			Display* display = tabDisplays[appid];
 
 			if(display != NULL) {
-				appDisplays[appid] = createAppDisplay();
-				display = appDisplays[appid];
+				tabDisplays[appid] = createAppDisplay();
+				display = tabDisplays[appid];
 			}
 
 			display->setEnabled(true);
 
 			if(!app->running) {
-				app->startup();
+				app->startup(this);
 				app->running = true;
 			}
 
-			app->load();
-			app->paint(appDisplays[appid]);
-			currentApp = appid;
-			drawTabs();
-			printf("Starting app [%s] %s\n", apps[appid]->abriv, apps[appid]->name);
+			app->runTab();
+			app->paintTab(tabDisplays[appid]);
+			currentTab = appid;
+			drawTabList();
+			printf("Starting app [%s] %s\n", tabs[appid]->abriv, tabs[appid]->name);
 			return true;
 		} else {
 			printf("Can't switch, something was null\n");
@@ -77,13 +77,13 @@ bool RecipOS::switchApp(int appid) {
 	return false;
 }
 
-bool RecipOS::drawTabs(void) {
+bool RecipOS::drawTabList(void) {
 //	printf("hh");
 	int y = displayBackend->height - TAB_HEIGHT;
 	int x = 0;
 	int dx = displayBackend->width / NUM_TABS;
-	for(int i = 0; i < MAX_APPLICATIONS; i++) {
-		Application* app = apps[i];
+	for(int i = 0; i < MAX_TABS; i++) {
+		Application* app = tabs[i];
 		if(app != NULL) {
 			int egacolor = app->color;
 			int color = egaColors[egacolor];
@@ -97,27 +97,27 @@ bool RecipOS::drawTabs(void) {
 				}
 			}
 			abriv[MAX_ABRIV_LENGTH] = '\0';
-			mainDisplay->displayString(x, y, (const char*) abriv, 2, (i == currentApp) ? BLACK : color, (i == currentApp) ? color : BLACK);
+			mainDisplay->displayString(x, y, (const char*) abriv, 2, (i == currentTab) ? BLACK : color, (i == currentTab) ? color : BLACK);
 			x += dx;
 		}
 	}
 	drawWidgets();
-	return true;printf("Was %d, now is %d\n", currentApp, currentApp-1);
+	return true;printf("Was %d, now is %d\n", currentTab, currentTab-1);
 }
 
 bool RecipOS::tabLeft(void) {
-	if(currentApp > 0) {
-		printf(" < Was %d, now is %d\n", currentApp, currentApp-1);
-		switchApp(currentApp-1);
+	if(currentTab > 0) {
+		printf(" < Was %d, now is %d\n", currentTab, currentTab-1);
+		switchTab(currentTab-1);
 		return true;
 	}
 	return false;
 }
 
 bool RecipOS::tabRight(void) {
-	if(apps[currentApp+1] != NULL) {
-		printf(" > Was %d, now is %d\n", currentApp, currentApp+1);
-		switchApp(currentApp+1);
+	if(tabs[currentTab+1] != NULL) {
+		printf(" > Was %d, now is %d\n", currentTab, currentTab+1);
+		switchTab(currentTab+1);
 		return true;
 	}
 	return false;
@@ -141,19 +141,19 @@ int RecipOS::addWidget(Application* widget) {
 bool RecipOS::boot(void) {
 	if(!booted) {
 		bool hasFirst = false;
-		for(int i = 0; i < MAX_APPLICATIONS; i++) {
-			if(apps[i] != NULL) {
-				apps[i]->startup();
+		for(int i = 0; i < MAX_TABS; i++) {
+			if(tabs[i] != NULL) {
+				tabs[i]->startup(this);
 				if(!hasFirst) {
 					hasFirst = true;
-					currentApp = i;
+					currentTab = i;
 
 				}
 			}
 		}
 		displayBackend->displayString(24, 128, "RecipOS", 8, BRIGHT_RED, BLACK);
-		if(currentApp >= 0 && currentApp <= MAX_APPLICATIONS) {
-			switchApp(currentApp);
+		if(currentTab >= 0 && currentTab <= MAX_TABS) {
+			switchTab(currentTab);
 		}
 		booted = true;
 		return true;
@@ -168,10 +168,10 @@ bool RecipOS::checkButtonPress(void) {
 
 	uint16_t pressed = buttons->checkButtons();
 	if(pressed > 0) {
-		int i = currentApp;
+		int i = currentTab;
 //		for(int i = 0; i < MAX_APPLICATIONS; i++) {
-		if(apps[i] != NULL) {
-			apps[i]->onButtonPress(pressed, buttons);
+		if(tabs[i] != NULL) {
+			tabs[i]->onButtonPress(pressed, buttons);
 		}
 //		}
 		return true;
