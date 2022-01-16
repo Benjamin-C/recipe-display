@@ -38,8 +38,6 @@
 #define MAX_NAME_LENGTH 32
 #define MAX_ABRIV_LENGTH 4
 
-#define MAX_BOX_SIZE
-
 class RecipOS;
 
 class Application {
@@ -63,6 +61,10 @@ public:
 	bool running = false;
 	// The pointer to the OS that the app is running under
 	RecipOS* os;
+	/* A user-defined storage box
+	 * The value can be passed in when the Application is registered to the OS, or modified thereafter
+	 */
+	void* box;
 
 	// ------------------------------
 	// Tab Methods
@@ -104,8 +106,10 @@ public:
 
 	/* Requested run interval in ms
 	 * The real interval will vary, check times with millis()
+	 * Values < 0 will not run as a service
+	 * Values == 0 will run as often as possible;
 	 */
-	unsigned long serviceInterval;
+	unsigned long serviceInterval = -1;
 	/* The next time the service should run
 	 * Automatically updated when the service runs
 	 * Intervals may be skipped if the system is running slow
@@ -120,5 +124,34 @@ public:
 	virtual void runService(void) = 0;
 
 };
+
+// More descriptive names since Applications are used in may places
+typedef Application TabApp;
+typedef Application WidgetApp;
+typedef Application ServiceApp;
+
+/*
+
+// An example of a minimal app
+class ExampleApp : public Application {
+public:
+	~ExampleApp() { };
+	void startup(RecipOS* os) {
+		this->os = os;
+		strcpy((char*) name, "Test Application");
+		strcpy((char*) abriv, "qqqq");
+		color = EGA_BRIGHT_RED;
+	}
+	void paintTab(Display* d) {
+		d->fill(egaColors[color]); return;
+	}
+	void runTab(void) { }
+	void onButtonPress(uint16_t pressed, Buttons* buttons) { }
+
+	void paintWidget(Display* d) { }
+	void runService(void) { }
+};
+
+*/
 
 #endif /* RECIPOS_APPLICATION_H_ */

@@ -30,9 +30,9 @@ public:
 	Storage* storage;
 
 	// Applications
-	Application* tabs[MAX_TABS];
+	TabApp* tabs[MAX_TABS];
 	Display* tabDisplays[MAX_TABS];
-	int addTab(Application* app);
+	int addTab(TabApp* app, void* box); // Pass NULL to leave the box unchanged
 	int currentTab = -1;
 	bool switchTab(int appid);
 	bool tabLeft(void);
@@ -42,7 +42,7 @@ public:
 	// Widgets
 	Application* widgets[MAX_WIDGETS];
 	Display* widgetDisplays[MAX_WIDGETS];
-	int addWidget(Application* widget);
+	int addWidget(Application* widget, void* box); // Pass NULL to leave the box unchanged
 	bool drawWidgets(void);
 	int currentWidget = -1;
 
@@ -55,7 +55,9 @@ public:
 	bool checkButtonPress(void);
 
 	// Services
-
+	Application* services[MAX_SERVICES];
+	int addService(Application* widget, void* box); // Pass NULL to leave the box unchanged
+	bool runServices(void);
 
 private:
 	int nothing = 2;

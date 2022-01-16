@@ -1,5 +1,9 @@
 #include "RecipOS.h"
 
+#include <string.h>
+
+#include "../arduinostandin.h"
+
 #include "drivers/display/bitmapdrawer.h"
 
 #include "modules/Buttons.h"
@@ -22,12 +26,21 @@ RecipOS::RecipOS() {
 	for(int i = 0; i < MAX_WIDGETS; i++) {
 		widgets[i] = NULL;
 	}
+	for(int i = 0; i < MAX_SERVICES; i++) {
+		services[i] = NULL;
+	}
+
+
+
 }
 
-int RecipOS::addTab(Application* tab) {
+int RecipOS::addTab(TabApp* tab, void* box) {
 	for(int i = 0; i < MAX_TABS; i++) {
 		if(tabs[i] == NULL) {
 			tabs[i] = tab;
+			if(box != NULL) {
+				tab->box = box;
+			}
 			Display* display = createAppDisplay();
 			tabDisplays[i] = display;
 			return i;
@@ -43,7 +56,7 @@ Display* RecipOS::createAppDisplay(void) {
 bool RecipOS::switchTab(int appid) {
 	// send old app to backgorund, can't do yet
 	if(appid >= 0 && appid < MAX_TABS) {
-		Application* app = tabs[appid];
+		TabApp* app = tabs[appid];
 		if(app != NULL) {
 			if(currentTab >= 0 && currentTab < MAX_TABS) {
 				tabDisplays[currentTab]->setEnabled(false);
@@ -83,7 +96,7 @@ bool RecipOS::drawTabList(void) {
 	int x = 0;
 	int dx = displayBackend->width / NUM_TABS;
 	for(int i = 0; i < MAX_TABS; i++) {
-		Application* app = tabs[i];
+		TabApp* app = tabs[i];
 		if(app != NULL) {
 			int egacolor = app->color;
 			int color = egaColors[egacolor];
@@ -124,18 +137,63 @@ bool RecipOS::tabRight(void) {
 }
 
 bool RecipOS::drawWidgets(void) {
+//	WidgetApp
+//	if(!service->running) {
+//					service->startup(this);
+//				}
 	mainDisplay->displayString(0, 0, "WIDGETS GO HERE", 4, BRIGHT_GREEN, BLACK);
 	return true;
 }
 
-int RecipOS::addWidget(Application* widget) {
+int RecipOS::addWidget(WidgetApp* widget, void* box) {
 	for(int i = 0; i < MAX_WIDGETS; i++) {
 		if(widgets[i] == NULL) {
 			widgets[i] = widget;
+			if(box != NULL) {
+				widget->box = box;
+			}
 			return i;
 		}
 	}
 	return -1;
+}
+
+int RecipOS::addService(ServiceApp* service, void* box) {
+	for(int i = 0; i < MAX_SERVICES; i++) {
+		if(services[i] == NULL) {
+			services[i] = service;
+			if(!service->running) {
+				service->startup(this);
+				service->running = true;
+			}
+			service->nextServiceTime = millis();
+			if(box != NULL) {
+				service->box = box;
+			}
+			return i;
+		}
+	}
+	return -1;
+}
+
+bool RecipOS::runServices(void) {
+	for(int i = 0; i < MAX_SERVICES; i++) {
+		if(services[i] != NULL) {
+			ServiceApp* ser = services[i];
+			if(!ser->running) {
+				ser->startup(this);
+				ser->running = true;
+			}
+			if(ser->nextServiceTime < millis()) {
+				ser->runService();
+				while(ser->nextServiceTime < millis()) {
+					ser->nextServiceTime += ser->serviceInterval;
+				}
+			}
+		}
+		delay(1); // Use a bit less cpu power, may or may not be needed
+	}
+	return true;
 }
 
 bool RecipOS::boot(void) {
@@ -144,6 +202,7 @@ bool RecipOS::boot(void) {
 		for(int i = 0; i < MAX_TABS; i++) {
 			if(tabs[i] != NULL) {
 				tabs[i]->startup(this);
+				tabs[i]->running = true;
 				if(!hasFirst) {
 					hasFirst = true;
 					currentTab = i;
@@ -156,6 +215,45 @@ bool RecipOS::boot(void) {
 			switchTab(currentTab);
 		}
 		booted = true;
+
+		class ButtonService : public ServiceApp {
+		public:
+			~ButtonService() { };
+			void startup(RecipOS* os) {
+				this->os = os;
+				serviceInterval = 100; // Check buttons 10x per second
+			}
+			void paintTab(Display* d) { }
+			void runTab(void) { }
+			void onButtonPress(uint16_t pressed, Buttons* buttons) { }
+			void paintWidget(Display* d) { }
+			void runService(void) { os->checkButtonPress(); }
+		};
+
+		ButtonService* bts = new ButtonService();
+		addService(bts, NULL);
+
+		class WatchdogService : public ServiceApp {
+		public:
+			~WatchdogService() { };
+			void startup(RecipOS* os) {
+				this->os = os;
+				serviceInterval = 1000; // Check buttons 10x per second
+			}
+			void paintTab(Display* d) { }
+			void runTab(void) { }
+			void onButtonPress(uint16_t pressed, Buttons* buttons) { }
+			void paintWidget(Display* d) { }
+			void runService(void) { printf("Woof\n"); }
+		};
+
+		WatchdogService* wds = new WatchdogService();
+		addService(wds, NULL);
+
+		while(booted) {
+			runServices();
+		}
+
 		return true;
 	} else {
 		printf("Can't boot, already booted!");
@@ -164,7 +262,7 @@ bool RecipOS::boot(void) {
 }
 
 bool RecipOS::checkButtonPress(void) {
-	printf("Press button?\n");
+//	printf("Press button?\n");
 
 	uint16_t pressed = buttons->checkButtons();
 	if(pressed > 0) {

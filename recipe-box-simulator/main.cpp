@@ -24,11 +24,11 @@ int main(void) {
 		~MyApp() { };
 		void startup(RecipOS* os) {
 			this->os = os;
-			strcpy((char*) name, "Test Application");
-//			abriv[4] = '\0';
-//			strcpy((char*) abriv, "qqqq");
-			// Make sure it looks good on black
-//			color = EGA_BRIGHT_RED;
+			strcpy(name, "Test Application");
+			int i = *((int*) box);
+			printf("Startup: %d\n", i);
+			sprintf(abriv, "Tab%01d", i);
+			color = i+3;
 		}
 		void paintTab(Display* d) {
 			printf("color: %d %s\n", color, abriv);
@@ -48,6 +48,7 @@ int main(void) {
 				printf("Left\n");
 			}
 			printf("Someone pushed my button!\n");
+			os->displayBackend->screenshot();
 		}
 
 		void runService(void) { }
@@ -56,35 +57,36 @@ int main(void) {
 
 	int testCount = 6;
 
-	ros.boot();
-
 	for(int i = 0; i < testCount; i++) {
 		MyApp* app = new MyApp();
-		sprintf(app->abriv, "Tab%01d", i);
-//		app->abriv[2] = '\0';
-		app->color = i+3;
-		ros.addTab(app);
-	}
-
-	ros.switchTab(0);
-
-	ros.mainDisplay->screenshot();
-
-	while(true) {
-		if(ros.checkButtonPress()) {
-			ros.mainDisplay->screenshot();
+		void* c = malloc(sizeof(int));
+		if(c != NULL) {
+			*((int*) c) = i;
+			ros.addTab(app, c);
 		}
 	}
 
-	for(int i = 0; i < testCount; i++) {
-		ros.switchTab(i);
-		ros.checkButtonPress();
-		delay(3000);
-		ros.mainDisplay->screenshot();
-		printf("Should have saved screenshot\n");
-	}
+	ros.boot(); // Program will not pass here
 
-	printf("Done!");
+//	ros.switchTab(0);
+//
+//	ros.mainDisplay->screenshot();
+//
+//	while(true) {
+//		if(ros.checkButtonPress()) {
+//			ros.mainDisplay->screenshot();
+//		}
+//	}
+//
+//	for(int i = 0; i < testCount; i++) {
+//		ros.switchTab(i);
+//		ros.checkButtonPress();
+//		delay(3000);
+//		ros.mainDisplay->screenshot();
+//		printf("Should have saved screenshot\n");
+//	}
+//
+//	printf("Done!");
 
 
 //	runDemo();
