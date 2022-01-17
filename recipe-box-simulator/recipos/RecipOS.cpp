@@ -90,6 +90,16 @@ bool RecipOS::switchTab(int appid) {
 	return false;
 }
 
+bool RecipOS::repaintCurrentTab(void) {
+	TabApp* app = tabs[currentTab];
+	if(app != NULL) {
+		app->paintTab(tabDisplays[currentTab]);
+		return true;
+	} else {
+		return false;
+	}
+}
+
 bool RecipOS::drawTabList(void) {
 //	printf("hh");
 	int y = displayBackend->height - TAB_HEIGHT;

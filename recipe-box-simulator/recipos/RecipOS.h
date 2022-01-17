@@ -35,6 +35,7 @@ public:
 	int addTab(TabApp* app, void* box); // Pass NULL to leave the box unchanged
 	int currentTab = -1;
 	bool switchTab(int appid);
+	bool repaintCurrentTab(void);
 	bool tabLeft(void);
 	bool tabRight(void);
 	bool drawTabList(void);
