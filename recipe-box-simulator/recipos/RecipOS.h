@@ -1,3 +1,16 @@
+/* RecipOS.h
+ *
+ * Operating system for the Recipe Box device
+ *
+ * This class handles most of the running of the box, including
+ *   drawing windows, managing apps, running services, user input,
+ *   outputs, and more.
+ *
+ * Author: Benjamin Crall
+ */
+
+// TODO improve comments
+
 #ifndef RECIPOS_H
 #define RECIPOS_H
 
@@ -21,48 +34,92 @@
 
 class RecipOS {
 public:
+	// the main constructor. Call it to start a new OS. Not recommended to do multiple times, although it probably won't break
 	RecipOS(void);
+	// Call this when you are ready to start the OS. Once booted, the OS will take over the calling thread
+	bool boot(void);
+	// The DisplayBackend that all Display objects will point to
 	DisplayBackend* displayBackend;
+	// The main display that covers the entire screen. Don't use it unless you need full screen write privlages
 	Display* mainDisplay;
+	// The Buttons for button uses
 	Buttons* buttons;
+	// Not implemented
 	Printer* printer;
+	// Not implemented
 	Speaker* speaker;
+	// Not implemented
 	Storage* storage;
+
+	// ---------------------
+	// Applications
+	// ---------------------
+
+	/* Adds a new Tab to the menu
+	 * Currently, only 6 tabs will be shown
+	 * Pass a pointer to your Application/TabApp,
+	 *   and a void pointer to anything you want to set the Application's box variable to.
+	 *   Passing NULL will leave the Application's box variable unchanged
+	 */
+	int addTab(TabApp* app, void* box); // Pass NULL to leave the box unchanged
+	/* Switch to a tab by index
+	 * Don't pass a number > 15 or < 0, it might break.
+	 * TODO make sure it won't break
+	 */
+	bool switchTab(int appid);
+	/* Switch to the next tab to the left, if it exists
+	 */
+	bool tabLeft(void);
+	/* Switch to the next tab to the right, if it exists
+	 */
+	bool tabRight(void);
+	/* Redraws the current tab
+	 */
+	bool repaintCurrentTab(void);
+
+	// ---------------------
+	// Widgets
+	// ---------------------
+	/* Adds a new Widget to the menu
+	 * Currently, only 6 tabs will be shown
+	 * Pass a pointer to your Application/WidgetApp,
+	 *   and a void pointer to anything you want to set the Application's box variable to.
+	 *   Passing NULL will leave the Application's box variable unchanged
+	 */
+	int addWidget(WidgetApp* widget, void* box); // Pass NULL to leave the box unchanged
+
+	// ---------------------
+	// Services
+	// ---------------------
+	/* Adds a new Service to the OS
+	 * Currently, only 6 tabs will be shown
+	 * Pass a pointer to your Application/ServiceApp,
+	 *   and a void pointer to anything you want to set the Application's box variable to.
+	 *   Passing NULL will leave the Application's box variable unchanged
+	 */
+	int addService(Application* widget, void* box); // Pass NULL to leave the box unchanged
+
+private: // TODO add comments
+	bool booted = false;
+
+	bool checkButtonPress(void);
 
 	// Applications
 	TabApp* tabs[MAX_TABS];
 	Display* tabDisplays[MAX_TABS];
-	int addTab(TabApp* app, void* box); // Pass NULL to leave the box unchanged
 	int currentTab = -1;
-	bool switchTab(int appid);
-	bool repaintCurrentTab(void);
-	bool tabLeft(void);
-	bool tabRight(void);
 	bool drawTabList(void);
+	Display* createTabDisplay(void);
 
 	// Widgets
 	Application* widgets[MAX_WIDGETS];
 	Display* widgetDisplays[MAX_WIDGETS];
-	int addWidget(Application* widget, void* box); // Pass NULL to leave the box unchanged
-	bool drawWidgets(void);
 	int currentWidget = -1;
-
-	// Boot
-	bool boot(void);
-	bool booted = false;
-
-	// Events
-	void main(void);
-	bool checkButtonPress(void);
+	bool drawWidgets(void);
 
 	// Services
 	Application* services[MAX_SERVICES];
-	int addService(Application* widget, void* box); // Pass NULL to leave the box unchanged
 	bool runServices(void);
-
-private:
-	int nothing = 2;
-	Display* createAppDisplay(void);
 };
 
 #endif

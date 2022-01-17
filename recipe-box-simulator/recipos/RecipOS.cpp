@@ -1,3 +1,14 @@
+/* RecipOS.cpp
+ *
+ * Operating system for the Recipe Box device
+ *
+ * This class handles most of the running of the box, including
+ *   drawing windows, managing apps, running services, user input,
+ *   outputs, and more.
+ *
+ * Author: Benjamin Crall
+ */
+
 #include "RecipOS.h"
 
 #include <string.h>
@@ -41,7 +52,7 @@ int RecipOS::addTab(TabApp* tab, void* box) {
 			if(box != NULL) {
 				tab->box = box;
 			}
-			Display* display = createAppDisplay();
+			Display* display = createTabDisplay();
 			tabDisplays[i] = display;
 			return i;
 		}
@@ -49,7 +60,7 @@ int RecipOS::addTab(TabApp* tab, void* box) {
 	return -1;
 }
 
-Display* RecipOS::createAppDisplay(void) {
+Display* RecipOS::createTabDisplay(void) {
 	return new Display(displayBackend, 0, WIDGET_HEIGHT, displayBackend->width, displayBackend->height - TAB_HEIGHT);
 }
 
@@ -65,7 +76,7 @@ bool RecipOS::switchTab(int appid) {
 			Display* display = tabDisplays[appid];
 
 			if(display != NULL) {
-				tabDisplays[appid] = createAppDisplay();
+				tabDisplays[appid] = createTabDisplay();
 				display = tabDisplays[appid];
 			}
 
