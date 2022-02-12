@@ -45,6 +45,28 @@ RecipOS::RecipOS() {
 
 }
 
+int RecipOS::getNextMID(void) {
+	return nextMID++;
+}
+
+void RecipOS::sendMessage(int mid, const char* dest, void* msgbox) {
+	for(int i = 0; i < MAX_TABS; i++) {
+		if(tabs[i] != NULL) {
+			tabs[i]->onMessage(mid, dest, msgbox);
+		}
+	}
+	for(int i = 0; i < MAX_WIDGETS; i++) {
+		if(widgets[i] != NULL) {
+			widgets[i]->onMessage(mid, dest, msgbox);
+		}
+	}
+	for(int i = 0; i < MAX_SERVICES; i++) {
+		if(services[i] != NULL) {
+			services[i]->onMessage(mid, dest, msgbox);
+		}
+	}
+}
+
 int RecipOS::addTab(TabApp* tab, void* box) {
 	for(int i = 0; i < MAX_TABS; i++) {
 		if(tabs[i] == NULL) {
@@ -244,6 +266,7 @@ bool RecipOS::boot(void) {
 				this->os = os;
 				serviceInterval = 100; // Check buttons 10x per second
 			}
+			void onMessage(int mid, const char* dest, void* mbox) { }
 			void paintTab(Display* d) { }
 			void runTab(void) { }
 			void onButtonPress(uint16_t pressed, Buttons* buttons) { }
@@ -259,8 +282,9 @@ bool RecipOS::boot(void) {
 			~WatchdogService() { };
 			void startup(RecipOS* os) {
 				this->os = os;
-				serviceInterval = 1000; // Check buttons 10x per second
+				serviceInterval = 1000; // Woof every second
 			}
+			void onMessage(int mid, const char* dest, void* mbox) { }
 			void paintTab(Display* d) { }
 			void runTab(void) { }
 			void onButtonPress(uint16_t pressed, Buttons* buttons) { }

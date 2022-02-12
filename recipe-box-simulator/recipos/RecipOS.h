@@ -55,6 +55,15 @@ public:
 	// Applications
 	// ---------------------
 
+	// Gets the next message ID for the next message
+	int getNextMID(void); // rebuild me
+	/* Sends a message to all applications.
+	 * id holds a (hopefully) unique message ID
+	 * dest holds a string stating the destination.
+	 * box holds the message body.
+	 */
+	void sendMessage(int nid, const char* dest, void* msgbox);
+
 	/* Adds a new Tab to the menu
 	 * Currently, only 6 tabs will be shown
 	 * Pass a pointer to your Application/TabApp,
@@ -103,6 +112,9 @@ private: // TODO add comments
 	bool booted = false;
 
 	bool checkButtonPress(void);
+
+	// The next message ID to be assigned
+	int nextMID = 0;
 
 	// Applications
 	TabApp* tabs[MAX_TABS];

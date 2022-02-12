@@ -66,6 +66,13 @@ public:
 	 */
 	void* box;
 
+	/* Receives messages from other applications.
+	 * Every application receives every message, the app must use dest to determine
+	 *   if the message is intended for that app.
+	 * Gets the message ID, a string dest and a pointer to the message box.
+	 */
+	virtual void onMessage(int mid, const char* dest, void* mbox) = 0;
+
 	// ------------------------------
 	// Tab Methods
 	// ------------------------------
@@ -142,6 +149,7 @@ public:
 		strcpy((char*) abriv, "qqqq");
 		color = EGA_BRIGHT_RED;
 	}
+	void onMessage(int mid, const char* dest, void* mbox) { }
 	void paintTab(Display* d) {
 		d->fill(egaColors[color]); return;
 	}
