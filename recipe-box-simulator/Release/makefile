@@ -9,6 +9,7 @@ RM := rm -rf
 # All of the sources participating in the build are defined here
 -include sources.mk
 -include recipos/modules/subdir.mk
+-include recipos/drivers/printer/subdir.mk
 -include recipos/drivers/display/subdir.mk
 -include recipos/drivers/buttons/subdir.mk
 -include recipos/subdir.mk

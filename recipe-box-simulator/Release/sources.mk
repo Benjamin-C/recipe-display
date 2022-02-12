@@ -31,5 +31,6 @@ SUBDIRS := \
 recipos \
 recipos/drivers/buttons \
 recipos/drivers/display \
+recipos/drivers/printer \
 recipos/modules \
 
