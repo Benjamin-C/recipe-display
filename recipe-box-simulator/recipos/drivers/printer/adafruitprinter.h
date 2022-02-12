@@ -1,0 +1,4 @@
+#ifndef ADAFRUIT_PRINTER_H
+#define ADAFRUIT_PRINTER_H
+
+#endif
