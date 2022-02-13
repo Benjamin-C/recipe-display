@@ -5,10 +5,10 @@
  *      Author: benjamin
  */
 
-#ifndef SOFTWARE_RECIPESTRUCT_H_
-#define SOFTWARE_RECIPESTRUCT_H_
+#ifndef SOFTWARE_RECIPEUTILS_H_
+#define SOFTWARE_RECIPEUTILS_H_
 
-enum IngrediantUnit {
+enum IngredientUnit {
     PIECES,
     CUP,
     TABLESPOON,
@@ -17,9 +17,9 @@ enum IngrediantUnit {
 };
 
 // Struct for the ingredinats in a recipe
-struct RecipeIngrediant {
+struct RecipeIngredient {
     float amount; // The amonut of the ingrediant as a float, not fraction
-    IngrediantUnit unit; // The unit of the amount
+    IngredientUnit unit; // The unit of the amount
     char* name; // The name of the ingrediant
 };
 
@@ -43,10 +43,20 @@ struct RecipeObejct {
     char* category; // Recipe category
     float servings; // Number of servings
     int cookTime; // Cook time in mins
-    RecipeIngrediant* ingrediants; // List of ingrediants
-    RecipeStep steps; // List of steps
+    int ingredientCount; // Number of ingredient
+    RecipeIngredient* ingredients; // List of ingredients
+    int stepCount; // Number of steps
+    RecipeStep* steps; // List of steps
 };
 
+// Gets the example RecipeObject
+RecipeObejct* getExampleRO(void);
+// Prints a RecipeObject
+void printRecipeObject(RecipeObejct* ro);
+// Prints a unit, and adds 's' if amount != 0
+void printUnit(IngredientUnit iu, float amount);
+// Dynamically allocates a string;
+char* makeString(const char* string);
+// There should probably be a destroy method here. There is not. Too bad.
 
-
-#endif /* SOFTWARE_RECIPESTRUCT_H_ */
+#endif /* SOFTWARE_RECIPEUTILS_H_ */

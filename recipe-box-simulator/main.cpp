@@ -12,10 +12,15 @@
 
 #include <string.h>
 
+#include "software/RecipeUtils.h"
+
 int main(void) {
 	printf("Hello World %ld\n", sizeof(char));
 
-	setup();
+//	setup();
+
+	RecipeObejct* ro = getExampleRO();
+	printRecipeObject(ro);
 
 	RecipOS ros = RecipOS();
 

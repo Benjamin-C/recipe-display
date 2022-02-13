@@ -8,11 +8,12 @@
 #ifndef SOFTWARE_RECIPESELECTOR_H_
 #define SOFTWARE_RECIPESELECTOR_H_
 
-#include "../recipos/Application.h"
+#include "../recipos/RecipOS.h"
+#include "RecipeUtils.h"
 
 class RecipeSelector : public Application {
 public:
-	~RecipeSelector() { };
+	~RecipeSelector();
 	void startup(RecipOS* os);
 	void onMessage(int mid, const char* dest, void* mbox);
 	void paintTab(Display* d);
@@ -22,3 +23,5 @@ public:
 	void paintWidget(Display* d);
 	void runService(void);
 };
+
+#endif

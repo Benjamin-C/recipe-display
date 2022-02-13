@@ -8,11 +8,8 @@
 #include "RecipeSelector.h"
 #include "../recipos/RecipOS.h"
 #include <string.h>
-
-RecipeSelector::RecipeSelector() {
-	// TODO Auto-generated constructor stub
-
-}
+#include <stdio.h>
+#include "RecipeUtils.h"
 
 RecipeSelector::~RecipeSelector() {
 	// TODO Auto-generated destructor stub
@@ -38,7 +35,15 @@ void RecipeSelector::runTab(void) {
 }
 
 void RecipeSelector::onButtonPress(uint16_t pressed, Buttons* buttons) {
-
+	if((pressed & BUTTON_RIGHT_MASK) > 0) {
+		os->tabRight();
+		printf("Right\n");
+	} else if((pressed & BUTTON_LEFT_MASK) > 0) {
+		os->tabLeft();
+		printf("Left\n");
+	} else if((pressed & BUTTON_UP_MASK) > 0) {
+		// Send example message
+	}
 }
 
 void RecipeSelector::paintWidget(Display* d) {
