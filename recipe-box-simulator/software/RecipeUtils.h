@@ -37,7 +37,7 @@ struct VersionNumber {
 };
 
 // Main recipe storage object
-struct RecipeObejct {
+struct Recipe {
     VersionNumber version; // Recipe storage version
     char* name; // Recipe name
     char* category; // Recipe category
@@ -50,9 +50,9 @@ struct RecipeObejct {
 };
 
 // Gets the example RecipeObject
-RecipeObejct* getExampleRO(void);
+Recipe* getExampleRO(void);
 // Prints a RecipeObject
-void printRecipeObject(RecipeObejct* ro);
+void printRecipeObject(Recipe* ro);
 // Prints a unit, and adds 's' if amount != 0
 void printUnit(IngredientUnit iu, float amount);
 // Dynamically allocates a string;

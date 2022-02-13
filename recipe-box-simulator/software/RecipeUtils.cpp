@@ -4,8 +4,8 @@
 #include <stdio.h>
 #include <string.h>
 
-RecipeObejct* getExampleRO(void) {
-	RecipeObejct* ro = new RecipeObejct;
+Recipe* getExampleRO(void) {
+	Recipe* ro = new Recipe;
 
 	RecipeIngredient* ri = (RecipeIngredient*) malloc(sizeof(RecipeIngredient)*2);
 	RecipeStep* rs = (RecipeStep*)malloc(sizeof(RecipeStep)*2);
@@ -47,7 +47,7 @@ RecipeObejct* getExampleRO(void) {
 	return ro;
 }
 
-void printRecipeObject(RecipeObejct* ro) {
+void printRecipeObject(Recipe* ro) {
 	printf("--- Recipe Object ---\n");
 	printf("  Version: %d.%d.%d\n", ro->version.major, ro->version.minor, ro->version.rev);
 	printf("  Name: %s\n", ro->name);

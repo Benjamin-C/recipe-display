@@ -19,7 +19,7 @@ int main(void) {
 
 //	setup();
 
-	RecipeObejct* ro = getExampleRO();
+	Recipe* ro = getExampleRO();
 	printRecipeObject(ro);
 
 	RecipOS ros = RecipOS();
