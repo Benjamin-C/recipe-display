@@ -15,7 +15,7 @@ public:
 	virtual ~Storage();
 	// Reads the maxlength bytes of a file, starting start bytes in.
 	// WARNING this will crash the OS if dest can not hold maxlen characters
-	void readFile(char* path, char* dest, int start, int maxLength);
+	void readFile(const char* path, char* dest, int start, int maxLength);
 };
 
 #endif /* RECIPOS_MODULES_STORAGE_H_ */

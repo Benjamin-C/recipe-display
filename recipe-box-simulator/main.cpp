@@ -60,6 +60,10 @@ int main(void) {
 			} else if((pressed & BUTTON_LEFT_MASK) > 0) {
 				os->tabLeft();
 				printf("Left\n");
+			} else if((pressed & BUTTON_DOWN_MASK) > 0) {
+				char str[1024];
+				os->storage->readFile("/dev/example", str, 0, 1024);
+				printf("%s\n", str);
 			}
 			os->sendMessage(os->getNextMID(), "testmsg", (void*) &pressed);
 			printf("Someone pushed my button!\n");
@@ -129,6 +133,7 @@ int main(void) {
 				msgbox[1] = (void*) &stime;
 				os->sendMessage(os->getNextMID(), "timer", msgbox);
 			}
+
 			printf("Someone pushed my button!\n");
 			os->displayBackend->screenshot();
 		}
