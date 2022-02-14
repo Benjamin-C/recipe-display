@@ -30,9 +30,9 @@ void Storage::readFile(const char* path, char* dest, int start, int maxLength) {
     "version":[1,0,0],
     "name":"Chocolate Bananna",
     "category":"snacks",
-    "servinges":1.8,
+    "servings":1.8,
     "cooktime":2,
-    "ingrediants":[{
+    "Ingredients":[{
         "amount":3.6,
         "unit":"UNIT",
         "name":"chocolate"

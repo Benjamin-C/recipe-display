@@ -19,8 +19,8 @@ int main(void) {
 
 //	setup();
 
-	Recipe* ro = getExampleRO();
-	printRecipeObject(ro);
+	RecipeUtils::Recipe* ro = RecipeUtils::getExampleRecipe();
+	RecipeUtils::printRecipe(ro);
 
 	RecipOS ros = RecipOS();
 
@@ -63,6 +63,7 @@ int main(void) {
 			} else if((pressed & BUTTON_DOWN_MASK) > 0) {
 				char str[1024];
 				os->storage->readFile("/dev/example", str, 0, 1024);
+				RecipeUtils::parseStrin(str);
 				printf("%s\n", str);
 			}
 			os->sendMessage(os->getNextMID(), "testmsg", (void*) &pressed);
