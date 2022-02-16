@@ -32,7 +32,7 @@ void Storage::readFile(const char* path, char* dest, int start, int maxLength) {
     "category":"snacks",
     "servings":1.8,
     "cooktime":2,
-    "Ingredients":[{
+    "ingredients":[{
         "amount":3.6,
         "unit":"UNIT",
         "name":"chocolate"

@@ -19,7 +19,7 @@ RecipeUtils::Recipe* RecipeUtils::getExampleRecipe(void) {
 	ro->version.minor = 0;
 	ro->version.rev = 0;
 
-	ro->name = makeString("Chocolate Bananna");
+	ro->name = makeString("Chocolate Bananana");
 	ro->category = makeString("Snacks");
 	ro->servings = 1.5;
 	ro->cookTime = 4;
@@ -142,7 +142,7 @@ RecipeUtils::Recipe* RecipeUtils::parseStrin(char* str) {
 //		return NULL;
 //	}
 
-	// Split top level
+	// Find version number
 	int squareCount = 0;
 	inQuotes = false;
 	read = str;
@@ -169,6 +169,7 @@ RecipeUtils::Recipe* RecipeUtils::parseStrin(char* str) {
 		verSearch++;
 	}
 
+	// Only continue if this version is supported
 	if(r->version.major == 1 && r->version.minor == 0 && r->version.rev == 0) {
 
 		while(*read != '\0') {
@@ -180,9 +181,21 @@ RecipeUtils::Recipe* RecipeUtils::parseStrin(char* str) {
 				read = maybeStoreFloat("servings", read, &(r->servings));
 				read = maybeStoreInt("cookTime", read, &(r->cookTime));
 				// ingredient
+				char* test = quoteComp(read, "ingredients");
+				if(test != NULL) {
+					// Should read ingredients here
+					while(*read++ != ']') { }
+				}
+
+				test = quoteComp(read, "steps");
+				if(test != NULL) {
+					// Should read ingredients here
+					while(*read++ != ']') { }
+					break;
+				}
 
 				// Steps
-				printf("\nno\n");
+//				printf("\nno\n");
 			}
 			read++;
 		}
@@ -260,9 +273,9 @@ float RecipeUtils::readFloat(char** str) {
 		while(**str >= '0' && **str <= '9') {
 			d += (**str) - '0';
 			i++;
-			char tmp = *(*str)++;
+			*(*str)++;
 		}
-		n += d / (10*i);
+		n += d / (float) (10.0*i);
 	}
 	return n;
 }
