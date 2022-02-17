@@ -24,6 +24,8 @@
 
 #include "Application.h"
 
+#include <string>
+
 #define MAX_TABS 16
 #define MAX_WIDGETS 16
 #define MAX_SERVICES 16
@@ -50,6 +52,10 @@ public:
 	Speaker* speaker;
 	// Not implemented
 	Storage* storage;
+
+	// Shows the blue screen of death with the included message
+	// you can use __FILE__ and __LINE__ to get the file and line that the error happened at to help debugging
+	void bsod(std::string msg);
 
 	// ---------------------
 	// Applications
@@ -133,5 +139,19 @@ private: // TODO add comments
 	Application* services[MAX_SERVICES];
 	bool runServices(void);
 };
+
+class RecipOSErrorWrapper {
+public:
+	void setOS(RecipOS* os);
+	void bsod(std::string msg);
+	bool hasError = false;
+	std::string errMsg;
+private:
+	RecipOS* myROS;
+};
+
+extern RecipOSErrorWrapper* globalError;
+
+void makeBSOD(std::string msg);
 
 #endif

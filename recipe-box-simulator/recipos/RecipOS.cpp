@@ -23,6 +23,8 @@
 #include "modules/Speaker.h"
 #include "modules/Storage.h"
 
+RecipOSErrorWrapper* globalError;
+
 RecipOS::RecipOS() {
 	displayBackend = new BitmapDrawer();
 	mainDisplay = new Display(displayBackend, 0, 0, 480, 320);
@@ -241,6 +243,15 @@ bool RecipOS::runServices(void) {
 
 bool RecipOS::boot(void) {
 	if(!booted) {
+		if(globalError == NULL) {
+			globalError = new RecipOSErrorWrapper();
+		}
+		globalError->setOS(this);
+
+		if(globalError->hasError) {
+			bsod(globalError->errMsg);
+		}
+
 		bool hasFirst = false;
 		for(int i = 0; i < MAX_TABS; i++) {
 			if(tabs[i] != NULL) {
@@ -321,4 +332,64 @@ bool RecipOS::checkButtonPress(void) {
 	} else {
 		return false;
 	}
+}
+
+// BSOD stuffs
+void RecipOS::bsod(std::string msg) {
+	buttons->halt(); // Should probably shut other sutff down here too
+	displayBackend->clear(BLUE);
+	displayBackend->displayString(0, 0, "   ---   Fatal  Error   ---   ", 2, WHITE, BLUE);
+	printf("\n\n\n-------- RecipOS has crashed! --------\n");
+
+	// Some nice multiline drawing code that maybe should be implemented into the display stuff?
+	const char* c = msg.c_str();
+	bool hasMoreMsg = true;
+	int ystart = 16;
+	const int SCALE = 2;
+	while(hasMoreMsg) {
+		int xpos = 0;
+		int rowcount = 0;
+		while(*c != '\0' && rowcount < 60/SCALE) {
+			displayBackend->displayChar(xpos, ystart, *c, SCALE, WHITE, BLUE);
+			printf("%c", *c);
+			xpos += 8*SCALE;
+			c++;
+			rowcount++;
+		}
+		if(*c != '\0') {
+			ystart += 8*SCALE;
+		} else {
+			hasMoreMsg = false;
+		}
+		printf("\n");
+	}
+	printf("--------------------------------------\n");
+	displayBackend->screenshot();
+	while(true) { // OS is crashed, so don't do anything else.
+		delay(2147483647); // Basically forever anyway
+	} // but then loop so it really is forever
+}
+
+void RecipOSErrorWrapper::setOS(RecipOS* os) {
+	myROS = os;
+}
+
+void RecipOSErrorWrapper::bsod(std::string msg) {
+	if(!hasError) {
+		errMsg = msg;
+		hasError = true;
+		if(myROS != NULL) {
+			myROS->bsod(msg);
+		}
+	} else {
+		printf("There is already a BSOD queued. Only the first error is shown on the screen.\n");
+		printf("This error msg: %s\n", msg.c_str());
+	}
+}
+
+void makeBSOD(std::string msg) {
+	if(globalError == NULL) {
+		globalError = new RecipOSErrorWrapper;
+	}
+	globalError->bsod(msg);
 }
