@@ -59,15 +59,14 @@ namespace RecipeUtils {
 	// Prints a unit, and adds 's' if amount != 0
 	void printUnit(IngredientUnit iu, float amount);
 	void printVersion(VersionNumber v);
-	// Dynamically allocates a string;
-	char* makeString(const char* string);
+
 	// There should probably be a destroy method here. There is not. Too bad.
 	void destroyRecipe(Recipe* r);
 
 	Recipe* parseStrin(char* str);
 
 	RecipeIngredient* parseIngredient(char** readhead);
-	char* maybeStoreQuotedString(const char* test, char* readhead, char** dest);
+	char* maybeStoreQuotedString(const char* test, char* readhead, std::string* dest);
 	char* maybeStoreFloat(const char* test, char* readhead, float* dest);
 	char* maybeStoreInt(const char* test, char* readhead, int* dest);
 

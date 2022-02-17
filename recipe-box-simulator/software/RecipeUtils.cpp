@@ -84,16 +84,6 @@ void RecipeUtils::printVersion(VersionNumber v) {
 	printf("%d.%d.%d", v.major, v.minor, v.rev);
 }
 
-char* RecipeUtils::makeString(const char* string) {
-	char* s = (char*) malloc(sizeof(char) * strlen(string));
-	if(s != NULL) {
-		strcpy(s, string);
-	} else {
-		printf("AAAAAA String allocation failed (RecipeUtils.cpp)");
-	}
-	return s;
-}
-
 void RecipeUtils::destroyRecipe(Recipe* ro) {
 
 	free(ro->ingredients);
@@ -228,7 +218,7 @@ RecipeUtils::RecipeIngredient* RecipeUtils::parseIngredient(char** readhead) {
 	return i;
 }
 
-char* RecipeUtils::maybeStoreQuotedString(const char* test, char* readhead, char** dest) {
+char* RecipeUtils::maybeStoreQuotedString(const char* test, char* readhead, std::string* dest) {
 	char* next = quoteComp(readhead, test);
 	if(next != NULL) {
 		next += 2;
@@ -236,7 +226,7 @@ char* RecipeUtils::maybeStoreQuotedString(const char* test, char* readhead, char
 		if(name != NULL) {
 			next++;
 			quoteCpy(name, &next);
-			*dest = name;
+			dest->assign(name);
 		} else {
 			printf("malloc error! Fix it!");
 		}

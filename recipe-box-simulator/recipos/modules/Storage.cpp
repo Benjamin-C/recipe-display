@@ -28,7 +28,7 @@ void Storage::readFile(const char* path, char* dest, int start, int maxLength) {
 		const char* exstr = R"===(
 {
     "version":[1,0,0],
-    "name":"Chocolate Bananna",
+    "name":"Chocolate Bananana",
     "category":"snacks",
     "servings":1.8,
     "cooktime":2,
@@ -39,14 +39,14 @@ void Storage::readFile(const char* path, char* dest, int start, int maxLength) {
     },{
         "amount":8.1,
         "unit":"UNIT",
-        "name":"banannas"
+        "name":"Bananana"
     }],
     "steps":[{
         "number":0,
         "text":"eat the chocolate"
     },{
         "number":1,
-        "text":"eat the bananna"
+        "text":"eat the bananana"
     }]
 }
 )===";
