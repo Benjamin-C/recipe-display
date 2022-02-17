@@ -4,8 +4,8 @@
 #include <stdio.h>
 #include <string.h>
 
-Recipe* getExampleRO(void) {
-	Recipe* ro = new Recipe;
+RecipeUtils::Recipe* RecipeUtils::getExampleRecipe(void) {
+	Recipe* ro = new RecipeUtils::Recipe;
 
 	RecipeIngredient* ri = (RecipeIngredient*) malloc(sizeof(RecipeIngredient)*2);
 	RecipeStep* rs = (RecipeStep*)malloc(sizeof(RecipeStep)*2);
@@ -25,18 +25,18 @@ Recipe* getExampleRO(void) {
 	ro->cookTime = 4;
 
 	ri[0].amount = 1.5;
-	ri[0].unit = PIECES;
+	ri[0].unit = RecipeUtils::PIECES;
 	ri[0].name = "Bananana";
 
 	ri[1].amount = 0.76;
-	ri[1].unit = CUP;
+	ri[1].unit = RecipeUtils::CUP;
 	ri[1].name = "Chocolate";
 
 	ro->ingredients = ri;
 	ro->ingredientCount = 2;
 
 	rs[0].number = 1;
-	rs[0].text = "Eat bananna";
+	rs[0].text = "Eat bananana";
 
 	rs[1].number = 2;
 	rs[1].text = "Eat chocolate";
@@ -47,7 +47,7 @@ Recipe* getExampleRO(void) {
 	return ro;
 }
 
-void printRecipeObject(Recipe* ro) {
+void RecipeUtils::printRecipe(Recipe* ro) {
 	printf("--- Recipe Object ---\n");
 	printf("  Version: %d.%d.%d\n", ro->version.major, ro->version.minor, ro->version.rev);
 	printf("  Name: %s\n", ro->name.c_str());
@@ -68,7 +68,11 @@ void printRecipeObject(Recipe* ro) {
 	printf("---------------------\n");
 }
 
-void printUnit(IngredientUnit iu, float amount) {
+void RecipeUtils::printVersion(VersionNumber v) {
+	printf("%d.%d.%d", v.major, v.minor, v.rev);
+}
+
+void RecipeUtils::printUnit(IngredientUnit iu, float amount) {
 	switch(iu) {
 	case PIECES: printf("piece"); break;
 	case CUP: printf("cup"); break;

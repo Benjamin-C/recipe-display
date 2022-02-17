@@ -19,8 +19,8 @@ int main(void) {
 
 //	setup();
 
-	Recipe* ro = getExampleRO();
-	printRecipeObject(ro);
+	RecipeUtils::Recipe* ro = RecipeUtils::getExampleRecipe();
+	RecipeUtils::printRecipe(ro);
 
 	RecipOS ros = RecipOS();
 
