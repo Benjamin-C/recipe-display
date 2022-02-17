@@ -183,6 +183,11 @@ RecipeUtils::Recipe* RecipeUtils::parseStrin(char* str) {
 				// ingredient
 				char* test = quoteComp(read, "ingredients");
 				if(test != NULL) {
+					read = test;
+					while(*read != '\0' && *read != ']') {
+						RecipeUtils::RecipeIngredient* i = RecipeUtils::parseIngredient(&read);
+						read++;
+					}
 					// Should read ingredients here
 					while(*read++ != ']') { }
 				}
@@ -205,6 +210,31 @@ RecipeUtils::Recipe* RecipeUtils::parseStrin(char* str) {
 		printf("Invalid recipe version");
 		return NULL;
 	}
+}
+
+RecipeUtils::RecipeIngredient* RecipeUtils::parseIngredient(char** readhead) {
+	char* read = *(readhead);
+
+	RecipeUtils::RecipeIngredient* i = (RecipeUtils::RecipeIngredient*) malloc(sizeof(RecipeUtils::RecipeIngredient));
+	while(*read++ != '{') { };
+	if(i != NULL) {
+		while(*read != '\0' && *read != '}') {
+			if(*read == '"') {
+				read = maybeStoreFloat("amount", read, &(i->amount));
+				read = maybeStoreQuotedString("name", read, &(i->name));
+				// Still need to parse units
+			}
+			read++;
+		}
+		while(*read != '}') {
+			read++;
+		};
+	} else {
+		printf("Could not allocate RecipeIngrediant");
+	}
+
+	*readhead = read;
+	return i;
 }
 
 char* RecipeUtils::maybeStoreQuotedString(const char* test, char* readhead, char** dest) {
@@ -289,7 +319,7 @@ char* RecipeUtils::quoteComp(char* str, const char* test) {
 			return NULL;
 		}
 	}
-	return (*str == '"') ? str : NULL;
+	return (*str == '"' && *test == '\0') ? str : NULL;
 
 }
 

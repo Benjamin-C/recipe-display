@@ -64,6 +64,7 @@ namespace RecipeUtils {
 
 	Recipe* parseStrin(char* str);
 
+	RecipeIngredient* parseIngredient(char** readhead);
 	char* maybeStoreQuotedString(const char* test, char* readhead, char** dest);
 	char* maybeStoreFloat(const char* test, char* readhead, float* dest);
 	char* maybeStoreInt(const char* test, char* readhead, int* dest);
