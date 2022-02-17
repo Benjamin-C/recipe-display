@@ -8,6 +8,8 @@
 #ifndef SOFTWARE_RECIPEUTILS_H_
 #define SOFTWARE_RECIPEUTILS_H_
 
+#include <string>
+
 namespace RecipeUtils {
 	enum IngredientUnit {
 		PIECES,
@@ -21,13 +23,13 @@ namespace RecipeUtils {
 	struct RecipeIngredient {
 		float amount; // The amonut of the ingrediant as a float, not fraction
 		IngredientUnit unit; // The unit of the amount
-		char* name; // The name of the ingrediant
+		std::string name; // The name of the ingrediant
 	};
 
 	// Structs for the step in the recipe
 	struct RecipeStep {
 		int number; // Step number in case stuff gets moved around
-		char* text; // The instruction text
+		std::string text; // The instruction text
 	};
 
 	// Version numbering format. Print as major.minor.revision
@@ -40,8 +42,8 @@ namespace RecipeUtils {
 	// Main recipe storage object
 	struct Recipe {
 		VersionNumber version; // Recipe storage version
-		char* name; // Recipe name
-		char* category; // Recipe category
+		std::string name; // Recipe name
+    	std::string category; // Recipe category
 		float servings; // Number of servings
 		int cookTime; // Cook time in mins
 		int ingredientCount; // Number of ingredient

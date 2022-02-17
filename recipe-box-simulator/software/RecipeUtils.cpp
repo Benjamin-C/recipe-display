@@ -19,27 +19,27 @@ RecipeUtils::Recipe* RecipeUtils::getExampleRecipe(void) {
 	ro->version.minor = 0;
 	ro->version.rev = 0;
 
-	ro->name = makeString("Chocolate Bananana");
-	ro->category = makeString("Snacks");
+	ro->name = "Chocolate Bananana";
+	ro->category = "Snacks";
 	ro->servings = 1.5;
 	ro->cookTime = 4;
 
 	ri[0].amount = 1.5;
 	ri[0].unit = PIECES;
-	ri[0].name = makeString("Bananna");
+	ri[0].name = "Bananana";
 
 	ri[1].amount = 0.76;
 	ri[1].unit = CUP;
-	ri[1].name = makeString("Chocolate");
+	ri[1].name = "Chocolate";
 
 	ro->ingredients = ri;
 	ro->ingredientCount = 2;
 
 	rs[0].number = 1;
-	rs[0].text = makeString("Eat bananna");
+	rs[0].text = "Eat bananna";
 
 	rs[1].number = 2;
-	rs[1].text = makeString("Eat chocolate");
+	rs[1].text = "Eat chocolate";
 
 	ro->steps = rs;
 	ro->stepCount = 2;
@@ -50,20 +50,20 @@ RecipeUtils::Recipe* RecipeUtils::getExampleRecipe(void) {
 void RecipeUtils::printRecipe(Recipe* ro) {
 	printf("--- Recipe Object ---\n");
 	printf("  Version: "); printVersion(ro->version); printf("\n");
-	printf("  Name: %s\n", ro->name);
-	printf("  Category: %s\n", ro->category);
+	printf("  Name: %s\n", ro->name.c_str());
+	printf("  Category: %s\n", ro->category.c_str());
 	printf("  Servings: %.1f\n", ro->servings);
 	printf("  Cook time: %dmin\n", ro->cookTime);
 	printf("  Ingredients:\n");
 	for(int i = 0; i < ro->ingredientCount; i++) {
 		printf("    %.2f ", ro->ingredients[i].amount);
 		printUnit(ro->ingredients[i].unit, ro->ingredients[i].amount);
-		printf(" %s\n", ro->ingredients[i].name);
+		printf(" %s\n", ro->ingredients[i].name.c_str());
 	}
 
 	printf("  Steps: (%d)\n", ro->stepCount);
 	for(int s = 0; s < ro->stepCount; s++) {
-		printf("    %d: %s\n", ro->steps[s].number, ro->steps[s].text);
+		printf("    %d: %s\n", ro->steps[s].number, ro->steps[s].text.c_str());
 	}
 	printf("---------------------\n");
 }
@@ -96,17 +96,8 @@ char* RecipeUtils::makeString(const char* string) {
 
 void RecipeUtils::destroyRecipe(Recipe* ro) {
 
-	free(ro->name);
-	free(ro->category);
-
-	for(int i = 0; i < ro->ingredientCount; i++) {
-		free(ro->ingredients[i].name);
-	}
 	free(ro->ingredients);
 
-	for(int s = 0; s < ro->stepCount; s++) {
-		free(ro->steps[s].text);
-	}
 	free(ro->steps);
 }
 
