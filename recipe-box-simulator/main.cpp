@@ -13,6 +13,7 @@
 #include <string.h>
 
 #include "software/RecipeUtils.h"
+#include "software/RecipeSelector.h"
 
 int main(void) {
 	printf("Hello World %ld\n", sizeof(char));
@@ -36,10 +37,10 @@ int main(void) {
 			color = i+3;
 		}
 		int lastMID = -1;
-		void onMessage(int mid, const char* dest, void* mbox) {
+		void onMessage(int mid, std::string dest, void* mbox) {
 			if(mid != lastMID) {
 				lastMID = mid;
-				if(strcmp((const char*) dest, "testmsg")==0) {
+				if(dest == "testmsg") {
 					printf("Button press message! %d\n", *((uint16_t*) mbox));
 				}
 			}
@@ -90,10 +91,10 @@ int main(void) {
 			serviceInterval = 1000;
 		}
 		int lastMID = -1;
-		void onMessage(int mid, const char* dest, void* mbox) {
+		void onMessage(int mid, std::string dest, void* mbox) {
 			if(mid != lastMID) {
 				lastMID = mid;
-				if(strcmp((const char*) dest, "timer")==0) {
+				if(dest == "timer") {
 					void** args = (void**) mbox;
 					const char* cmd = (const char*) args[0];
 					printf("Timer: %s\n", cmd);
@@ -166,10 +167,35 @@ int main(void) {
 		}
 	}
 
+	class StartupScreenshot : public Application {
+	public:
+		~StartupScreenshot() { };
+		void startup(RecipOS* os) {
+			this->os = os;
+			serviceInterval = 100;
+		}
+		int lastMID = -1;
+		void onMessage(int mid, std::string dest, void* mbox) { }
+		void paintTab(Display* d) { }
+		void runTab(void) { }
+		void onButtonPress(uint16_t pressed, Buttons* buttons) { }
+		void runService(void) {
+			os->displayBackend->screenshot();
+			serviceInterval = -1;
+		}
+		void paintWidget(Display* d) { }
+	};
+
+	StartupScreenshot* sst = new StartupScreenshot();
+	ros.addService(sst, NULL);
+
 	Timer* timer = new Timer();
 
-	int tid = ros.addTab(timer, NULL);
+	ros.addTab(timer, NULL);
 	ros.addService(timer, NULL);
+
+	RecipeSelector* rs = new RecipeSelector();
+	int tid = ros.addTab(rs, NULL);
 	ros.switchTab(tid);
 
 	ros.boot(); // Program will not pass here

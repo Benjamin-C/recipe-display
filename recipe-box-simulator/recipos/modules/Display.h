@@ -10,6 +10,7 @@
 #define RECIPOS_MODULES_DISPLAY_H_
 
 #include <stdint.h>
+#include <string>
 
 #include "../drivers/display/DisplayBackend.h"
 
@@ -58,7 +59,7 @@ public:
     // Displays character c at xpos,ypos with a scale scale and color fontcolor on color backgroundcolor
     bool displayChar(int xpos, int ypos, uint8_t c, int scale, int fontcolor, int backgroundcolor);
     // Displays string str at xpos,ypos with a scale scale and color fontcolor on color backgroundcolor
-    bool displayString(int xstart, int ystart, const char* str, int scale, int fontcolor, int backgroundcolor);
+    bool displayString(int xstart, int ystart, std::string str, int scale, int fontcolor, int backgroundcolor);
     // Asks the underlying display driver to take a screenshot. Exactly what this does depends on that driver.
     bool screenshot(void);
     // Get the width of the allowed drawing window

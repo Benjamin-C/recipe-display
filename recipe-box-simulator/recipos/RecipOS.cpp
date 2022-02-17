@@ -51,7 +51,7 @@ int RecipOS::getNextMID(void) {
 	return nextMID++;
 }
 
-void RecipOS::sendMessage(int mid, const char* dest, void* msgbox) {
+void RecipOS::sendMessage(int mid, std::string dest, void* msgbox) {
 	for(int i = 0; i < MAX_TABS; i++) {
 		if(tabs[i] != NULL) {
 			tabs[i]->onMessage(mid, dest, msgbox);
@@ -121,6 +121,8 @@ bool RecipOS::switchTab(int appid) {
 			printf("Can't switch, something was null\n");
 			return false;
 		}
+	} else {
+		printf("Invalid dest");
 	}
 	return false;
 }
@@ -186,7 +188,7 @@ bool RecipOS::drawWidgets(void) {
 //	if(!service->running) {
 //					service->startup(this);
 //				}
-	mainDisplay->displayString(0, 0, "WIDGETS GO HERE", 4, BRIGHT_GREEN, BLACK);
+	mainDisplay->displayString(0, 0, " Tasty  Snacks ", 4, DARK_GREY, BLACK);
 	return true;
 }
 
@@ -229,10 +231,12 @@ bool RecipOS::runServices(void) {
 				ser->startup(this);
 				ser->running = true;
 			}
-			if(ser->nextServiceTime < millis()) {
+			if(ser->serviceInterval >= 0 && ser->nextServiceTime < millis()) {
 				ser->runService();
-				while(ser->nextServiceTime < millis()) {
-					ser->nextServiceTime += ser->serviceInterval;
+				if(ser->serviceInterval > 0) {
+					while(ser->nextServiceTime < millis()) {
+						ser->nextServiceTime += ser->serviceInterval;
+					}
 				}
 			}
 		}
@@ -252,7 +256,7 @@ bool RecipOS::boot(void) {
 			bsod(globalError->errMsg);
 		}
 
-		bool hasFirst = false;
+		bool hasFirst = currentTab >= 0;
 		for(int i = 0; i < MAX_TABS; i++) {
 			if(tabs[i] != NULL) {
 				tabs[i]->startup(this);
@@ -277,7 +281,7 @@ bool RecipOS::boot(void) {
 				this->os = os;
 				serviceInterval = 100; // Check buttons 10x per second
 			}
-			void onMessage(int mid, const char* dest, void* mbox) { }
+			void onMessage(int mid, std::string dest, void* mbox) { }
 			void paintTab(Display* d) { }
 			void runTab(void) { }
 			void onButtonPress(uint16_t pressed, Buttons* buttons) { }
@@ -295,7 +299,7 @@ bool RecipOS::boot(void) {
 				this->os = os;
 				serviceInterval = 1000; // Woof every second
 			}
-			void onMessage(int mid, const char* dest, void* mbox) { }
+			void onMessage(int mid, std::string dest, void* mbox) { }
 			void paintTab(Display* d) { }
 			void runTab(void) { }
 			void onButtonPress(uint16_t pressed, Buttons* buttons) { }
@@ -368,6 +372,46 @@ void RecipOS::bsod(std::string msg) {
 	while(true) { // OS is crashed, so don't do anything else.
 		delay(2147483647); // Basically forever anyway
 	} // but then loop so it really is forever
+}
+
+void RecipOS::error(std::string msg) {
+	buttons->halt(); // Should probably shut other sutff down here too
+	int leftx = 5*16;
+	displayBackend->displayString(leftx, 2*16, "\xC9\xCD\xCD Error \xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xBB", 2, WHITE, BLUE);
+	printf("\n\n\n-------- Something has encountered an error! --------\n");
+
+	// Some nice multiline drawing code that maybe should be implemented into the display stuff?
+	const char* c = msg.c_str();
+	bool hasMoreMsg = true;
+	int ystart = 4*16;
+	const int SCALE = 2;
+	while(hasMoreMsg) {
+		int xpos = leftx;
+		int rowcount = 0;
+		displayBackend->displayChar(xpos, ystart, '\xBA', SCALE, WHITE, BLUE);
+		xpos += 8*SCALE;
+		displayBackend->displayChar(xpos, ystart, ' ', SCALE, WHITE, BLUE);
+		xpos += 8*SCALE;
+		while(rowcount < 16) {
+			if(*c != '\0') {
+				displayBackend->displayChar(xpos, ystart, *c, SCALE, WHITE, BLUE);
+				printf("%c", *c);
+				xpos += 8*SCALE;
+				c++;
+			rowcount++;
+		}
+		displayBackend->displayChar(xpos, ystart, ' ', SCALE, WHITE, BLUE);
+		xpos += 8*SCALE;
+		displayBackend->displayChar(xpos, ystart, '\xBA', SCALE, WHITE, BLUE);
+		if(*c != '\0') {
+			ystart += 8*SCALE;
+		} else {
+			hasMoreMsg = false;
+		}
+		printf("\n");
+	}
+	printf("--------------------------------------\n");
+	displayBackend->screenshot();
 }
 
 void RecipOSErrorWrapper::setOS(RecipOS* os) {

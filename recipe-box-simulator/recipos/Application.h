@@ -71,7 +71,7 @@ public:
 	 *   if the message is intended for that app.
 	 * Gets the message ID, a string dest and a pointer to the message box.
 	 */
-	virtual void onMessage(int mid, const char* dest, void* mbox) = 0;
+	virtual void onMessage(int mid, std::string dest, void* mbox) = 0;
 
 	// ------------------------------
 	// Tab Methods
@@ -116,7 +116,7 @@ public:
 	 * Values < 0 will not run as a service
 	 * Values == 0 will run as often as possible;
 	 */
-	unsigned long serviceInterval = -1;
+	long serviceInterval = -1;
 	/* The next time the service should run
 	 * Automatically updated when the service runs
 	 * Intervals may be skipped if the system is running slow

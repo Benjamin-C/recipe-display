@@ -10,6 +10,7 @@
 
 #include "../drivers/display/DisplayBackend.h"
 #include <string.h>
+#include <string>
 #include <stdio.h>
 #include "Display.h"
 
@@ -160,16 +161,17 @@ bool Display::displayChar(int xpos, int ypos, uint8_t c, int scale, int fontcolo
 		return false;
 	}
 }
-bool Display::displayString(int xstart, int ystart, const char* str, int scale, int fontcolor, int backgroundcolor) {
+bool Display::displayString(int xstart, int ystart, std::string str, int scale, int fontcolor, int backgroundcolor) {
 #ifdef MEGA_DEBUG_LOG
 	printf("displayString(%d, %d, \"%s\", %d, %d, %d)\n", xstart, ystart, str, scale, fontcolor, backgroundcolor);
 #endif
-	if(str != NULL) {
+	if(!str.empty()) {
 #ifdef MEGA_DEBUG_LOG
 		printf("datas: %d %d %d %d %d %d\n", xstart, ystart, (int) (8*strlen(str)*scale), 8*scale, (int) (xstart+xmin+(8*strlen(str)*scale)), ystart+ymin+(8*scale));
 #endif
-		if(inBounds(xstart, ystart,8*strlen(str)*scale,8*scale)) {
-			dbe->displayString(xstart+xmin,ystart+ymin, str, scale, fontcolor, backgroundcolor);
+		const char* cstr = str.c_str();
+		if(inBounds(xstart, ystart,8*strlen(cstr)*scale,8*scale)) {
+			dbe->displayString(xstart+xmin,ystart+ymin, cstr, scale, fontcolor, backgroundcolor);
 			return true;
 		} else {
 			return false;
