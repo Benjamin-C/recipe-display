@@ -38,7 +38,7 @@ void Storage::readFile(const char* path, char* dest, int start, int maxLength) {
         "name":"chocolate"
     },{
         "amount":8.1,
-        "unit":"UNIT",
+        "unit":"CUP",
         "name":"Bananana"
     }],
     "steps":[{

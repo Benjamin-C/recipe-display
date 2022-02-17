@@ -10,12 +10,18 @@
 
 #include <string>
 
+#define MAX_RECIPE_SIZE 256
+
 namespace RecipeUtils {
+// Update this if longer ingredient names are used
+// Also update the parser and the printer
+#define MAX_INGREDIENT_UNIT_LENGTH 16
 	enum IngredientUnit {
-		PIECES,
+		PIECE,
 		CUP,
 		TABLESPOON,
-		TEASPOON
+		TEASPOON,
+		NOTHING // It's null, as you would expect
 		// Add more as needed
 	};
 
@@ -65,7 +71,10 @@ namespace RecipeUtils {
 
 	Recipe* parseStrin(char* str);
 
-	RecipeIngredient* parseIngredient(char** readhead);
+	int countJSONArray(char* read);
+
+	RecipeIngredient parseIngredient(char** readhead);
+	RecipeStep parseStep(char** readhead);
 	char* maybeStoreQuotedString(const char* test, char* readhead, std::string* dest);
 	char* maybeStoreFloat(const char* test, char* readhead, float* dest);
 	char* maybeStoreInt(const char* test, char* readhead, int* dest);
@@ -75,6 +84,8 @@ namespace RecipeUtils {
 	char* quoteComp(char* str, const char* test);
 	int quoteLen(char* str);
 	void quoteCpy(char* dest, char** str);
+
+	IngredientUnit parseUnit(std::string str);
 }
 
 
