@@ -65,6 +65,8 @@ int main(void) {
 				os->storage->readFile("/dev/example", str, 0, 1024);
 				RecipeUtils::parseStrin(str);
 				printf("%s\n", str);
+			} else if((pressed & BUTTON_UP_MASK) > 0) {
+				makeBSOD("You pressed up. How dare you! ");
 			}
 			os->sendMessage(os->getNextMID(), "testmsg", (void*) &pressed);
 			printf("Someone pushed my button!\n");

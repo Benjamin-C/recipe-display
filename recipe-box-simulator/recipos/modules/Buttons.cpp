@@ -25,33 +25,40 @@
 const char* directions[7] = {"null", "up", "down", "left", "right", "enter", "super"};
 
 std::atomic<uint16_t> buttons;
+std::atomic<bool> mayRun;
 
 uint16_t waitForButtons(void) {
-	while(true) {
+	while(mayRun) {
 		printf("What button do you want to press? ");
 		int num = 0;
 		scanf("%1d", &num);
-		std::cin.ignore();
-		uint16_t out;
-		if(num <= 6 && num > 0) {
-			out = 1 << (num-1);
-			int oc = out;
-			for(int i = 0; i < 8; i++) {
-				printf("%01d", (oc >> 7) & 1);
-				oc <<= 1;
+		if(mayRun) {
+			std::cin.ignore();
+			uint16_t out;
+			if(num <= 6 && num > 0) {
+				out = 1 << (num-1);
+				int oc = out;
+				for(int i = 0; i < 8; i++) {
+					printf("%01d", (oc >> 7) & 1);
+					oc <<= 1;
+				}
+				printf("\nYou pressed %s\n", directions[num]);
+				buttons = out;
+			} else {
+				printf("Invalid button %d\n", num);
 			}
-			printf("\nYou pressed %s\n", directions[num]);
-			buttons = out;
+			std::this_thread::sleep_for(std::chrono::milliseconds(1));
 		} else {
-			printf("Invalid button %d\n", num);
+			break;
 		}
-		std::this_thread::sleep_for(std::chrono::milliseconds(1));
 	}
+	return 0;
 }
 
 
 
 Buttons::Buttons(void) {
+	mayRun = true;
 	std::thread worker(waitForButtons);
 	worker.detach();
 }
@@ -64,4 +71,8 @@ uint16_t Buttons::checkButtons() {
 	uint16_t tmp = buttons;
 	buttons = 0;
 	return (uint16_t) tmp;
+}
+
+void Buttons::halt(void) {
+	mayRun = false;
 }
