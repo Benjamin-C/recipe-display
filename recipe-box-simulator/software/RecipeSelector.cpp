@@ -37,7 +37,8 @@ void RecipeSelector::startup(RecipOS* os) {
 
 void RecipeSelector::onMessage(int mid, std::string dest, void* mbox) {
 	if(dest == "recipe-select") {
-		os->error("You can't select recipies yet!");
+		RecipeUtils::Recipe* rp = (RecipeUtils::Recipe*) mbox;
+		os->error("You can't select recipes yet!\n\n" + rp->name);
 	}
 }
 
@@ -64,6 +65,8 @@ void RecipeSelector::runTab(void) {
 }
 
 void RecipeSelector::onButtonPress(uint16_t pressed, Buttons* buttons) {
+	using namespace RecipeUtils;
+	printf("Button!");
 	if((pressed & BUTTON_RIGHT_MASK) > 0) {
 		os->tabRight();
 		printf("Right\n");
@@ -83,7 +86,8 @@ void RecipeSelector::onButtonPress(uint16_t pressed, Buttons* buttons) {
 	} else if((pressed & BUTTON_ENTER_MASK) > 0) {
 		printf("Messaging...");
 		// Should put the recipe here, but doesn't yet
-		os->sendMessage(os->getNextMID(), "recipe-select", (void*) &currentSelection);
+		Recipe* rsp = getExampleRecipe();
+		os->sendMessage(os->getNextMID(), "recipe-select", (void*) rsp);
 	}
 
 	os->displayBackend->screenshot();

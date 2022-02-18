@@ -375,42 +375,79 @@ void RecipOS::bsod(std::string msg) {
 }
 
 void RecipOS::error(std::string msg) {
-	buttons->halt(); // Should probably shut other sutff down here too
-	int leftx = 5*16;
-	displayBackend->displayString(leftx, 2*16, "\xC9\xCD\xCD Error \xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xBB", 2, WHITE, BLUE);
+	const int FONTCOLOR = BLACK;
+	const int BACKGROUND = displayBackend->RGB(255, 255, 0); // Yellow
+
+	int leftx = 3*16;
+	displayBackend->displayString(leftx, 3*16, "\xC9\xCD\xCD\xCD\xCD Error \xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xBB", 2, FONTCOLOR, BACKGROUND);
 	printf("\n\n\n-------- Something has encountered an error! --------\n");
 
 	// Some nice multiline drawing code that maybe should be implemented into the display stuff?
+
 	const char* c = msg.c_str();
 	bool hasMoreMsg = true;
-	int ystart = 4*16;
 	const int SCALE = 2;
-	while(hasMoreMsg) {
+	int rows = 0;
+	int ystart = 4*16;
+	while(rows < 12) {
 		int xpos = leftx;
-		int rowcount = 0;
-		displayBackend->displayChar(xpos, ystart, '\xBA', SCALE, WHITE, BLUE);
+		int charCount = 0;
+		displayBackend->displayChar(xpos, ystart, '\xBA', SCALE, FONTCOLOR, BACKGROUND);
 		xpos += 8*SCALE;
-		displayBackend->displayChar(xpos, ystart, ' ', SCALE, WHITE, BLUE);
+		displayBackend->displayChar(xpos, ystart, ' ', SCALE, FONTCOLOR, BACKGROUND);
 		xpos += 8*SCALE;
-		while(rowcount < 16) {
-			if(*c != '\0') {
-				displayBackend->displayChar(xpos, ystart, *c, SCALE, WHITE, BLUE);
+		const int LINEWIDTH = 20;
+		int ll = 0;
+		int tll = 0;
+		const char* tc = c;
+		while(tll < LINEWIDTH) {
+			while(*tc != ' ' && *tc != '\0' && *tc != '\n') { tc++; tll++; }
+			if(tll+1 < LINEWIDTH) {
+				ll = tll;
+				if(*tc != ' ') {
+					break;
+				} else {
+					tc++;
+					tll++;
+				}
+			}
+		}
+		while(charCount < LINEWIDTH) {
+			if(*c != '\0' && *c != '\n' && ll > 0) {
+				displayBackend->displayChar(xpos, ystart, *c, SCALE, FONTCOLOR, BACKGROUND);
 				printf("%c", *c);
-				xpos += 8*SCALE;
 				c++;
-			rowcount++;
+				ll--;
+				if(ll == 0) {
+					c++;
+				}
+			} else {
+				if(*c == '\0') {
+					hasMoreMsg = false;
+				}
+				displayBackend->displayChar(xpos, ystart, ' ', SCALE, FONTCOLOR, BACKGROUND);
+			}
+			xpos += 8*SCALE;
+			charCount++;
 		}
-		displayBackend->displayChar(xpos, ystart, ' ', SCALE, WHITE, BLUE);
+		if(*c == '\n') {
+			c++;
+		}
+		displayBackend->displayChar(xpos, ystart, ' ', SCALE, FONTCOLOR, BACKGROUND);
 		xpos += 8*SCALE;
-		displayBackend->displayChar(xpos, ystart, '\xBA', SCALE, WHITE, BLUE);
-		if(*c != '\0') {
-			ystart += 8*SCALE;
-		} else {
-			hasMoreMsg = false;
+		displayBackend->displayChar(xpos, ystart, '\xBA', SCALE, FONTCOLOR, BACKGROUND);
+		ystart += 8*SCALE;
+		if(hasMoreMsg) {
+			printf("\n");
 		}
-		printf("\n");
+		rows++;
 	}
-	printf("--------------------------------------\n");
+	displayBackend->displayString(leftx, 16*16, "\xC8", 2, FONTCOLOR, BACKGROUND);
+	for(int i = 1; i < 23; i++) {
+		displayBackend->displayString(leftx+(16*i), 16*16, "\xCD", 2, FONTCOLOR, BACKGROUND);
+	}
+	displayBackend->displayString(leftx+(16*23), 16*16, "\xBC", 2, FONTCOLOR, BACKGROUND);
+	printf("\n--------------------------------------\n");
 	displayBackend->screenshot();
 }
 
