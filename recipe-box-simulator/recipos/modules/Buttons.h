@@ -24,6 +24,8 @@ public:
 	uint16_t checkButtons(void);
 	// Checks the status of a specific button. See the section above for IDs.
 	bool checkButton(int id);
+	// Halts the button reading thread
+	void halt(void);
 };
 
 #endif /* RECIPOS_MODULES_BUTTONS_H_ */

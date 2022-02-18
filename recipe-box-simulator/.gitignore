@@ -1,3 +1,7 @@
 /Debug/
 /Release/
+<<<<<<< HEAD
 /.DS_Store
+=======
+/junk/
+>>>>>>> refs/heads/master
