@@ -28,6 +28,7 @@ public:
 private:
 	int currentSelection;
 	int optionCount;
+	std::string* optionNames;
 	std::string* options;
 };
 

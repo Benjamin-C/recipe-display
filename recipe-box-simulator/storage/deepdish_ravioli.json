@@ -1,0 +1,30 @@
+{
+    "version":[1,0,0],
+    "name":"Deep-Dish Ravioli",
+    "category":"lunch",
+    "servings":8,
+    "cooktime":45,
+    "ingredients":[{
+        "amount":25,
+        "unit":"PIECE",
+        "name":"raw ravioli"
+    },{
+        "amount":1,
+        "unit":"PIECE",
+        "name":"pizza dough"
+    },{
+        "amount":5,
+        "unit":"CUP",
+        "name":"marinara sauce"
+    }],
+    "steps":[{
+        "number":1,
+        "text":"Place the pizza dough into a deep-dish pizza pan"
+    },{
+        "number":2,
+        "text":"Add the raviolies and the marinara sauce to the pizza"
+    },{
+        "number":3,
+        "text":"Bake the pizza until baked, around 40 minutes"
+    }]
+}

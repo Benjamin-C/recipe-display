@@ -1,0 +1,23 @@
+{
+    "version":[1,0,0],
+    "name":"BBQ Lasagne",
+    "category":"dinner",
+    "servings":2,
+    "cooktime":45,
+    "ingredients":[{
+        "amount":1,
+        "unit":"PIECE",
+        "name":"costco lasagne"
+    },{
+        "amount":1.5,
+        "unit":"CUP",
+        "name":"barbeque sauce"
+    }],
+    "steps":[{
+        "number":1,
+        "text":"Bake the lasagne"
+    },{
+        "number":2,
+        "text":"Spread the barbeque sauce on the lasagne"
+    }]
+}

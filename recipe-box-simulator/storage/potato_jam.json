@@ -1,0 +1,29 @@
+{
+    "version":[1,0,0],
+    "name":"Potato Jam",
+    "category":"breakfast",
+    "servings":8,
+    "cooktime":90,
+    "ingredients":[{
+        "amount":4,
+        "unit":"CUP",
+        "name":"chopped potato"
+    },{
+        "amount":4,
+        "unit":"CUP",
+        "name":"sugar"
+    }],
+    "steps":[{
+        "number":1,
+        "text":"Boil the potatoes"
+    },{
+        "number":2,
+        "text":"Drain the potatoes"
+    },{
+        "number":3,
+        "text":"Add the sugar"
+    },{
+        "number":4,
+        "text":"Simmer for 1 hour"
+    }]
+}

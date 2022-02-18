@@ -1,0 +1,16 @@
+{
+    "version":[1,0,0],
+    "name":"Burnt Toast",
+    "category":"breakfast",
+    "servings":1,
+    "cooktime":6,
+    "ingredients":[{
+        "amount":1,
+        "unit":"PIECE",
+        "name":"bread"
+    }],
+    "steps":[{
+        "number":1,
+        "text":"Toast the bread at the maximum toast setting 3 times"
+    }]
+}

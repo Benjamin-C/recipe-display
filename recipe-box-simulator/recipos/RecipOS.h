@@ -146,7 +146,9 @@ class RecipOSErrorWrapper {
 public:
 	void setOS(RecipOS* os);
 	void bsod(std::string msg);
-	bool hasError = false;
+	void error(std::string msg);
+	bool hasBSOD = false;
+	bool hasErr = false;
 	std::string errMsg;
 private:
 	RecipOS* myROS;
@@ -155,5 +157,6 @@ private:
 extern RecipOSErrorWrapper* globalError;
 
 void makeBSOD(std::string msg);
+void makeError(std::string msg);
 
 #endif

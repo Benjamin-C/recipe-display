@@ -252,8 +252,12 @@ bool RecipOS::boot(void) {
 		}
 		globalError->setOS(this);
 
-		if(globalError->hasError) {
+		if(globalError->hasBSOD) {
 			bsod(globalError->errMsg);
+		}
+
+		if(globalError->hasErr) {
+			error(globalError->errMsg);
 		}
 
 		bool hasFirst = currentTab >= 0;
@@ -418,7 +422,7 @@ void RecipOS::error(std::string msg) {
 				printf("%c", *c);
 				c++;
 				ll--;
-				if(ll == 0) {
+				if(ll == 0 && *c != '\0') {
 					c++;
 				}
 			} else {
@@ -456,9 +460,9 @@ void RecipOSErrorWrapper::setOS(RecipOS* os) {
 }
 
 void RecipOSErrorWrapper::bsod(std::string msg) {
-	if(!hasError) {
+	if(!hasBSOD) {
 		errMsg = msg;
-		hasError = true;
+		hasBSOD = true;
 		if(myROS != NULL) {
 			myROS->bsod(msg);
 		}
@@ -466,6 +470,31 @@ void RecipOSErrorWrapper::bsod(std::string msg) {
 		printf("There is already a BSOD queued. Only the first error is shown on the screen.\n");
 		printf("This error msg: %s\n", msg.c_str());
 	}
+}
+
+void RecipOSErrorWrapper::error(std::string msg) {
+	if(!hasBSOD) {
+		if(!hasErr) {
+			errMsg = msg;
+			hasErr = true;
+			if(myROS != NULL) {
+				myROS->error(msg);
+			}
+		} else {
+			printf("There is already another error queued. Only the first error is shown on the screen.\n");
+			printf("This error msg: %s\n", msg.c_str());
+		}
+	} else {
+		printf("There is already a BSOD queued. Only the first error is shown on the screen.\n");
+		printf("This error msg: %s\n", msg.c_str());
+	}
+}
+
+void makeError(std::string msg) {
+	if(globalError == NULL) {
+		globalError = new RecipOSErrorWrapper;
+	}
+	globalError->error(msg);
 }
 
 void makeBSOD(std::string msg) {

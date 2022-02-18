@@ -11,6 +11,7 @@
 #include "recipos/colors.h"
 
 #include <string.h>
+#include <string>
 
 #include "software/RecipeUtils.h"
 #include "software/RecipeSelector.h"
@@ -62,10 +63,8 @@ int main(void) {
 				os->tabLeft();
 				printf("Left\n");
 			} else if((pressed & BUTTON_DOWN_MASK) > 0) {
-				char str[1024];
-				os->storage->readFile("/dev/example", str, 0, 1024);
-				RecipeUtils::parseStrin(str);
-				printf("%s\n", str);
+//				RecipeUtils::parseStrin(os->storage->readFile("/dev/example"));
+				printf("\n%s\n", os->storage->readFile("b.txt").c_str());
 			} else if((pressed & BUTTON_UP_MASK) > 0) {
 				makeBSOD("You pressed up. How dare you! ");
 			}

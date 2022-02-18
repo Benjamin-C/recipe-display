@@ -1,0 +1,33 @@
+{
+    "version":[1,0,0],
+    "name":"Raspberry Filet",
+    "category":"breakfast",
+    "servings":4,
+    "cooktime":25,
+    "ingredients":[{
+        "amount":2.5,
+        "unit":"CUP",
+        "name":"raspberry"
+    },{
+        "amount":0.25,
+        "unit":"CUP",
+        "name":"chreios"
+    },{
+        "amount":1,
+        "unit":"CUP",
+        "name":"heavy whipping cream"
+    }],
+    "steps":[{
+        "number":1,
+        "text":"Whip the cream"
+    },{
+        "number":2,
+        "text":"Fillet the raspberries"
+    },{
+        "number":3,
+        "text":"Fold the raspberries into the whiped cream"
+    },{
+        "number":4,
+        "text":"Sprincle on cherios"
+    }]
+}

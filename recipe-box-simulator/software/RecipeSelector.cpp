@@ -21,16 +21,19 @@ void RecipeSelector::startup(RecipOS* os) {
 	strcpy((char*) abriv, "List");
 	color = EGA_BRIGHT_MAGENTA;
 
-	optionCount = 8;
-	options = new std::string[8];
-	options[0] = "Chocolate Cake";
-	options[1] = "Raspberry Filet";
-	options[2] = "BBQ Lasagne";
-	options[3] = "Deep-Dish Ravioli";
-	options[4] = "Moist Butter";
-	options[5] = "Potato Jam";
-	options[6] = "Deep-fried Okra";
-	options[7] = "Burnt Toast";
+	FileList allFiles = os->storage->getDirectoryList("./");
+
+	optionCount = allFiles.count;
+	options = new std::string[allFiles.count];
+	optionNames = new std::string[allFiles.count];
+
+	for(int i = 0; i < allFiles.count; i++) {
+		std::string filename = allFiles.list[i];
+		std::string file = os->storage->readFile(filename);
+		RecipeUtils::Recipe* r = RecipeUtils::parseWithOptions(file, false, false);
+		options[i] = filename;
+		optionNames[i] = r->name;
+	}
 
 	currentSelection = 3;
 }
@@ -38,7 +41,7 @@ void RecipeSelector::startup(RecipOS* os) {
 void RecipeSelector::onMessage(int mid, std::string dest, void* mbox) {
 	if(dest == "recipe-select") {
 		RecipeUtils::Recipe* rp = (RecipeUtils::Recipe*) mbox;
-		os->error("You can't select recipes yet!\n\n" + rp->name);
+		os->error("You can't select recipes yet!\n \n" + rp->name);
 	}
 }
 
@@ -51,9 +54,9 @@ void RecipeSelector::paintTab(Display* d) {
 		if(i == currentSelection) {
 			fore = SELECTOR_BACKGROUND_COLOR;
 			back = SELECTOR_TEXT_COLOR;
-			d->fillRect(options[i].length()*16, starty, d->width()-options[i].length()*16, 16, back);
+			d->fillRect(optionNames[i].length()*16, starty, d->width()-optionNames[i].length()*16, 16, back);
 		}
-		d->displayString(0, starty, options[i], 2, fore, back);
+		d->displayString(0, starty, optionNames[i], 2, fore, back);
 		starty += 16;
 	}
 
@@ -86,7 +89,7 @@ void RecipeSelector::onButtonPress(uint16_t pressed, Buttons* buttons) {
 	} else if((pressed & BUTTON_ENTER_MASK) > 0) {
 		printf("Messaging...");
 		// Should put the recipe here, but doesn't yet
-		Recipe* rsp = getExampleRecipe();
+		Recipe* rsp = RecipeUtils::parseString(os->storage->readFile(options[currentSelection]));
 		os->sendMessage(os->getNextMID(), "recipe-select", (void*) rsp);
 	}
 

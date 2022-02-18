@@ -69,21 +69,23 @@ namespace RecipeUtils {
 	// There should probably be a destroy method here. There is not. Too bad.
 	void destroyRecipe(Recipe* r);
 
-	Recipe* parseStrin(char* str);
+	Recipe* parseWithOptions(std::string stdstr, bool includeIngredients, bool includeSteps);
+	Recipe* parseString(std::string stdstr);
 
-	int countJSONArray(char* read);
+	int countJSONArray(const char* read);
 
-	RecipeIngredient parseIngredient(char** readhead);
-	RecipeStep parseStep(char** readhead);
-	char* maybeStoreQuotedString(const char* test, char* readhead, std::string* dest);
-	char* maybeStoreFloat(const char* test, char* readhead, float* dest);
-	char* maybeStoreInt(const char* test, char* readhead, int* dest);
 
-	int readInt(char** str);
-	float readFloat(char** str);
-	char* quoteComp(char* str, const char* test);
-	int quoteLen(char* str);
-	void quoteCpy(char* dest, char** str);
+	RecipeIngredient parseIngredient(const char** readhead);
+	RecipeStep parseStep(const char** readhead);
+	const char* maybeStoreQuotedString(const char* test, const char* readhead, std::string* dest);
+	const char* maybeStoreFloat(const char* test, const char* readhead, float* dest);
+	const char* maybeStoreInt(const char* test, const char* readhead, int* dest);
+
+	int readInt(const char** str);
+	float readFloat(const char** str);
+	const char* quoteComp(const char* str, const char* test);
+	int quoteLen(const char* str);
+	void quoteCpy(char* dest, const char** str);
 
 	IngredientUnit parseUnit(std::string str);
 }
