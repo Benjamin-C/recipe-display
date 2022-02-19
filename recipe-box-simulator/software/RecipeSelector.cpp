@@ -39,10 +39,13 @@ void RecipeSelector::startup(RecipOS* os) {
 }
 
 void RecipeSelector::onMessage(int mid, std::string dest, void* mbox) {
+	// This should be removed once the recipe viewers are ready
 	if(dest == "recipe-select") {
 		RecipeUtils::Recipe* rp = (RecipeUtils::Recipe*) mbox;
 		os->error("You can't select recipes yet!\n \n" + rp->name);
+		RecipeUtils::printRecipe(rp);
 	}
+	// Possibly recipe viewer should register itself then report here to mention its id
 }
 
 void RecipeSelector::paintTab(Display* d) {
