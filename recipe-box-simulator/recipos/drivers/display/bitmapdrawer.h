@@ -9,6 +9,10 @@
 #define DISPLAY_WIDTH 480
 #define DISPLAY_HEIGHT 320
 
+// Comment out this line to not create a new file for each image,
+// Instead overwritign 0.bmp every time
+//#define NEW_IMAGE_FILES
+
 struct Pixel {
 	uint8_t b;
 	uint8_t g;

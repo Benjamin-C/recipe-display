@@ -293,7 +293,7 @@ void TextTerminal::scrollDown(void) {
 }
 
 void TextTerminal::render(void) {
-  unsigned long start = micros();
+//  unsigned long start = micros();
   for(int i = 0; i < this->height; i++) {
     uint16_t* c = this->buffer[i];
     if(c != NULL) {
@@ -326,7 +326,7 @@ void TextTerminal::render(void) {
       Serial.printf("Could not print line %d, it was null\n", i);
     }
   }
-  unsigned long end = micros();
+//  unsigned long end = micros();
 
   //Serial.printf("Render took %duS\n", (end-start));
 }

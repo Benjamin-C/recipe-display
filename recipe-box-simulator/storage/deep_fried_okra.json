@@ -1,0 +1,16 @@
+{
+    "version":[1,0,0],
+    "name":"Deep-fried Okra",
+    "category":"dinner",
+    "servings":1,
+    "cooktime":4,
+    "ingredients":[{
+        "amount":1,
+        "unit":"CUP",
+        "name":"washed okra"
+    }],
+    "steps":[{
+        "number":1,
+        "text":"Deep fry the okra"
+    }]
+}

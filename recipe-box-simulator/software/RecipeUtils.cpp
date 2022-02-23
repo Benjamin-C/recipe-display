@@ -4,8 +4,10 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "../recipos/RecipOS.h"
+
 RecipeUtils::Recipe* RecipeUtils::getExampleRecipe(void) {
-	Recipe* ro = new RecipeUtils::Recipe;
+	Recipe* ro = new Recipe;
 
 	RecipeIngredient* ri = (RecipeIngredient*) malloc(sizeof(RecipeIngredient)*2);
 	RecipeStep* rs = (RecipeStep*)malloc(sizeof(RecipeStep)*2);
@@ -25,18 +27,18 @@ RecipeUtils::Recipe* RecipeUtils::getExampleRecipe(void) {
 	ro->cookTime = 4;
 
 	ri[0].amount = 1.5;
-	ri[0].unit = RecipeUtils::PIECES;
+	ri[0].unit = PIECE;
 	ri[0].name = "Bananana";
 
 	ri[1].amount = 0.76;
-	ri[1].unit = RecipeUtils::CUP;
+	ri[1].unit = CUP;
 	ri[1].name = "Chocolate";
 
 	ro->ingredients = ri;
 	ro->ingredientCount = 2;
 
 	rs[0].number = 1;
-	rs[0].text = "Eat bananana";
+	rs[0].text = "Eat bananna";
 
 	rs[1].number = 2;
 	rs[1].text = "Eat chocolate";
@@ -49,7 +51,7 @@ RecipeUtils::Recipe* RecipeUtils::getExampleRecipe(void) {
 
 void RecipeUtils::printRecipe(Recipe* ro) {
 	printf("--- Recipe Object ---\n");
-	printf("  Version: %d.%d.%d\n", ro->version.major, ro->version.minor, ro->version.rev);
+	printf("  Version: "); printVersion(ro->version); printf("\n");
 	printf("  Name: %s\n", ro->name.c_str());
 	printf("  Category: %s\n", ro->category.c_str());
 	printf("  Servings: %.1f\n", ro->servings);
@@ -68,18 +70,365 @@ void RecipeUtils::printRecipe(Recipe* ro) {
 	printf("---------------------\n");
 }
 
-void RecipeUtils::printVersion(VersionNumber v) {
-	printf("%d.%d.%d", v.major, v.minor, v.rev);
-}
-
 void RecipeUtils::printUnit(IngredientUnit iu, float amount) {
 	switch(iu) {
-	case PIECES: printf("piece"); break;
+	case PIECE: printf("piece"); break;
 	case CUP: printf("cup"); break;
 	case TABLESPOON: printf("tablespoon"); break;
 	case TEASPOON: printf("teaspoon"); break;
+	case NOTHING: printf("nothing"); return; // Don't print s for plural
 	}
 	if(amount != 1) {
 		printf("s");
 	}
+}
+
+void RecipeUtils::printVersion(VersionNumber v) {
+	printf("%d.%d.%d", v.major, v.minor, v.rev);
+}
+
+void RecipeUtils::destroyRecipe(Recipe* ro) {
+
+	free(ro->ingredients);
+
+	free(ro->steps);
+}
+
+RecipeUtils::Recipe* RecipeUtils::parseString(std::string stdstr) {
+	return parseWithOptions(stdstr, true, true);
+}
+
+RecipeUtils::Recipe* RecipeUtils::parseWithOptions(std::string stdstr, bool includeIngredients, bool includeSteps) {
+	if(stdstr == "404") {// File loading error
+		makeError("The requested recipe file was not found");
+	}
+
+	// Only compatible with V1.0.0, currently does not check version
+	Recipe* r = new Recipe;
+
+//	if(!(str[0] != '{' && str[len-1] == '}'))
+
+	const char* str = stdstr.c_str();
+
+	const char* read = str;
+	char* write = (char*) malloc(sizeof(char) * stdstr.length());
+	if(write == NULL) {
+		makeBSOD("String could not be allocated");
+	}
+	bool inQuotes = false;
+
+	// Strip whitespace
+	while(*read != '\0') {
+		if(*read == '"') {
+			inQuotes = !inQuotes;
+			*write++ = *read;
+		} else {
+			if(inQuotes || !(*read == '\n' || *read == '\t' || *read == '\r' || *read == ' ')) {
+				*write++ = *read;
+			}
+		}
+		read++;
+	}
+	*write = '\0';
+
+	printf("%s\n", str);
+
+//	if(str[0] != '{' || str[len-1] != '}') {
+//		printf("String was not JSON");
+//		return NULL;
+//	}
+
+	// Find version number
+	inQuotes = false;
+	read = str;
+
+	printf("cowhide\n");
+
+	const char* verSearch = read;
+
+	while(*verSearch != '\0') {
+//		while(*read++ != '"') { }
+		if(*verSearch == '"') {
+			const char* next = quoteComp(verSearch, "version");
+			if(next != NULL) {
+				next += 3;
+				verSearch = next;
+				r->version.major = readInt(&verSearch);
+				verSearch++;
+				r->version.minor = readInt(&verSearch);
+				verSearch++;
+				r->version.rev = readInt(&verSearch);
+//				printf("Found version "); printVersion(r->version); printf("\n");
+			}
+		}
+		verSearch++;
+	}
+
+	// Only continue if this version is supported
+	if(r->version.major == 1 && r->version.minor == 0 && r->version.rev == 0) {
+
+		while(*read != '\0') {
+	//		while(*read++ != '"') { }
+			if(*read == '"') {
+				// Recipe header info
+				read = maybeStoreQuotedString("name", read, &(r->name));
+				read = maybeStoreQuotedString("category", read, &(r->category));
+				read = maybeStoreFloat("servings", read, &(r->servings));
+				read = maybeStoreInt("cookTime", read, &(r->cookTime));
+				// ingredient
+
+				const char* igtTest = quoteComp(read, "ingredients");
+				if(igtTest != NULL) {
+					if(includeIngredients) {
+						read = igtTest;
+						int igtNum = countJSONArray(read);
+						// Count ingredi
+						RecipeIngredient* ria = new RecipeIngredient[igtNum];
+						int igtPos = 0;
+						if(ria != NULL) {
+							while(*read != '\0' && *read != ']' && igtPos < igtNum) {
+								RecipeIngredient igt = parseIngredient(&read);
+								if(igt.amount > 0) {
+									ria[igtPos++] = igt;
+								}
+								read++;
+							}
+							r->ingredientCount = igtNum;
+							r->ingredients = ria;
+						} else {
+							printf("Ingredient array allocation failed");
+						}
+					}
+						// Should read ingredients here
+					while(*read++ != ']') { }
+				}
+
+
+				const char* stpTest = quoteComp(read, "steps");
+				if(stpTest != NULL) {
+					if(includeSteps) {
+						read = stpTest;
+						int stpNum = countJSONArray(read);
+						// Count ingredi
+						RecipeStep* sta = new RecipeStep[stpNum];
+						int stpPos = 0;
+						if(sta != NULL) {
+							while(*read != '\0' && *read != ']' && stpPos < stpNum) {
+								RecipeStep igt = parseStep(&read);
+								if(igt.number >= 0) {
+									sta[stpPos++] = igt;
+								}
+								read++;
+							}
+							r->stepCount = stpNum;
+							r->steps = sta;
+						} else {
+							printf("Ingredient array allocation failed");
+						}
+					}
+					// Should read ingredients here
+					while(*read++ != ']') { }
+				}
+
+				// Steps
+//				printf("\nno\n");
+			}
+			read++;
+		}
+
+		return r;
+	} else {
+		printf("Invalid recipe version");
+		return NULL;
+	}
+}
+
+int RecipeUtils::countJSONArray(const char* read) {
+	// Find beginning of array
+	while(*read++ != '[') { }
+	int count = 0;
+	while(*read != ']') {
+		// Find first opening bracket
+		while(*read++ != '{') {
+			if(*read == ']') {
+				return -1;
+			}
+		};
+		// Find closing bracket
+		while(*read++ != '}') {
+			if(*read == ']') {
+				return -1;
+			}
+		};
+		count++;
+	}
+	// Return -1 if the curly brackets were still open at the end
+	return count;
+}
+
+RecipeUtils::RecipeIngredient RecipeUtils::parseIngredient(const char** readhead) {
+	const char* read = *(readhead);
+
+	RecipeUtils::RecipeIngredient i;
+	i.amount = 0;
+	while(*read++ != '{') { };
+
+	while(*read != '\0' && *read != '}') {
+		if(*read == '"') {
+			read = maybeStoreFloat("amount", read, &(i.amount));
+			read = maybeStoreQuotedString("name", read, &(i.name));
+			std::string unitstr = "";
+			read = maybeStoreQuotedString("unit", read, &unitstr);
+			if(unitstr != "") {
+				i.unit = parseUnit(unitstr);
+			}
+
+		}
+		read++;
+	}
+	while(*read != '}') {
+		read++;
+	};
+
+	*readhead = read;
+	return i;
+}
+
+RecipeUtils::RecipeStep RecipeUtils::parseStep(const char** readhead) {
+	const char* read = *(readhead);
+
+	RecipeUtils::RecipeStep s;
+	s.number = -1;
+	while(*read++ != '{') { };
+
+	while(*read != '\0' && *read != '}') {
+		if(*read == '"') {
+			read = maybeStoreInt("amount", read, &(s.number));
+			read = maybeStoreQuotedString("name", read, &(s.text));
+		}
+		read++;
+	}
+	while(*read != '}') {
+		read++;
+	};
+
+	*readhead = read;
+	return s;
+}
+
+const char* RecipeUtils::maybeStoreQuotedString(const char* test, const char* readhead, std::string* dest) {
+	const char* next = quoteComp(readhead, test);
+	if(next != NULL) {
+		next += 2;
+		char* name = (char*) malloc(sizeof(char) * (quoteLen(next) + 1));
+		if(name != NULL) {
+			next++;
+			quoteCpy(name, &next);
+			dest->assign(name);
+		} else {
+			printf("malloc error! Fix it!");
+		}
+		return next;
+	} else {
+		return readhead;
+	}
+}
+
+const char* RecipeUtils::maybeStoreFloat(const char* test, const char* readhead, float* dest) {
+	const char* next = quoteComp(readhead, test);
+	if(next != NULL) {
+		next += 2;
+		*dest = readFloat(&next);
+		return next;
+	} else {
+		return readhead;
+	}
+}
+
+const char* RecipeUtils::maybeStoreInt(const char* test, const char* readhead, int* dest) {
+	const char* next = quoteComp(readhead, test);
+	if(next != NULL) {
+		next += 2;
+		*dest = readInt(&next);
+		return next;
+	} else {
+		return readhead;
+	}
+
+}
+
+int RecipeUtils::readInt(const char** str) {
+	int n = 0;
+	while(**str >= '0' && **str <= '9') {
+		n *= 10;
+		n += (**str) - '0';
+		(*str)++;
+	}
+	return n;
+}
+
+float RecipeUtils::readFloat(const char** str) {
+
+	float n = 0;
+	while(**str >= '0' && **str <= '9') {
+		n *= 10;
+		n += (**str) - '0';
+		(*str)++;
+	}
+	if(**str == '.') {
+		(*str)++;
+		int i = 0;
+		int d = 0;
+		while(**str >= '0' && **str <= '9') {
+			d += (**str) - '0';
+			i++;
+			*(*str)++;
+		}
+		n += d / (float) (10.0*i);
+	}
+	return n;
+}
+
+// Point str to the opening quotes
+const char* RecipeUtils::quoteComp(const char* str, const char* test) {
+	str++;
+	while(*str != '\0' && *str != '"' && *test != '\0') {
+//		printf("%c =? %c\n", *str, *test);
+		if(*str++ != *test++) {
+			return NULL;
+		}
+	}
+	return (*str == '"' && *test == '\0') ? str : NULL;
+
+}
+
+int RecipeUtils::quoteLen(const char* str) {
+	int count = 0;
+	str++;
+	while(*str != '\0' && *str != '"') {
+		str++;
+		count++;
+	}
+	return count;
+}
+
+void RecipeUtils::quoteCpy(char* dest, const char** str) {
+	while(**str != '\0' && **str != '"') {
+		*dest++ = **str;
+		(*str)++;
+	}
+	*dest = '\0';
+}
+
+RecipeUtils::IngredientUnit RecipeUtils::parseUnit(std::string str) {
+	if(str == "PIECE" || str == "UNIT") {
+		return RecipeUtils::PIECE;
+	} else if(str == "CUP") {
+		return RecipeUtils::CUP;
+	} else if(str == "TABLESPOON") {
+		return RecipeUtils::TABLESPOON;
+	} else if(str == "TEASPOON") {
+		return RecipeUtils::TEASPOON;
+	}
+	return RecipeUtils::NOTHING;
 }

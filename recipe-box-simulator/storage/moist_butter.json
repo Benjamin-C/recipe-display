@@ -1,0 +1,23 @@
+{
+    "version":[1,0,0],
+    "name":"Moist Butter",
+    "category":"breakfast",
+    "servings":12,
+    "cooktime":8,
+    "ingredients":[{
+        "amount":4,
+        "unit":"CUP",
+        "name":"butter"
+    },{
+        "amount":2,
+        "unit":"TABLESPOON",
+        "name":"water"
+    }],
+    "steps":[{
+        "number":1,
+        "text":"Whip the butter and the water together in a stand mixer"
+    },{
+        "number":2,
+        "text":"Serve on dry toast"
+    }]
+}

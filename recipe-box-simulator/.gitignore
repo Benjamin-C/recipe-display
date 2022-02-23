@@ -1,7 +1,13 @@
 /Debug/
 /Release/
 <<<<<<< HEAD
+<<<<<<< HEAD
 /.DS_Store
 =======
+=======
+/.cproject
+/.project
+/.settings/
+>>>>>>> refs/remotes/origin/master
 /junk/
 >>>>>>> refs/heads/master

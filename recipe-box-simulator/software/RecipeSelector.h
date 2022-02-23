@@ -11,17 +11,25 @@
 #include "../recipos/RecipOS.h"
 #include "RecipeUtils.h"
 
+#define SELECTOR_BACKGROUND_COLOR BLACK
+#define SELECTOR_TEXT_COLOR BRIGHT_CYAN
+
 class RecipeSelector : public Application {
 public:
 	~RecipeSelector();
 	void startup(RecipOS* os);
-	void onMessage(int mid, const char* dest, void* mbox);
+	void onMessage(int mid, std::string dest, void* mbox);
 	void paintTab(Display* d);
 	void runTab(void);
 	void onButtonPress(uint16_t pressed, Buttons* buttons);
 
 	void paintWidget(Display* d);
 	void runService(void);
+private:
+	int currentSelection;
+	int optionCount;
+	std::string* optionNames;
+	std::string* options;
 };
 
 #endif

@@ -10,12 +10,18 @@
 
 #include <string>
 
+#define MAX_RECIPE_SIZE 256
+
 namespace RecipeUtils {
+// Update this if longer ingredient names are used
+// Also update the parser and the printer
+#define MAX_INGREDIENT_UNIT_LENGTH 16
 	enum IngredientUnit {
-		PIECES,
+		PIECE,
 		CUP,
 		TABLESPOON,
-		TEASPOON
+		TEASPOON,
+		NOTHING // It's null, as you would expect
 		// Add more as needed
 	};
 
@@ -59,10 +65,29 @@ namespace RecipeUtils {
 	// Prints a unit, and adds 's' if amount != 0
 	void printUnit(IngredientUnit iu, float amount);
 	void printVersion(VersionNumber v);
-	// Dynamically allocates a string;
-	char* makeString(const char* string);
+
 	// There should probably be a destroy method here. There is not. Too bad.
 	void destroyRecipe(Recipe* r);
+
+	Recipe* parseWithOptions(std::string stdstr, bool includeIngredients, bool includeSteps);
+	Recipe* parseString(std::string stdstr);
+
+	int countJSONArray(const char* read);
+
+
+	RecipeIngredient parseIngredient(const char** readhead);
+	RecipeStep parseStep(const char** readhead);
+	const char* maybeStoreQuotedString(const char* test, const char* readhead, std::string* dest);
+	const char* maybeStoreFloat(const char* test, const char* readhead, float* dest);
+	const char* maybeStoreInt(const char* test, const char* readhead, int* dest);
+
+	int readInt(const char** str);
+	float readFloat(const char** str);
+	const char* quoteComp(const char* str, const char* test);
+	int quoteLen(const char* str);
+	void quoteCpy(char* dest, const char** str);
+
+	IngredientUnit parseUnit(std::string str);
 }
 
 

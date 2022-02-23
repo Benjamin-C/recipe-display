@@ -56,6 +56,8 @@ public:
 	// Shows the blue screen of death with the included message
 	// you can use __FILE__ and __LINE__ to get the file and line that the error happened at to help debugging
 	void bsod(std::string msg);
+	// Similar to BSOD, but doesn't halt the OS
+	void error(std::string msg);
 
 	// ---------------------
 	// Applications
@@ -68,7 +70,7 @@ public:
 	 * dest holds a string stating the destination.
 	 * box holds the message body.
 	 */
-	void sendMessage(int nid, const char* dest, void* msgbox);
+	void sendMessage(int nid, std::string dest, void* msgbox);
 
 	/* Adds a new Tab to the menu
 	 * Currently, only 6 tabs will be shown
@@ -144,7 +146,9 @@ class RecipOSErrorWrapper {
 public:
 	void setOS(RecipOS* os);
 	void bsod(std::string msg);
-	bool hasError = false;
+	void error(std::string msg);
+	bool hasBSOD = false;
+	bool hasErr = false;
 	std::string errMsg;
 private:
 	RecipOS* myROS;
@@ -153,5 +157,6 @@ private:
 extern RecipOSErrorWrapper* globalError;
 
 void makeBSOD(std::string msg);
+void makeError(std::string msg);
 
 #endif

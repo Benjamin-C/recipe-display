@@ -206,7 +206,10 @@ int num = 0;
 
 void BitmapDrawer::screenshot(void) {
 	char name[32];
-	sprintf(name, "junk/%d.bmp", num++);
+	sprintf(name, "junk/%d.bmp", num);
+#ifdef NEW_IMAGE_FILES
+	num++;
+#endif
 	outfile.open(name, std::ios::binary | std::ios::out);
 	outfile.write((const char*) header, HEADER_LENGTH);
 	for(int y = DISPLAY_HEIGHT-1; y >= 0; y--) {
