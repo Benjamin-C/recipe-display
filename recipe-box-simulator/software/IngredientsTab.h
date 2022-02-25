@@ -14,7 +14,7 @@ class IngredientsTab : public Application {
 public:
 	~IngredientsTab() { };
 	void startup(RecipOS* os);
-	void onMessage(int mid, const char* dest, void* mbox);
+	void onMessage(int mid, std::string dest, void* mbox);
 	void paintTab(Display* d);
 	void runTab(void);
 	void onButtonPress(uint16_t pressed, Buttons* buttons);

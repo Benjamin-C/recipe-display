@@ -18,10 +18,10 @@ void InstructionsTab::startup(RecipOS* os) {
 	sprintf(abriv, "Tab%01d", i);
 	color = i+3;
 }
-void InstructionsTab::onMessage(int mid, const char* dest, void* mbox) {
+void InstructionsTab::onMessage(int mid, std::string dest, void* mbox) {
 	if(mid != lastMID) {
 		lastMID = mid;
-		if(strcmp((const char*) dest, "testmsg")==0) {
+		if(dest == "testmsg") {
 			printf("Button press message! %d\n", *((uint16_t*) mbox));
 		}
 	}
