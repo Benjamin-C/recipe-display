@@ -15,6 +15,8 @@
 
 #include "software/RecipeUtils.h"
 #include "software/RecipeSelector.h"
+#include "software/IngredientsTab.h"
+#include "software/InstructionsTab.h"
 
 int main(void) {
 	printf("Hello World %ld\n", sizeof(char));
@@ -192,6 +194,12 @@ int main(void) {
 
 	ros.addTab(timer, NULL);
 	ros.addService(timer, NULL);
+
+	IngredientsTab* gt = new IngredientsTab();
+	int ingr = ros.addTab(gt, NULL);
+
+	InstructionsTab* st = new InstructionsTab();
+	int inst = ros.addTab(st, NULL);
 
 	RecipeSelector* rs = new RecipeSelector();
 	int tid = ros.addTab(rs, NULL);
