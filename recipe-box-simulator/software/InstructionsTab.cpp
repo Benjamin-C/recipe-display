@@ -13,7 +13,7 @@
 void InstructionsTab::startup(RecipOS* os) {
 	this->os = os;
 	strcpy(name, "Test Application");
-	int i = *((int*) box);
+	int i = 7;
 	printf("Startup: %d\n", i);
 	sprintf(abriv, "Tab%01d", i);
 	color = i+3;
