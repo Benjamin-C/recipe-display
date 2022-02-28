@@ -15,7 +15,7 @@ void InstructionsTab::startup(RecipOS* os) {
 	strcpy(name, "Test Application");
 	int i = 7;
 	printf("Startup: %d\n", i);
-	sprintf(abriv, "Tab%01d", i);
+	sprintf(abriv, "Inst");
 	color = i+3;
 }
 void InstructionsTab::onMessage(int mid, std::string dest, void* mbox) {

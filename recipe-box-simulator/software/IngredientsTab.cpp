@@ -9,13 +9,14 @@
 #include "../recipos/RecipOS.h"
 #include <stdio.h>
 #include <string.h>
+#include "RecipeUtils.h"
 
 void IngredientsTab::startup(RecipOS* os) {
 	this->os = os;
 	strcpy(name, "Test Application");
 	int i = 6;
 	printf("Startup: %d\n", i);
-	sprintf(abriv, "Tab%01d", i);
+	sprintf(abriv, "Ingr");
 	color = i+3;
 }
 void IngredientsTab::onMessage(int mid, std::string dest, void* mbox) {
@@ -30,6 +31,16 @@ void IngredientsTab::paintTab(Display* d) {
 	printf("color: %d %s\n", color, abriv);
 	d->fill(egaColors[color]);
 	d->displayString(0,0,name,2,WHITE,egaColors[color]);
+
+	if(ro == NULL) {
+		for(int i = 0; i < ro->ingredientCount; i++) {
+			d->displayString(0,18*i+18,ro->ingredients[i].name,2,WHITE,egaColors[color]);
+		}
+	}
+	else {
+		printf("Recipe object is null :(\n");
+		os->error("Recipe object is null :(\n");
+	}
 	return;
 }
 void IngredientsTab::runTab(void) {

@@ -159,14 +159,14 @@ int main(void) {
 
 	int testCount = 3;
 
-	for(int i = 0; i < testCount; i++) {
-		MyApp* app = new MyApp();
-		void* c = malloc(sizeof(int));
-		if(c != NULL) {
-			*((int*) c) = i;
-			ros.addTab(app, c);
-		}
-	}
+//	for(int i = 0; i < testCount; i++) {
+//		MyApp* app = new MyApp();
+//		void* c = malloc(sizeof(int));
+//		if(c != NULL) {
+//			*((int*) c) = i;
+//			ros.addTab(app, c);
+//		}
+//	}
 
 	class StartupScreenshot : public Application {
 	public:

@@ -9,6 +9,7 @@
 #define SOFTWARE_INGREDIENTSTAB_H_
 
 #include "../recipos/RecipOS.h"
+#include "RecipeUtils.h"
 
 class IngredientsTab : public Application {
 public:
@@ -23,5 +24,7 @@ public:
 	void runService(void);
 private:
 	int lastMID = -1;
+
+	RecipeUtils::Recipe* ro;
 };
 #endif
