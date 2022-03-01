@@ -7,32 +7,49 @@
 #include "../recipos/RecipOS.h"
 
 RecipeUtils::Recipe* RecipeUtils::getExampleRecipe(void) {
-	Recipe* ro = new Recipe;
+/*	Recipe* ro = new Recipe;
+
+	printf("RO didn't break it\n");
 
 	RecipeIngredient* ri = (RecipeIngredient*) malloc(sizeof(RecipeIngredient)*2);
 	RecipeStep* rs = (RecipeStep*)malloc(sizeof(RecipeStep)*2);
+
+	printf("Steps or ingredients didn't break it\n");
 
 	if(ri == NULL || rs == NULL) {
 		printf("Allocation error\n");
 		return NULL;
 	}
 
+	printf("Version ->\n");
+
 	ro->version.major = 1;
 	ro->version.minor = 0;
 	ro->version.rev = 0;
+
+	printf("Header\n");
 
 	ro->name = "Chocolate Bananana";
 	ro->category = "Snacks";
 	ro->servings = 1.5;
 	ro->cookTime = 4;
 
+	printf("Ing 0 ");
+
 	ri[0].amount = 1.5;
+	printf("a");
 	ri[0].unit = PIECE;
+	printf("%s\n", ri[0].name);
+	printf("b\n");
 	ri[0].name = "Bananana";
+
+	printf("Ing 1\n");
 
 	ri[1].amount = 0.76;
 	ri[1].unit = CUP;
 	ri[1].name = "Chocolate";
+
+	printf("Store ing\n");
 
 	ro->ingredients = ri;
 	ro->ingredientCount = 2;
@@ -46,7 +63,10 @@ RecipeUtils::Recipe* RecipeUtils::getExampleRecipe(void) {
 	ro->steps = rs;
 	ro->stepCount = 2;
 
-	return ro;
+	printf("Filling didn't break it\n");
+
+	return ro;*/
+//	return parseString(stdstr)
 }
 
 void RecipeUtils::printRecipe(Recipe* ro) {

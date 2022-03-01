@@ -7,13 +7,15 @@
 
 #include <string.h>
 #include "Storage.h"
+#include<string>
 
+#ifndef ESP32
 #include<iostream>
 #include<fstream>
 #include<sstream>
-#include<string>
 #include<vector>
 #include<filesystem>
+#endif
 
 Storage::Storage() {
 	// TODO Auto-generated constructor stub
@@ -60,6 +62,7 @@ std::string Storage::readFile(std::string path) {
 }
 )===";
 	} else {
+#ifndef ESP32
 		using namespace std;
 		ifstream f("./storage/" + path); //taking file as inputstream
 		string str;
@@ -72,6 +75,7 @@ std::string Storage::readFile(std::string path) {
 			printf("Something wrong, probably file doesn't exist");
 			return "404";
 		}
+#endif
 	}
 }
 

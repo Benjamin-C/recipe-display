@@ -8,6 +8,9 @@
 #ifndef ARDUINO_STANDIN_H
 #define ARDUINO_STANDIN_H
 
+#ifdef ESP32
+#include "Arduino.h"
+#else
 #define INPUT 0
 #define OUTPUT 0
 #define HIGH 0
@@ -36,5 +39,5 @@ public:
 };
 
 extern SerialClass Serial;
-
+#endif
 #endif

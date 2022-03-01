@@ -2,7 +2,6 @@
 #include <stdio.h>
 
 #include "arduinostandin.h"
-#include "lcdtest.h"
 #include "recipos/drivers/display/bitmapdrawer.h"
 #include "recipos/modules/Display.h"
 #include "recipos/RecipOS.h"
@@ -16,15 +15,21 @@
 #include "software/RecipeUtils.h"
 #include "software/RecipeSelector.h"
 
+#define DEBUG(val) printf("%s\n", val)
+
 int main(void) {
 	printf("Hello World %ld\n", sizeof(char));
 
 //	setup();
-
+/*
+	DEBUG("Making RO");
 	RecipeUtils::Recipe* ro = RecipeUtils::getExampleRecipe();
+	DEBUG("Printing RO");
 	RecipeUtils::printRecipe(ro);
-
+*/
+	DEBUG("Making OS");
 	RecipOS ros = RecipOS();
+	DEBUG("Making MyApp");
 
 	class MyApp : public Application {
 	public:
@@ -76,6 +81,8 @@ int main(void) {
 		void runService(void) { }
 		void paintWidget(Display* d) { }
 	};
+
+	DEBUG("Making Timer");
 
 	class Timer : public Application {
 	public:
@@ -157,6 +164,8 @@ int main(void) {
 
 	int testCount = 3;
 
+	DEBUG("Adding MyApps");
+
 	for(int i = 0; i < testCount; i++) {
 		MyApp* app = new MyApp();
 		void* c = malloc(sizeof(int));
@@ -165,6 +174,8 @@ int main(void) {
 			ros.addTab(app, c);
 		}
 	}
+
+	DEBUG("Making Screenshotter");
 
 	class StartupScreenshot : public Application {
 	public:
@@ -185,18 +196,29 @@ int main(void) {
 		void paintWidget(Display* d) { }
 	};
 
+	DEBUG("Starting Screenshotter");
+
 	StartupScreenshot* sst = new StartupScreenshot();
 	ros.addService(sst, NULL);
 
+	DEBUG("Making Timer");
+
 	Timer* timer = new Timer();
+
+	DEBUG("Adding timer");
 
 	ros.addTab(timer, NULL);
 	ros.addService(timer, NULL);
 
+	DEBUG("Adding RecipeSelector");
+/*
 	RecipeSelector* rs = new RecipeSelector();
 	int tid = ros.addTab(rs, NULL);
 	ros.switchTab(tid);
+*/
+	DEBUG("Booting");
 
+	printf("Boot\n");
 	ros.boot(); // Program will not pass here
 
 //	ros.switchTab(0);

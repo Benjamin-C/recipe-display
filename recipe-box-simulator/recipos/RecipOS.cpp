@@ -15,7 +15,7 @@
 
 #include "../arduinostandin.h"
 
-#include "drivers/display/bitmapdrawer.h"
+#include "drivers/display/touchlcd.h"
 
 #include "modules/Buttons.h"
 #include "modules/Display.h"
@@ -26,7 +26,7 @@
 RecipOSErrorWrapper* globalError;
 
 RecipOS::RecipOS() {
-	displayBackend = new BitmapDrawer();
+	displayBackend = new TouchLCD();
 	mainDisplay = new Display(displayBackend, 0, 0, 480, 320);
 	mainDisplay->setEnabled(true);
 	buttons = new Buttons();

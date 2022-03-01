@@ -7,6 +7,7 @@
 
 #include "arduinostandin.h"
 
+#ifndef ESP32
 #include <stdio.h>
 #include <chrono>
 #include <thread>
@@ -83,3 +84,5 @@ int SerialClass::printf(const char* format, ...) {
 
 	return done;
 }
+
+#endif
