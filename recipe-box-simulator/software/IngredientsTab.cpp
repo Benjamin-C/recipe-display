@@ -22,19 +22,25 @@ void IngredientsTab::startup(RecipOS* os) {
 void IngredientsTab::onMessage(int mid, std::string dest, void* mbox) {
 	if(mid != lastMID) {
 		lastMID = mid;
-		if(dest == "testmsg") {
-			printf("Button press message! %d\n", *((uint16_t*) mbox));
+		if(dest == "recipe-select") {
+			// Get the recipe from the box
+			// The box is a pointer to something, and we know that that something
+			// is a recipe structure, so tell the compiler that
+			ro = (RecipeUtils::Recipe*) mbox;
+			// Use the recipe for whatever you want
+			//RecipeUtils::printRecipe(ro);
 		}
 	}
 }
 void IngredientsTab::paintTab(Display* d) {
 	printf("color: %d %s\n", color, abriv);
 	d->fill(egaColors[color]);
-	d->displayString(0,0,name,2,WHITE,egaColors[color]);
+	d->displayString(8,0,ro->name,2,WHITE,egaColors[color]);
 
-	if(ro == NULL) {
+	if(ro != NULL) {
 		for(int i = 0; i < ro->ingredientCount; i++) {
-			d->displayString(0,18*i+18,ro->ingredients[i].name,2,WHITE,egaColors[color]);
+			d->displayString(32,18*i+36,ro->ingredients[i].name,2,WHITE,egaColors[color]);
+			d->displayString(8,18*i+36,std::to_string(ro->ingredients[i].amount),2,WHITE,egaColors[color]);
 		}
 	}
 	else {

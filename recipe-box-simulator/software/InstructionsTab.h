@@ -9,6 +9,7 @@
 #define SOFTWARE_INSTRUCTIONSTAB_H_
 
 #include "../recipos/RecipOS.h"
+#include "RecipeUtils.h"
 
 class InstructionsTab : public Application {
 public:
@@ -23,5 +24,7 @@ public:
 	void runService(void);
 private:
 	int lastMID = -1;
+
+	RecipeUtils::Recipe* ro;
 };
 #endif
