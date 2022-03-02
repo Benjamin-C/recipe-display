@@ -303,8 +303,8 @@ RecipeUtils::RecipeStep RecipeUtils::parseStep(const char** readhead) {
 
 	while(*read != '\0' && *read != '}') {
 		if(*read == '"') {
-			read = maybeStoreInt("amount", read, &(s.number));
-			read = maybeStoreQuotedString("name", read, &(s.text));
+			read = maybeStoreInt("number", read, &(s.number));
+			read = maybeStoreQuotedString("text", read, &(s.text));
 		}
 		read++;
 	}

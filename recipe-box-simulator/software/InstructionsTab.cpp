@@ -32,13 +32,74 @@ void InstructionsTab::paintTab(Display* d) {
 	d->fill(egaColors[color]);
 	d->displayString(0,0,name,2,WHITE,egaColors[color]);
 
+
+
 	if(ro != NULL) {
 		for(int i = 0; i < ro->ingredientCount; i++) {
 			printf("%s\n", ro->steps[i].text.c_str());
 			printf("%d\n", ro->steps[i].number);
 
-			d->displayString(32,18*i+36,ro->steps[i].text,2,WHITE,egaColors[color]);
-			d->displayString(8,18*i+36,std::to_string(ro->steps[i].number),2,WHITE,egaColors[color]);
+			d->displayString(0,18*i+36,std::to_string(ro->steps[i].number)+".",2,WHITE,egaColors[color]);
+
+			int leftx = 3*16;
+			const char* c = ro->steps[i].text.c_str();
+			bool hasMoreMsg = true;
+			const int SCALE = 2;
+			int rows = 0;
+			int ystart = 4*16;
+			while(rows < 12) {
+				int xpos = leftx;
+				int charCount = 0;
+				d->displayChar(xpos, ystart, '\xBA', SCALE,WHITE,egaColors[color]);
+				xpos += 8*SCALE;
+				d->displayChar(xpos, ystart, ' ', SCALE,WHITE,egaColors[color]);
+				xpos += 8*SCALE;
+				const int LINEWIDTH = 20;
+				int ll = 0;
+				int tll = 0;
+				const char* tc = c;
+				while(tll < LINEWIDTH) {
+					while(*tc != ' ' && *tc != '\0' && *tc != '\n') { tc++; tll++; }
+					if(tll+1 < LINEWIDTH) {
+						ll = tll;
+						if(*tc != ' ') {
+							break;
+						} else {
+							tc++;
+							tll++;
+						}
+					}
+				}
+				while(charCount < LINEWIDTH) {
+					if(*c != '\0' && *c != '\n' && ll > 0) {
+						d->displayChar(xpos, ystart, *c, SCALE,WHITE,egaColors[color]);
+						printf("%c", *c);
+						c++;
+						ll--;
+						if(ll == 0 && *c != '\0') {
+							c++;
+						}
+					} else {
+						if(*c == '\0') {
+							hasMoreMsg = false;
+						}
+						d->displayChar(xpos, ystart, ' ', SCALE,WHITE,egaColors[color]);
+					}
+					xpos += 8*SCALE;
+					charCount++;
+				}
+				if(*c == '\n') {
+					c++;
+				}
+				d->displayChar(xpos, ystart, ' ', SCALE,WHITE,egaColors[color]);
+				xpos += 8*SCALE;
+				d->displayChar(xpos, ystart, '\xBA', SCALE,WHITE,egaColors[color]);
+				ystart += 8*SCALE;
+				if(hasMoreMsg) {
+					printf("\n");
+				}
+				rows++;
+			}
 		}
 	}
 	else {
