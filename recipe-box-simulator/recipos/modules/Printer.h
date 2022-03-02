@@ -20,7 +20,8 @@ public:
 	Printer(void);
     Printer(int RxPin, int TxPin);
 	~Printer();
-	int printText(char* textToPrint);
+    int printText(char* textToPrint, int len);
+    int printText(std::string strToPrint);
 	int printRecipe(const Recipe* recipeToPrint);
 
 private:

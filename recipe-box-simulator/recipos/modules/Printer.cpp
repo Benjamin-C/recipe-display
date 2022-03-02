@@ -15,6 +15,7 @@
 #define DEF_PRINTERPIN_RX 15
 #define PAPER_CHARWIDTH 32
 #define PAPER_CHARWIDTH 32
+#define HW_ENABLED false
 
 Printer::Printer(void) {
     //this->SWSerial = new SoftwareSerial(DEF_PRINTERPIN_RX, DEF_PRINTERPIN_TX);
@@ -32,8 +33,28 @@ Printer::~Printer() {
 
 }
 
-int Printer::printText(char* textToPrint) {
-    return 0;
+int Printer::printText(char* textToPrint, int len) {
+    char tempStr[len+1];
+    strncpy(tempStr, textToPrint, len);
+    std::string strIn = tempStr;
+    return printText(strIn);
+}
+
+int Printer::printText(std::string strToPrint) {
+    this->printQueue.clear();
+    int linesToPrint = 0;
+    std::string lineOut;
+
+    int strStartPos = 0;
+    lineOut = tokenizeText(strStartPos, PAPER_CHARWIDTH, strToPrint);
+    while (lineOut.length() > 0) {                                                                                      // print step in paper-width chunks until done
+        this->printQueue.push_back(lineOut);
+        linesToPrint++;
+        lineOut = tokenizeText(strStartPos, PAPER_CHARWIDTH, strToPrint);
+    }
+
+    this->sendPrint();
+    return linesToPrint;
 }
 
 int Printer::printRecipe(const Recipe* recipeToPrint) {         // format, queue recipe data
@@ -177,7 +198,7 @@ std::string Printer::tokenizeText(int& lineStartPos, const int tokenMaxW, const 
 }
 
 void Printer::printTest() {                                     // DEBUG for testing DELETEME
-    Recipe* testRecipe = new Recipe();
+    /*Recipe* testRecipe = new Recipe();
     testRecipe->name = new char[128];
     strcpy(testRecipe->name, "CHIMKIN NOODLS");
     testRecipe->category = new char[128];
@@ -197,20 +218,31 @@ void Printer::printTest() {                                     // DEBUG for tes
     testRecipe->steps[2].number = 3;
     testRecipe->steps[2].text = new char[128];
     strcpy(testRecipe->steps[2].text, "enjoy soop.");
-    testRecipe->stepCount = 3;
+    testRecipe->stepCount = 3;*/
+
+    //std::string testTxt = "THIS IS A RECIPE! THIS IS A RECIPE! THIS IS A RECIPE! THIS IS A RECIPE! THIS IS A RECIPE! THIS IS A RECIPE! THIS IS A RECIPE!!";
+    char* testArr = new char[128];
+    strcpy(testArr, "THIS IS A RECIPE! THIS IS A RECIPE! THIS IS A RECIPE! THIS IS A RECIPE! THIS IS A RECIPE! THIS IS A RECIPE! THIS IS A RECIPE!!!\0");
+
     std::cout << "\n***BEGIN PRINTER TEST***\n" << std::endl;
-    this->printRecipe(testRecipe);
+    //this->printRecipe(testRecipe);
+    //this->printText(testTxt);
+    this->printText(testArr, 128);
     std::cout << "\n***END PRINTER TEST***\n" << std::endl;
 }
 
 void Printer::sendPrint() {                                     // write queue to printFile
-    std::string border = "";
-    border.append(PAPER_CHARWIDTH+6,'-');
-    std::cout << "\n" << border << std::endl;
-    int count = 0;
-    for (std::string s:printQueue) {
-        s.append(PAPER_CHARWIDTH - s.length(), ' ');
-        std::cout << "|  " << s << "  | " << count++ << std::endl;
+    if (HW_ENABLED) {
+        std::cout << "\nSending to printer...." << std::endl;
+    } else {
+        std::string border = "";
+        border.append(PAPER_CHARWIDTH+6,'-');
+        std::cout << "\n" << border << std::endl;
+        int count = 0;
+        for (std::string s:printQueue) {
+            s.append(PAPER_CHARWIDTH - s.length(), ' ');
+            std::cout << "|  " << s << "  | " << count++ << std::endl;
+        }
+        std::cout << border << "\n" << std::endl;
     }
-    std::cout << border << "\n" << std::endl;
 }

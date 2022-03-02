@@ -19,8 +19,8 @@ int main(void) {
 
 //	setup();
 
-	Recipe* ro = getExampleRO();
-	printRecipeObject(ro);
+	//Recipe* ro = getExampleRO();
+	//printRecipeObject(ro);
 
 	RecipOS ros = RecipOS();
 
