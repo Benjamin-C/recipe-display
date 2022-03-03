@@ -33,73 +33,17 @@ void InstructionsTab::paintTab(Display* d) {
 	d->displayString(0,0,name,2,WHITE,egaColors[color]);
 
 
+	int starty = 32;
 
 	if(ro != NULL) {
-		for(int i = 0; i < ro->ingredientCount; i++) {
+		for(int i = 0; i < ro->stepCount; i++) {
 			printf("%s\n", ro->steps[i].text.c_str());
 			printf("%d\n", ro->steps[i].number);
 
-			d->displayString(0,18*i+36,std::to_string(ro->steps[i].number)+".",2,WHITE,egaColors[color]);
+			d->displayString(0,starty,std::to_string(ro->steps[i].number)+".",2,WHITE,egaColors[color]);
 
-			int leftx = 3*16;
-			const char* c = ro->steps[i].text.c_str();
-			bool hasMoreMsg = true;
-			const int SCALE = 2;
-			int rows = 0;
-			int ystart = 4*16;
-			while(rows < 12) {
-				int xpos = leftx;
-				int charCount = 0;
-				d->displayChar(xpos, ystart, '\xBA', SCALE,WHITE,egaColors[color]);
-				xpos += 8*SCALE;
-				d->displayChar(xpos, ystart, ' ', SCALE,WHITE,egaColors[color]);
-				xpos += 8*SCALE;
-				const int LINEWIDTH = 20;
-				int ll = 0;
-				int tll = 0;
-				const char* tc = c;
-				while(tll < LINEWIDTH) {
-					while(*tc != ' ' && *tc != '\0' && *tc != '\n') { tc++; tll++; }
-					if(tll+1 < LINEWIDTH) {
-						ll = tll;
-						if(*tc != ' ') {
-							break;
-						} else {
-							tc++;
-							tll++;
-						}
-					}
-				}
-				while(charCount < LINEWIDTH) {
-					if(*c != '\0' && *c != '\n' && ll > 0) {
-						d->displayChar(xpos, ystart, *c, SCALE,WHITE,egaColors[color]);
-						printf("%c", *c);
-						c++;
-						ll--;
-						if(ll == 0 && *c != '\0') {
-							c++;
-						}
-					} else {
-						if(*c == '\0') {
-							hasMoreMsg = false;
-						}
-						d->displayChar(xpos, ystart, ' ', SCALE,WHITE,egaColors[color]);
-					}
-					xpos += 8*SCALE;
-					charCount++;
-				}
-				if(*c == '\n') {
-					c++;
-				}
-				d->displayChar(xpos, ystart, ' ', SCALE,WHITE,egaColors[color]);
-				xpos += 8*SCALE;
-				d->displayChar(xpos, ystart, '\xBA', SCALE,WHITE,egaColors[color]);
-				ystart += 8*SCALE;
-				if(hasMoreMsg) {
-					printf("\n");
-				}
-				rows++;
-			}
+			int r = d->displayWrappedString(32, starty, ro->steps[i].text, 20, 0, 2, WHITE, BLACK);
+			starty += r * 16;
 		}
 	}
 	else {
