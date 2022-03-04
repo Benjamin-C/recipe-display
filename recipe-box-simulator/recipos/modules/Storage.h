@@ -10,16 +10,14 @@
 #define RECIPOS_MODULES_STORAGE_H_
 
 #include <string>
-
-struct FileList {
-	std::string* list;
-	int count;
-};
+#include "../drivers/storage/StorageBackend.h"
 
 class Storage {
 public:
 	Storage();
 	virtual ~Storage();
+
+	StorageBackend* sb;
 	// Reads the maxlength bytes of a file, starting start bytes in.
 	// WARNING this will crash the OS if dest can not hold maxlen characters
 //	void readFile(const char* path, char* dest, int start, int maxLength);

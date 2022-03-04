@@ -23,7 +23,8 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/recipe_box_arduino/core/variant}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/recipe_box_arduino/recipe-box-simulator}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/recipe_box_arduino/libraries/SPI/src}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/recipe_box_arduino/libraries/FreeRTOS/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/recipe_box_arduino/libraries/SD/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/recipe_box_arduino/libraries/FS/src}&quot;"/>
 								</option>
 								<inputType id="io.sloeber.compiler.cpp.sketch.input.341782198" name="CPP source files" superClass="io.sloeber.compiler.cpp.sketch.input"/>
 							</tool>
@@ -33,7 +34,8 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/recipe_box_arduino/core/variant}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/recipe_box_arduino/recipe-box-simulator}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/recipe_box_arduino/libraries/SPI/src}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/recipe_box_arduino/libraries/FreeRTOS/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/recipe_box_arduino/libraries/SD/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/recipe_box_arduino/libraries/FS/src}&quot;"/>
 								</option>
 								<inputType id="io.sloeber.compiler.c.sketch.input.1871397659" name="C Source Files" superClass="io.sloeber.compiler.c.sketch.input"/>
 							</tool>
@@ -43,7 +45,8 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/recipe_box_arduino/core/variant}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/recipe_box_arduino/recipe-box-simulator}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/recipe_box_arduino/libraries/SPI/src}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/recipe_box_arduino/libraries/FreeRTOS/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/recipe_box_arduino/libraries/SD/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/recipe_box_arduino/libraries/FS/src}&quot;"/>
 								</option>
 								<inputType id="io.sloeber.compiler.S.sketch.input.63472243" name="Assembly source files" superClass="io.sloeber.compiler.S.sketch.input"/>
 							</tool>

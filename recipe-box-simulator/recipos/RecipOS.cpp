@@ -16,6 +16,7 @@
 #include "../arduinostandin.h"
 
 #include "drivers/display/touchlcd.h"
+#include "drivers/storage/ESP32SDCard.h"
 
 #include "modules/Buttons.h"
 #include "modules/Display.h"
@@ -33,6 +34,7 @@ RecipOS::RecipOS() {
 	printer = new Printer();
 	speaker = new Speaker();
 	storage = new Storage();
+	storage->sb = new ESP32SDCard();
 	for(int i = 0; i < MAX_TABS; i++) {
 		tabs[i] = NULL;
 	}

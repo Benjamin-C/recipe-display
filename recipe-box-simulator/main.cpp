@@ -192,6 +192,32 @@ int main(void) {
 		void runService(void) {
 			os->displayBackend->screenshot();
 			serviceInterval = -1;
+
+			Serial.println("Say Cheese!");
+
+			Serial.println("File listing:");
+			  FileList fl = os->storage->getDirectoryList("/");
+
+			  for(int i = 0; i < fl.count; i++) {
+			    Serial.print(fl.list[i].c_str());
+			    Serial.print("\t\t");
+			//    File entry = SD.open(fl.list[i].c_str());
+			    int qtcnt = 0;
+			    std::string fle = os->storage->readFile(fl.list[i]);
+			    const char* c = fle.c_str();
+			    while(qtcnt < 6) {
+			      if(*c == '"') {
+			        qtcnt++;
+			      } else {
+			        if(qtcnt == 5) {
+			          Serial.printf("%c", *c);
+			        }
+			      }
+			      c++;
+			    }
+			//    entry.close();
+			    Serial.println();
+			  }
 		}
 		void paintWidget(Display* d) { }
 	};
