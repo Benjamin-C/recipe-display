@@ -17,6 +17,7 @@
 
 #include "drivers/display/touchlcd.h"
 #include "drivers/storage/ESP32SDCard.h"
+#include "drivers/buttons/ButtonReader.h"
 
 #include "modules/Buttons.h"
 #include "modules/Display.h"
@@ -31,6 +32,7 @@ RecipOS::RecipOS() {
 	mainDisplay = new Display(displayBackend, 0, 0, 480, 320);
 	mainDisplay->setEnabled(true);
 	buttons = new Buttons();
+	buttons->bb = new ButtonReader();
 	printer = new Printer();
 	speaker = new Speaker();
 	storage = new Storage();
@@ -331,14 +333,20 @@ bool RecipOS::checkButtonPress(void) {
 //	printf("Press button?\n");
 
 	uint16_t pressed = buttons->checkButtons();
-	if(pressed > 0) {
-		int i = currentTab;
-//		for(int i = 0; i < MAX_APPLICATIONS; i++) {
-		if(tabs[i] != NULL) {
-			tabs[i]->onButtonPress(pressed, buttons);
+	if(pressed != lastButtons) {
+		lastButtons = pressed;
+		if(pressed > 0) {
+			printf("Pressed: %d\n", pressed);
+			int i = currentTab;
+	//		for(int i = 0; i < MAX_APPLICATIONS; i++) {
+			if(tabs[i] != NULL) {
+				tabs[i]->onButtonPress(pressed, buttons);
+			}
+	//		}
+			return true;
+		} else {
+			return false;
 		}
-//		}
-		return true;
 	} else {
 		return false;
 	}

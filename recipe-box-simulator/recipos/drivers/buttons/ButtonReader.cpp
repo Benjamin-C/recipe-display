@@ -21,6 +21,7 @@
  */
 
 ButtonReader::ButtonReader(void) {
+	pinMode(BUTTON_PIN, INPUT);
 	// TODO Rhema: Write this
 	// Any init code you need. EX: pinMode(...
 }
@@ -38,11 +39,24 @@ ButtonReader::ButtonReader(void) {
  * EX: Up, Left, and Super are pressed: 00000000 00100101
  */
 uint16_t ButtonReader::checkButtons(void) {
-	// TODO Rhema: Write this
-	return 0;
+	int bn = readAnalogButton();
+	return (bn > 0) ? 1 << bn-1 : 0;
 }
 // Checks the status of a specific button. See the section in ButtonBackend.h for IDs.
 bool ButtonReader::checkButton(int id) {
 	// TODO Rhema: Write this
+	// Or don't, we don't really need it right now
 	return false;
+}
+
+int ButtonReader::readAnalogButton(void) {
+  int button = analogRead(BUTTON_PIN);
+  // These exact values should probably be in a calibration table somewhere.
+  // They are not. Too bad.
+  if (button < 100) return 1;
+  if (button < 2000) return 2;
+  if (button < 2750) return 3;
+  if (button < 3050) return 4;
+  if (button < 3400) return 5;
+  return 0;
 }

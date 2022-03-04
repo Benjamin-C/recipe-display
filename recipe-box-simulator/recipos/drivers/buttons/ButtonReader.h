@@ -12,6 +12,8 @@
 
 #include "ButtonBackend.h"
 
+#define BUTTON_PIN A2
+
 class ButtonReader : public ButtonBackend {
 public:
 	ButtonReader(void);
@@ -19,6 +21,8 @@ public:
 	uint16_t checkButtons(void);
 	// Checks the status of a specific button. See the section above for IDs.
 	bool checkButton(int id);
+private:
+	int readAnalogButton(void);
 
 };
 

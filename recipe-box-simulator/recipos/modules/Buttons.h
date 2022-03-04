@@ -26,6 +26,7 @@ public:
 	bool checkButton(int id);
 	// Halts the button reading thread
 	void halt(void);
+	ButtonBackend* bb;
 };
 
 #endif /* RECIPOS_MODULES_BUTTONS_H_ */

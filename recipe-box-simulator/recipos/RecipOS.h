@@ -121,6 +121,8 @@ private: // TODO add comments
 
 	bool checkButtonPress(void);
 
+	int lastButtons;
+
 	// The next message ID to be assigned
 	int nextMID = 0;
 

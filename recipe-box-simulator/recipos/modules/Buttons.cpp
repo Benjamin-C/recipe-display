@@ -25,7 +25,7 @@
 const char* directions[7] = {"null", "up", "down", "left", "right", "enter", "super"};
 
 Buttons::Buttons(void) {
-
+	bb = NULL;
 }
 
 bool Buttons::checkButton(int id) {
@@ -33,8 +33,11 @@ bool Buttons::checkButton(int id) {
 }
 
 uint16_t Buttons::checkButtons() {
-	uint16_t tmp = 0;
-	return (uint16_t) tmp;
+	if(bb != NULL) {
+		return bb->checkButtons();
+	} else {
+		return 0;
+	}
 }
 
 void Buttons::halt(void) {
