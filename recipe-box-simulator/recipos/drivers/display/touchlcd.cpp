@@ -45,6 +45,8 @@ height = DISPLAY_HEIGHT;
   hspi->begin(HSPI_SCLK, HSPI_MISO, HSPI_MOSI, HSPI_SS); //SCLK, MISO, MOSI, SS
 //#endif
 
+  hspi->beginTransaction(SPISettings(spiClk, MSBFIRST, SPI_MODE0));
+
   pinMode(LCD_LATCH, OUTPUT); //HSPI SS
     digitalWrite(LCD_LATCH, LOW);
   // end SPI init
@@ -182,18 +184,11 @@ height = DISPLAY_HEIGHT;
 void TouchLCD::Lcd_Writ_Bus(unsigned char d) {
   digitalWrite(LCD_LATCH, LOW);
   digitalWrite(LCD_WR, LOW);
-  hspi->beginTransaction(SPISettings(spiClk, MSBFIRST, SPI_MODE0));
+
   hspi->transfer(d);
-  hspi->endTransaction();
-//  for(int i = 0; i < BIT_COUNT; i++) {
-//    digitalWriteFast(bits[i], d & 1);
-//    d >>= 1;
-//  }
-  digitalWrite(LCD_WR, LOW);
-  // May need some delay?
+
   digitalWrite(LCD_LATCH, HIGH);
   digitalWrite(LCD_WR, HIGH);
-  digitalWrite(LCD_LATCH, LOW);
 }
 
 void TouchLCD::Lcd_Write_Com(unsigned char VH) {
