@@ -18,6 +18,8 @@
 #define DEBUG(val) printf("%s\n", val)
 
 int main(void) {
+	String noihatethis = "No, I hate this!";
+
 	printf("Hello World %ld\n", sizeof(char));
 
 //	setup();
@@ -172,6 +174,7 @@ int main(void) {
 		if(c != NULL) {
 			*((int*) c) = i;
 			ros.addTab(app, c);
+			printf("Added app I think\n");
 		}
 	}
 

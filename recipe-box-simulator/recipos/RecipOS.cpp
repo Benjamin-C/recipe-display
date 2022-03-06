@@ -47,7 +47,7 @@ RecipOS::RecipOS() {
 		services[i] = NULL;
 	}
 
-
+	lastButtons = -1;
 
 }
 
@@ -276,6 +276,7 @@ bool RecipOS::boot(void) {
 				}
 			}
 		}
+		displayBackend->clear(BLACK);
 		displayBackend->displayString(24, 128, "RecipOS", 8, BRIGHT_RED, BLACK);
 		if(currentTab >= 0 && currentTab <= MAX_TABS) {
 			switchTab(currentTab);

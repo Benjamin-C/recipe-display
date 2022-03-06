@@ -34,6 +34,9 @@ SPIClass * hspi = NULL;
  */
 TouchLCD::TouchLCD(void) {
 
+width = DISPLAY_WIDTH;
+height = DISPLAY_HEIGHT;
+
   // SPI init
   hspi = new SPIClass(HSPI); 
 //#ifndef ALTERNATE_PINS

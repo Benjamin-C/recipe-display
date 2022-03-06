@@ -40,6 +40,9 @@ ButtonReader::ButtonReader(void) {
  */
 uint16_t ButtonReader::checkButtons(void) {
 	int bn = readAnalogButton();
+	if(bn > 0) {
+		printf("%d\n", bn);
+	}
 	return (bn > 0) ? 1 << bn-1 : 0;
 }
 // Checks the status of a specific button. See the section in ButtonBackend.h for IDs.
@@ -53,10 +56,10 @@ int ButtonReader::readAnalogButton(void) {
   int button = analogRead(BUTTON_PIN);
   // These exact values should probably be in a calibration table somewhere.
   // They are not. Too bad.
-  if (button < 100) return 1;
-  if (button < 2000) return 2;
-  if (button < 2750) return 3;
-  if (button < 3050) return 4;
-  if (button < 3400) return 5;
+  if (button < 100) return 1; // up
+  if (button < 2000) return 3; // left
+  if (button < 2750) return 2; // Down
+  if (button < 3050) return 4; // Right
+  if (button < 3400) return 5; // Enter
   return 0;
 }

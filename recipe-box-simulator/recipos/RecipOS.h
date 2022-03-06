@@ -34,6 +34,8 @@
 #define TAB_HEIGHT 16
 #define NUM_TABS 6
 
+#define FIX_STD_STRINGS() String noihatethis = "No, I hate this!";
+
 class RecipOS {
 public:
 	// the main constructor. Call it to start a new OS. Not recommended to do multiple times, although it probably won't break

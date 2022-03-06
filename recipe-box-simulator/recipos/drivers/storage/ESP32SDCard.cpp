@@ -7,10 +7,12 @@
 
 #include "ESP32SDCard.h"
 
+#include <Arduino.h>
+
 #include <SD.h>
 #include <SPI.h>
 
-
+#include "../../RecipOS.h"
 
 // please fix errors
 int ESP32SDCard::countFiles(std::string path) {
@@ -81,8 +83,10 @@ ESP32SDCard::ESP32SDCard() {
 	Serial.print("Initializing SD card...");
 
 	if (!SD.begin(32)) {
-	Serial.println("initialization failed!");
-	return;
+		Serial.println("initialization failed!");
+		FIX_STD_STRINGS();
+		makeBSOD("SD card initialization failed.Please make sure that the cardis inserted and that there    are no loose connections.");
+		return;
 	}
 	Serial.println("initialization done.");
 
