@@ -42,8 +42,11 @@ void InstructionsTab::paintTab(Display* d) {
 
 			d->displayString(0,starty,std::to_string(ro->steps[i].number)+".",2,WHITE,egaColors[color]);
 
-			int r = d->displayWrappedString(32, starty, ro->steps[i].text, 20, 0, 2, WHITE, egaColors[color]);
+			int r = d->displayWrappedString(32, starty, ro->steps[i].text, 27, 0, 2, WHITE, egaColors[color]);
 			starty += r * 16;
+			if(starty >= d->height()) {
+				break;
+			}
 		}
 	}
 	else {

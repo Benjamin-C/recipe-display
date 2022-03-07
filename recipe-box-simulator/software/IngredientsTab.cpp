@@ -70,6 +70,9 @@ void IngredientsTab::paintTab(Display* d) {
 
 			int r = d->displayWrappedString(184, starty, ro->ingredients[i].name, 18, 0, 2, WHITE, egaColors[color]);
 			starty += r * 16;
+			if(starty >= d->height()) {
+				break;
+			}
 		}
 	}
 	else {
