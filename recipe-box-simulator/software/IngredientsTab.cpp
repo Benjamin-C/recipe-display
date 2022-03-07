@@ -42,7 +42,7 @@ void IngredientsTab::paintTab(Display* d) {
 	int starty = 32;
 
 	if(ro != NULL) {
-		for(int i = 0; i < ro->ingredientCount; i++) {
+		for(int i = currentSelection; i < ro->ingredientCount; i++) {
 			float amount = ro->ingredients[i].amount;
 			std::string str = std::to_string(amount);
 			if(str.find('.') != std::string::npos){
@@ -65,10 +65,10 @@ void IngredientsTab::paintTab(Display* d) {
 				unit = unit + "s";
 			}
 
-			d->displayString(0,18*i+36,str,2,WHITE,egaColors[color]);
-			d->displayString(72,18*i+36,unit,2,WHITE,egaColors[color]);
+			d->displayString(0,starty,str,2,WHITE,egaColors[color]);
+			d->displayString(72,starty,unit,2,WHITE,egaColors[color]);
 
-			int r = d->displayWrappedString(184, starty, ro->ingredients[i].name, 18, 0, 2, WHITE, BLACK);
+			int r = d->displayWrappedString(184, starty, ro->ingredients[i].name, 18, 0, 2, WHITE, egaColors[color]);
 			starty += r * 16;
 		}
 	}
@@ -90,16 +90,20 @@ void IngredientsTab::onButtonPress(uint16_t pressed, Buttons* buttons) {
 		os->tabLeft();
 		printf("Left\n");
 	}
-//	else if((pressed & BUTTON_UP_MASK) > 0) {
-//			if(currentSelection > 0) {
-//				currentSelection--;
-//				os->repaintCurrentTab();
-//			}
-//		} else if((pressed & BUTTON_DOWN_MASK) > 0) {
-//			if(currentSelection < optionCount - 1) {
-//				currentSelection++;
-//				os->repaintCurrentTab();
-//			}
+	else if((pressed & BUTTON_UP_MASK) > 0) {
+		if(currentSelection > 0) {
+			currentSelection--;
+			os->repaintCurrentTab();
+		}
+	}
+	else if((pressed & BUTTON_DOWN_MASK) > 0) {
+		if(ro != NULL) {
+			if(currentSelection < ro->ingredientCount - 1) {
+				currentSelection++;
+				os->repaintCurrentTab();
+			}
+		}
+	}
 	os->sendMessage(os->getNextMID(), "testmsg", (void*) &pressed);
 	printf("Someone pushed my button!\n");
 	os->displayBackend->screenshot();

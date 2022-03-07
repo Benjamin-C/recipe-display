@@ -30,19 +30,19 @@ void InstructionsTab::onMessage(int mid, std::string dest, void* mbox) {
 void InstructionsTab::paintTab(Display* d) {
 	printf("color: %d %s\n", color, abriv);
 	d->fill(egaColors[color]);
-	d->displayString(0,0,name,2,WHITE,egaColors[color]);
+	d->displayString(8,0,ro->name,2,WHITE,egaColors[color]);
 
 
 	int starty = 32;
 
 	if(ro != NULL) {
-		for(int i = 0; i < ro->stepCount; i++) {
+		for(int i = currentSelection; i < ro->stepCount; i++) {
 			printf("%s\n", ro->steps[i].text.c_str());
 			printf("%d\n", ro->steps[i].number);
 
 			d->displayString(0,starty,std::to_string(ro->steps[i].number)+".",2,WHITE,egaColors[color]);
 
-			int r = d->displayWrappedString(32, starty, ro->steps[i].text, 20, 0, 2, WHITE, BLACK);
+			int r = d->displayWrappedString(32, starty, ro->steps[i].text, 20, 0, 2, WHITE, egaColors[color]);
 			starty += r * 16;
 		}
 	}
@@ -59,9 +59,24 @@ void InstructionsTab::onButtonPress(uint16_t pressed, Buttons* buttons) {
 	if((pressed & BUTTON_RIGHT_MASK) > 0) {
 		os->tabRight();
 		printf("Right\n");
-	} else if((pressed & BUTTON_LEFT_MASK) > 0) {
+	}
+	else if((pressed & BUTTON_LEFT_MASK) > 0) {
 		os->tabLeft();
 		printf("Left\n");
+	}
+	else if((pressed & BUTTON_UP_MASK) > 0) {
+		if(currentSelection > 0) {
+			currentSelection--;
+			os->repaintCurrentTab();
+		}
+	}
+	else if((pressed & BUTTON_DOWN_MASK) > 0) {
+		if(ro != NULL) {
+			if(currentSelection < ro->stepCount - 1) {
+				currentSelection++;
+				os->repaintCurrentTab();
+			}
+		}
 	}
 	os->sendMessage(os->getNextMID(), "testmsg", (void*) &pressed);
 	printf("Someone pushed my button!\n");
