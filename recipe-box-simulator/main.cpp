@@ -251,7 +251,7 @@ int main(void) {
 	InstructionsTab* st = new InstructionsTab();
 	int inst = ros.addTab(st, NULL);
 	
-	DEBUG("Added Rhema's tabs")
+	DEBUG("Added Rhema's tabs");
 	
 	RecipeSelector* rs = new RecipeSelector();
 	int tid = ros.addTab(rs, NULL);

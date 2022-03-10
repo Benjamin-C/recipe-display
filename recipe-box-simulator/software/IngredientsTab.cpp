@@ -11,6 +11,7 @@
 #include <string.h>
 #include <iostream>
 #include <iomanip>
+#include <string>
 #include "RecipeUtils.h"
 
 void IngredientsTab::startup(RecipOS* os) {
@@ -34,7 +35,7 @@ void IngredientsTab::onMessage(int mid, std::string dest, void* mbox) {
 		}
 	}
 }
-void IngredientsTab::paintTab(Display* d) {
+void IngredientsTab::paintTab(Display* d, bool repaint) {
 	printf("color: %d %s\n", color, abriv);
 	d->fill(egaColors[color]);
 	d->displayString(8,0,ro->name,2,WHITE,egaColors[color]);
@@ -44,7 +45,8 @@ void IngredientsTab::paintTab(Display* d) {
 	if(ro != NULL) {
 		for(int i = currentSelection; i < ro->ingredientCount; i++) {
 			float amount = ro->ingredients[i].amount;
-			std::string str = std::to_string(amount);
+//			std::string str = std::to_string(amount);
+			std::string str = "abc"; // TODO fix this
 			if(str.find('.') != std::string::npos){
 				str = str.substr(0, str.find_last_not_of('0')+1);
 				if(str.find('.') == str.size()-1){

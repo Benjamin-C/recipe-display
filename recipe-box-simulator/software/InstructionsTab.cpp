@@ -27,7 +27,7 @@ void InstructionsTab::onMessage(int mid, std::string dest, void* mbox) {
 		}
 	}
 }
-void InstructionsTab::paintTab(Display* d) {
+void InstructionsTab::paintTab(Display* d, bool repaint) {
 	printf("color: %d %s\n", color, abriv);
 	d->fill(egaColors[color]);
 	d->displayString(8,0,ro->name,2,WHITE,egaColors[color]);
@@ -40,7 +40,7 @@ void InstructionsTab::paintTab(Display* d) {
 			printf("%s\n", ro->steps[i].text.c_str());
 			printf("%d\n", ro->steps[i].number);
 
-			d->displayString(0,starty,std::to_string(ro->steps[i].number)+".",2,WHITE,egaColors[color]);
+//			d->displayString(0,starty,std::to_string(ro->steps[i].number)+".",2,WHITE,egaColors[color]);
 
 			int r = d->displayWrappedString(32, starty, ro->steps[i].text, 27, 0, 2, WHITE, egaColors[color]);
 			starty += r * 16;

@@ -16,7 +16,7 @@ public:
 	~InstructionsTab() { };
 	void startup(RecipOS* os);
 	void onMessage(int mid, std::string dest, void* mbox);
-	void paintTab(Display* d);
+	void paintTab(Display* d, bool repaint);
 	void runTab(void);
 	void onButtonPress(uint16_t pressed, Buttons* buttons);
 
