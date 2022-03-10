@@ -14,6 +14,8 @@
 
 #include "software/RecipeUtils.h"
 #include "software/RecipeSelector.h"
+#include "software/IngredientsTab.h"
+#include "software/InstructionsTab.h"
 
 #define DEBUG(val) printf("%s\n", val)
 
@@ -168,6 +170,7 @@ int main(void) {
 
 	int testCount = 3;
 
+<<<<<<< HEAD
 	DEBUG("Adding MyApps");
 
 	for(int i = 0; i < testCount; i++) {
@@ -179,6 +182,16 @@ int main(void) {
 			printf("Added app I think\n");
 		}
 	}
+=======
+//	for(int i = 0; i < testCount; i++) {
+//		MyApp* app = new MyApp();
+//		void* c = malloc(sizeof(int));
+//		if(c != NULL) {
+//			*((int*) c) = i;
+//			ros.addTab(app, c);
+//		}
+//	}
+>>>>>>> refs/remotes/origin/ViewerTabs
 
 	DEBUG("Making Screenshotter");
 
@@ -241,7 +254,15 @@ int main(void) {
 	ros.addTab(timer, NULL);
 	ros.addService(timer, NULL);
 
+<<<<<<< HEAD
 	DEBUG("Adding RecipeSelector");
+=======
+	IngredientsTab* gt = new IngredientsTab();
+	int ingr = ros.addTab(gt, NULL);
+
+	InstructionsTab* st = new InstructionsTab();
+	int inst = ros.addTab(st, NULL);
+>>>>>>> refs/remotes/origin/ViewerTabs
 
 	RecipeSelector* rs = new RecipeSelector();
 	int tid = ros.addTab(rs, NULL);

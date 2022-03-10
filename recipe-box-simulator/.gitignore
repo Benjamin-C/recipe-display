@@ -1,7 +1,17 @@
 /Debug/
 /Release/
+<<<<<<< HEAD
+<<<<<<< HEAD
+/.DS_Store
+=======
+=======
 /.cproject
 /.project
 /.settings/
+>>>>>>> refs/remotes/origin/master
 /junk/
+<<<<<<< HEAD
 /Arduino/
+=======
+>>>>>>> refs/heads/master
+>>>>>>> refs/remotes/origin/ViewerTabs

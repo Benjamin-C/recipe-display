@@ -415,9 +415,9 @@ void RecipOS::error(std::string msg) {
 		int ll = 0;
 		int tll = 0;
 		const char* tc = c;
-		while(tll < LINEWIDTH) {
+		while(tll <= LINEWIDTH) {
 			while(*tc != ' ' && *tc != '\0' && *tc != '\n') { tc++; tll++; }
-			if(tll+1 < LINEWIDTH) {
+			if(tll <= LINEWIDTH) {
 				ll = tll;
 				if(*tc != ' ') {
 					break;

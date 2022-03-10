@@ -9,15 +9,97 @@
         "unit":"PIECE",
         "name":"costco lasagne"
     },{
-        "amount":1.5,
+        "amount":6.5,
         "unit":"CUP",
         "name":"barbeque sauce"
+    },{
+        "amount":14,
+        "unit":"PIECES",
+        "name":"lasagne noodles"
+    },{
+        "amount":4,
+        "unit":"CUP",
+        "name":"lasagne cheese"
+    },{
+        "amount":2,
+        "unit":"CUP",
+        "name":"lasagne meat"
+    },{
+        "amount":1,
+        "unit":"CUP",
+        "name":"lasagne vegtables"
+    },{
+        "amount":5,
+        "unit":"CUP",
+        "name":"lasagne sauce"
+    },{
+        "amount":2,
+        "unit":"CUP",
+        "name":"black  M&Ms"
+    },{
+        "amount":2,
+        "unit":"CUP",
+        "name":"brown M&Ms"
+    },{
+        "amount":2,
+        "unit":"CUP",
+        "name":"red M&Ms"
+    },{
+        "amount":2,
+        "unit":"CUP",
+        "name":"orange M&Ms"
+    },{
+        "amount":2,
+        "unit":"CUP",
+        "name":"yellow M&Ms"
+    },{
+        "amount":2,
+        "unit":"CUP",
+        "name":"green M&Ms"
+    },{
+        "amount":2,
+        "unit":"CUP",
+        "name":"blue M&Ms"
+    },{
+        "amount":2,
+        "unit":"CUP",
+        "name":"purple M&Ms"
+    },{
+        "amount":2,
+        "unit":"CUP",
+        "name":"grey  M&Ms"
+    },{
+        "amount":2,
+        "unit":"CUP",
+        "name":"white  M&Ms"
+    }{
+        "amount":2,
+        "unit":"CUP",
+        "name":"pink  M&Ms"
     }],
     "steps":[{
         "number":1,
-        "text":"Bake the lasagne"
+        "text":"Prepare the lasagne dish with butter"
     },{
         "number":2,
+        "text":"Place half of the lasagne things into the lasagne dish"
+    },{
+        "number":3,
+        "text":"Add a layer of barbeque sauce"
+    },{
+        "number":1,
+        "text":"Drop the other half of the lasagne things into the lasagne dish from at least 1m up"
+    },{
+        "number":4,
+        "text":"Top with costco lasagne"
+    },{
+        "number":5,
+        "text":"Bake the lasagne"
+    },{
+        "number":6,
         "text":"Spread the barbeque sauce on the lasagne"
+    },{
+        "number":7,
+        "text":"Serve with a side of M&Ms"
     }]
 }

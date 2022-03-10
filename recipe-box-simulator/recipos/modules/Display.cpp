@@ -181,6 +181,94 @@ bool Display::displayString(int xstart, int ystart, std::string str, int scale, 
 		return false;
 	}
 }
+
+/* Displays a string with line wrapping. Does not autowrap if the string would go off the screen.
+ * May not prevent all printing if some text would be out of bounds. Hopefully won't print out of bounds ...
+ * Returns the number of rows printed. Should probably return an error state, but doesn't
+ *
+ * int xstart - The x staritng position
+ * int ystart - The y starting position
+ * std::string text - The text to print
+ * int width - The number of characters wide to print
+ * int height - The required height to print.
+ *   Set to 0 to only print as many lines as needed,
+ *   Setting to > 0 will print exactly that many lines
+ * int scale - The text scale
+ * int fontcolor - The font color 16bit color number
+ * int bkgcoolor - the background color 16bit number
+ */
+int Display::displayWrappedString(int xstart, int ystart, std::string text, int width, int height, int scale, int fontcolor, int bkgcolor) {
+	// Get the string as a character array so we can do pointer manipulation
+	const char* c = text.c_str();
+	bool hasMoreMsg = true; // Is there more message to print?
+	int rows = 0; // How many rows have been printed
+	int inc = 8*scale; // The distance to move per character
+	while((height > 0 && rows < height) || (height <= 0 && hasMoreMsg)) { // Always does 12 rows. Is this good? I don't know
+		int xpos = xstart; // Reset the x position for each row
+		int charCount = 0; // Number of characters already printed
+		int currentLineLength = 0; // The current confirmed line length
+		int tempLineLength = 0; // The temporary line length that may be confrimed later
+		const char* tempChar = c; // Temporary pointer set to the beginning of the current line
+		while(tempLineLength <= width) {
+			// Find the next possible place to break the line
+			while(*tempChar != ' ' && *tempChar != '\0' && *tempChar != '\n') {
+				tempChar++; tempLineLength++;
+			}
+			// If that is an allowable width for the line
+			if(tempLineLength <= width) {
+				// Note that length
+				currentLineLength = tempLineLength;
+				if(*tempChar != ' ') { // If the character should start a new line, do so
+					break;
+				} else { // Move to the next character so loop above will pass
+					tempChar++;
+					tempLineLength++;
+				}
+			} else {
+				// Maybe should do something here? I don't know
+//				if(*tempChar == '\0') {
+//					break;
+//				}
+			}
+		}
+		// Print the line with the correct number of characters, then print spaces to pad the line
+		while(charCount < width) {
+			// If the next character is printable, and fits on the line,
+			if(*c != '\0' && *c != '\n' && currentLineLength > 0) {
+				// Print it
+				displayChar(xpos, ystart, *c, scale, fontcolor, bkgcolor);
+//				printf("%c", *c);
+				c++;
+				currentLineLength--;
+				if(currentLineLength == 0 && *c != '\0') {
+					// Remove extra spaces or line breaks
+					c++;
+				}
+			} else {
+				// Otherwise, pad the line with spaces
+				if(*c == '\0') {
+					// Maybe stop after this line if we have reached the end of the string
+					hasMoreMsg = false;
+				}
+				displayChar(xpos, ystart, ' ', scale, fontcolor, bkgcolor);
+			}
+			// Keep track of where we are
+			xpos += inc;
+			charCount++;
+		}
+		// Put new lines on new lines
+		if(*c == '\n') {
+			c++;
+		}
+		ystart += inc;
+//		if(hasMoreMsg) {
+//			printf("\n");
+//		}
+		rows++;
+	}
+	return rows;
+}
+
 bool Display::screenshot(void) {
 	dbe->screenshot();
 	return true;

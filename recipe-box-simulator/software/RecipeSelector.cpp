@@ -42,15 +42,15 @@ void RecipeSelector::startup(RecipOS* os) {
 void RecipeSelector::onMessage(int mid, std::string dest, void* mbox) {
 	// This should be removed once the recipe viewers are ready
 	// EXAMPLE: If the message is a recipe select message
-	if(dest == "recipe-select") {
-		// Get the recipe from the box
-		// The box is a pointer to something, and we know that that something
-		// is a recipe structure, so tell the compiler that
-		RecipeUtils::Recipe* rp = (RecipeUtils::Recipe*) mbox;
-		// Use the recipe for whatever you want
-		os->error("You can't select recipes yet!\n \n" + rp->name);
-		RecipeUtils::printRecipe(rp);
-	}
+//	if(dest == "recipe-select") {
+//		// Get the recipe from the box
+//		// The box is a pointer to something, and we know that that something
+//		// is a recipe structure, so tell the compiler that
+//		RecipeUtils::Recipe* rp = (RecipeUtils::Recipe*) mbox;
+//		// Use the recipe for whatever you want
+//		os->error("You can't select recipes yet!\n \n" + rp->name);
+//		RecipeUtils::printRecipe(rp);
+//	}
 	// Possibly recipe viewer should register itself then report here to mention its id
 }
 
