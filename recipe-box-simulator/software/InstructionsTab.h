@@ -24,6 +24,7 @@ public:
 	void runService(void);
 private:
 	int lastMID = -1;
+	int currentSelection = 0;
 
 	RecipeUtils::Recipe* ro;
 };
