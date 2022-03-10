@@ -19,14 +19,14 @@ void RecipeSelector::startup(RecipOS* os) {
 	this->os = os;
 	strcpy((char*) name, "Recipe Selector");
 	strcpy((char*) abriv, "List");
-	color = EGA_BRIGHT_MAGENTA;
+	color = SELECTOR_TEXT_COLOR;
 
 	FileList allFiles = os->storage->getDirectoryList("/");
 
-	optionCount = allFiles.count;
+	optionCount = allFiles.count + 1;
 
-	options = new std::string[allFiles.count];
-	optionNames = new std::string[allFiles.count];
+	options = new std::string[optionCount];
+	optionNames = new std::string[optionCount];
 
 	for(int i = 0; i < allFiles.count; i++) {
 		std::string filename = allFiles.list[i];
@@ -35,6 +35,8 @@ void RecipeSelector::startup(RecipOS* os) {
 		options[i] = filename;
 		optionNames[i] = r->name;
 	}
+	options[optionCount - 1] = "null";
+	optionNames[optionCount - 1] = "null";
 
 	currentSelection = 3;
 }
@@ -55,21 +57,22 @@ void RecipeSelector::onMessage(int mid, std::string dest, void* mbox) {
 }
 
 void RecipeSelector::paintTab(Display* d, bool repaint) {
-	if(!repaint) {
-		d->fill(SELECTOR_BACKGROUND_COLOR);
-	}
+//	if(!repaint) {
+//		d->fill(SELECTOR_BACKGROUND_COLOR);
+//	}
 	int starty = 0;
 	for(int i = 0; i < optionCount; i++) {
-		int fore = SELECTOR_TEXT_COLOR;
+		int fore = egaColors[SELECTOR_TEXT_COLOR];
 		int back = SELECTOR_BACKGROUND_COLOR;
 		if(i == currentSelection) {
 			fore = SELECTOR_BACKGROUND_COLOR;
-			back = SELECTOR_TEXT_COLOR;
+			back = egaColors[SELECTOR_TEXT_COLOR];
 		}
-		d->fillRect(optionNames[i].length()*16, starty, d->width()-optionNames[i].length()*16, 16, back);
-		d->displayString(0, starty, optionNames[i], 2, fore, back);
+//		d->fillRect(optionNames[i].length()*16, starty, d->width()-optionNames[i].length()*16, 16, back);
+		d->displayPaddedString(0, starty, optionNames[i], 30, 2, fore, back);
 		starty += 16;
 	}
+	d->fillRect(0, starty, d->width(), d->height()-starty, BLACK);
 
 	return;
 }
@@ -102,6 +105,7 @@ void RecipeSelector::onButtonPress(uint16_t pressed, Buttons* buttons) {
 		// Should put the recipe here, but doesn't yet
 		Recipe* rsp = RecipeUtils::parseString(os->storage->readFile(options[currentSelection]));
 		os->sendMessage(os->getNextMID(), "recipe-select", (void*) rsp);
+		os->tabRight();
 	}
 
 	os->displayBackend->screenshot();

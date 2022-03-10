@@ -60,6 +60,8 @@ public:
     bool displayChar(int xpos, int ypos, uint8_t c, int scale, int fontcolor, int backgroundcolor);
     // Displays string str at xpos,ypos with a scale scale and color fontcolor on color backgroundcolor
     bool displayString(int xstart, int ystart, std::string str, int scale, int fontcolor, int backgroundcolor);
+    // Displays a string to a number of characters.
+    int displayPaddedString(int xstart, int ystart, std::string text, int width, int scale, int fontcolor, int bkgcolor);
     // Displays text with line wrapping, but does not autowrap at edge of screen
     int displayWrappedString(int xstart, int ystart, std::string text, int width, int height, int scale, int fontcolor, int bkgcolor);
     // Asks the underlying display driver to take a screenshot. Exactly what this does depends on that driver.

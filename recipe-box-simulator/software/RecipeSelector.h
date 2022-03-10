@@ -12,7 +12,7 @@
 #include "RecipeUtils.h"
 
 #define SELECTOR_BACKGROUND_COLOR BLACK
-#define SELECTOR_TEXT_COLOR BRIGHT_CYAN
+#define SELECTOR_TEXT_COLOR EGA_BRIGHT_CYAN
 
 class RecipeSelector : public Application {
 public:

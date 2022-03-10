@@ -167,7 +167,7 @@ bool Display::displayString(int xstart, int ystart, std::string str, int scale, 
 #endif
 	if(!str.empty()) {
 #ifdef MEGA_DEBUG_LOG
-		printf("datas: %d %d %d %d %d %d\n", xstart, ystart, (int) (8*strlen(str)*scale), 8*scale, (int) (xstart+xmin+(8*strlen(str)*scale)), ystart+ymin+(8*scale));
+		printf("datas: %d %d %d %d %d %d\n", xstart, ystart, (int) (8*str.length()*scale), 8*scale, (int) (xstart+xmin+(8*str.length()*scale)), ystart+ymin+(8*scale));
 #endif
 		const char* cstr = str.c_str();
 		if(inBounds(xstart, ystart,8*strlen(cstr)*scale,8*scale)) {
@@ -180,6 +180,10 @@ bool Display::displayString(int xstart, int ystart, std::string str, int scale, 
 		printf("Nope, string was null\n");
 		return false;
 	}
+}
+
+int Display::displayPaddedString(int xstart, int ystart, std::string text, int width, int scale, int fontcolor, int bkgcolor) {
+	return displayWrappedString(xstart, ystart, text, width, 1, scale, fontcolor, bkgcolor);
 }
 
 /* Displays a string with line wrapping. Does not autowrap if the string would go off the screen.

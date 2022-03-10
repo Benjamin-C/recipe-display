@@ -97,6 +97,7 @@ bool RecipOS::switchTab(int appid) {
 	if(appid >= 0 && appid < MAX_TABS) {
 		TabApp* app = tabs[appid];
 		if(app != NULL) {
+
 			if(currentTab >= 0 && currentTab < MAX_TABS) {
 				tabDisplays[currentTab]->setEnabled(false);
 			}
@@ -108,18 +109,29 @@ bool RecipOS::switchTab(int appid) {
 				display = tabDisplays[appid];
 			}
 
-			display->setEnabled(true);
+			if(booted) {
 
-			if(!app->running) {
-				app->startup(this);
-				app->running = true;
+				display->setEnabled(true);
+
+				currentTab = appid;
+
+				drawTabList();
+
+				if(!app->running) {
+					app->startup(this);
+					app->running = true;
+				}
+
+				app->runTab();
+				displayBackend->drawPoint(0, 0, BRIGHT_BLUE);
+				app->paintTab(tabDisplays[appid], false);
+				displayBackend->drawPoint(0, 0, BLACK);
+
+
+				printf("Starting app [%s] %s\n", tabs[appid]->abriv, tabs[appid]->name);
+			} else {
+				printf("Not booted, so not starting app.\n");
 			}
-
-			app->runTab();
-			app->paintTab(tabDisplays[appid], false);
-			currentTab = appid;
-			drawTabList();
-			printf("Starting app [%s] %s\n", tabs[appid]->abriv, tabs[appid]->name);
 			return true;
 		} else {
 			printf("Can't switch, something was null\n");
@@ -134,7 +146,9 @@ bool RecipOS::switchTab(int appid) {
 bool RecipOS::repaintCurrentTab(void) {
 	TabApp* app = tabs[currentTab];
 	if(app != NULL) {
+		displayBackend->drawPoint(0, 0, BRIGHT_RED);
 		app->paintTab(tabDisplays[currentTab], true);
+		displayBackend->drawPoint(0, 0, BLACK);
 		return true;
 	} else {
 		return false;
@@ -264,6 +278,8 @@ bool RecipOS::boot(void) {
 			error(globalError->errMsg);
 		}
 
+		buttons->start(buttons->bb);
+
 		bool hasFirst = currentTab >= 0;
 		for(int i = 0; i < MAX_TABS; i++) {
 			if(tabs[i] != NULL) {
@@ -278,10 +294,12 @@ bool RecipOS::boot(void) {
 		}
 		displayBackend->clear(BLACK);
 		displayBackend->displayString(24, 128, "RecipOS", 8, BRIGHT_RED, BLACK);
+
+		booted = true;
+
 		if(currentTab >= 0 && currentTab <= MAX_TABS) {
 			switchTab(currentTab);
 		}
-		booted = true;
 
 		class ButtonService : public ServiceApp {
 		public:

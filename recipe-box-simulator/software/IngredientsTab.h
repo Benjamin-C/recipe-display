@@ -25,7 +25,7 @@ public:
 private:
 	int lastMID = -1;
 	int currentSelection = 0;
-
+	bool mayScrollDown = false;
 	RecipeUtils::Recipe* ro;
 };
 #endif

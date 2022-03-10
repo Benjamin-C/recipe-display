@@ -1,19 +1,19 @@
 /*
- * InstructionsTab.h
+ * PrintTab.h
  *
  *  Created on: Feb 14, 2022
  *      Author: Rhema
  */
 
-#ifndef SOFTWARE_INSTRUCTIONSTAB_H_
-#define SOFTWARE_INSTRUCTIONSTAB_H_
+#ifndef SOFTWARE_PRINTTAB_H_
+#define SOFTWARE_PRINTTAB_H_
 
 #include "../recipos/RecipOS.h"
 #include "RecipeUtils.h"
 
-class InstructionsTab : public Application {
+class PrintTab : public Application {
 public:
-	~InstructionsTab() { };
+	~PrintTab() { };
 	void startup(RecipOS* os);
 	void onMessage(int mid, std::string dest, void* mbox);
 	void paintTab(Display* d, bool repaint);
@@ -24,8 +24,6 @@ public:
 	void runService(void);
 private:
 	int lastMID = -1;
-	int currentSelection = 0;
-	bool mayScrollDown = false;
 	RecipeUtils::Recipe* ro;
 };
 #endif

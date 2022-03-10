@@ -16,6 +16,7 @@
 #include "software/RecipeSelector.h"
 #include "software/IngredientsTab.h"
 #include "software/InstructionsTab.h"
+#include "software/PrintTab.h"
 
 #define DEBUG(val) printf("%s\n", val)
 
@@ -170,17 +171,17 @@ int main(void) {
 
 	int testCount = 3;
 
-	DEBUG("Adding MyApps");
-
-	for(int i = 0; i < testCount; i++) {
-		MyApp* app = new MyApp();
-		void* c = malloc(sizeof(int));
-		if(c != NULL) {
-			*((int*) c) = i;
-			ros.addTab(app, c);
-			printf("Added app I think\n");
-		}
-	}
+//	DEBUG("Adding MyApps");
+//
+//	for(int i = 0; i < testCount; i++) {
+//		MyApp* app = new MyApp();
+//		void* c = malloc(sizeof(int));
+//		if(c != NULL) {
+//			*((int*) c) = i;
+//			ros.addTab(app, c);
+//			printf("Added app I think\n");
+//		}
+//	}
 
 	DEBUG("Making Screenshotter");
 
@@ -234,28 +235,33 @@ int main(void) {
 	StartupScreenshot* sst = new StartupScreenshot();
 	ros.addService(sst, NULL);
 
-	DEBUG("Making Timer");
-
-	Timer* timer = new Timer();
-
-	DEBUG("Adding timer");
-
-	ros.addTab(timer, NULL);
-	ros.addService(timer, NULL);
+//	DEBUG("Making Timer");
+//
+//	Timer* timer = new Timer();
+//
+//	DEBUG("Adding timer");
+//
+//	ros.addTab(timer, NULL);
+//	ros.addService(timer, NULL);
 
 	DEBUG("Adding RecipeSelector");
+
+	RecipeSelector* rs = new RecipeSelector();
+	int tid = ros.addTab(rs, NULL);
+	ros.switchTab(tid);
+
+	DEBUG("Adding Rhema's tabs");
 
 	IngredientsTab* gt = new IngredientsTab();
 	int ingr = ros.addTab(gt, NULL);
 
 	InstructionsTab* st = new InstructionsTab();
 	int inst = ros.addTab(st, NULL);
-	
-	DEBUG("Added Rhema's tabs");
-	
-	RecipeSelector* rs = new RecipeSelector();
-	int tid = ros.addTab(rs, NULL);
-	ros.switchTab(tid);
+
+	DEBUG("Adding PrintTab");
+
+	PrintTab* ptb = new PrintTab();
+	int ptid = ros.addTab(ptb, NULL);
 
 	DEBUG("Booting");
 
