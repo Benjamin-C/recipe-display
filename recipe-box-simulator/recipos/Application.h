@@ -80,7 +80,7 @@ public:
 	/* Called when the app should draw itself as a tab
 	 * Gets a pointer to the main display area
 	 */
-	virtual void paintTab(Display* d) = 0;
+	virtual void paintTab(Display* d, bool repaint) = 0;
 	/* Called when the tab is selected before paintTab
 	 * paintTab may be called without calling runTab first
 	 */

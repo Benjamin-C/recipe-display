@@ -21,9 +21,10 @@ void RecipeSelector::startup(RecipOS* os) {
 	strcpy((char*) abriv, "List");
 	color = EGA_BRIGHT_MAGENTA;
 
-	FileList allFiles = os->storage->getDirectoryList("./");
+	FileList allFiles = os->storage->getDirectoryList("/");
 
 	optionCount = allFiles.count;
+
 	options = new std::string[allFiles.count];
 	optionNames = new std::string[allFiles.count];
 
@@ -53,8 +54,10 @@ void RecipeSelector::onMessage(int mid, std::string dest, void* mbox) {
 	// Possibly recipe viewer should register itself then report here to mention its id
 }
 
-void RecipeSelector::paintTab(Display* d) {
-	d->fill(SELECTOR_BACKGROUND_COLOR);
+void RecipeSelector::paintTab(Display* d, bool repaint) {
+	if(!repaint) {
+		d->fill(SELECTOR_BACKGROUND_COLOR);
+	}
 	int starty = 0;
 	for(int i = 0; i < optionCount; i++) {
 		int fore = SELECTOR_TEXT_COLOR;
@@ -62,8 +65,8 @@ void RecipeSelector::paintTab(Display* d) {
 		if(i == currentSelection) {
 			fore = SELECTOR_BACKGROUND_COLOR;
 			back = SELECTOR_TEXT_COLOR;
-			d->fillRect(optionNames[i].length()*16, starty, d->width()-optionNames[i].length()*16, 16, back);
 		}
+		d->fillRect(optionNames[i].length()*16, starty, d->width()-optionNames[i].length()*16, 16, back);
 		d->displayString(0, starty, optionNames[i], 2, fore, back);
 		starty += 16;
 	}

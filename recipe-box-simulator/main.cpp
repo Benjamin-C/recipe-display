@@ -53,7 +53,7 @@ int main(void) {
 				}
 			}
 		}
-		void paintTab(Display* d) {
+		void paintTab(Display* d, bool repaint) {
 			printf("color: %d %s\n", color, abriv);
 			d->fill(egaColors[color]);
 			d->displayString(0,0,name,2,WHITE,egaColors[color]);
@@ -115,8 +115,10 @@ int main(void) {
 				}
 			}
 		}
-		void paintTab(Display* d) {
-			d->fill(egaColors[color]);
+		void paintTab(Display* d, bool repaint) {
+			if(!repaint) {
+				d->fill(egaColors[color]);
+			}
 			d->displayString(0,0,name,2,WHITE,egaColors[color]);
 			if(runtime > 0) {
 				char time[8];
@@ -189,7 +191,7 @@ int main(void) {
 		}
 		int lastMID = -1;
 		void onMessage(int mid, std::string dest, void* mbox) { }
-		void paintTab(Display* d) { }
+		void paintTab(Display* d, bool repaint) { }
 		void runTab(void) { }
 		void onButtonPress(uint16_t pressed, Buttons* buttons) { }
 		void runService(void) {
@@ -240,11 +242,11 @@ int main(void) {
 	ros.addService(timer, NULL);
 
 	DEBUG("Adding RecipeSelector");
-/*
+
 	RecipeSelector* rs = new RecipeSelector();
 	int tid = ros.addTab(rs, NULL);
 	ros.switchTab(tid);
-*/
+
 	DEBUG("Booting");
 
 	printf("Boot\n");

@@ -6,6 +6,9 @@
 
 #include "../recipos/RecipOS.h"
 
+//#define DEBUG(m) m
+#define DEBUG(m)
+
 RecipeUtils::Recipe* RecipeUtils::getExampleRecipe(void) {
 /*	Recipe* ro = new Recipe;
 
@@ -151,7 +154,7 @@ RecipeUtils::Recipe* RecipeUtils::parseWithOptions(std::string stdstr, bool incl
 	}
 	*write = '\0';
 
-	printf("%s\n", str);
+	DEBUG(printf("%s\n", str));
 
 //	if(str[0] != '{' || str[len-1] != '}') {
 //		printf("String was not JSON");
@@ -162,7 +165,7 @@ RecipeUtils::Recipe* RecipeUtils::parseWithOptions(std::string stdstr, bool incl
 	inQuotes = false;
 	read = str;
 
-	printf("cowhide\n");
+	DEBUG(printf("cowhide\n"));
 
 	const char* verSearch = read;
 

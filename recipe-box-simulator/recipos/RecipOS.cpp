@@ -116,7 +116,7 @@ bool RecipOS::switchTab(int appid) {
 			}
 
 			app->runTab();
-			app->paintTab(tabDisplays[appid]);
+			app->paintTab(tabDisplays[appid], false);
 			currentTab = appid;
 			drawTabList();
 			printf("Starting app [%s] %s\n", tabs[appid]->abriv, tabs[appid]->name);
@@ -134,7 +134,7 @@ bool RecipOS::switchTab(int appid) {
 bool RecipOS::repaintCurrentTab(void) {
 	TabApp* app = tabs[currentTab];
 	if(app != NULL) {
-		app->paintTab(tabDisplays[currentTab]);
+		app->paintTab(tabDisplays[currentTab], true);
 		return true;
 	} else {
 		return false;
@@ -291,7 +291,7 @@ bool RecipOS::boot(void) {
 				serviceInterval = 100; // Check buttons 10x per second
 			}
 			void onMessage(int mid, std::string dest, void* mbox) { }
-			void paintTab(Display* d) { }
+			void paintTab(Display* d, bool repaint) { }
 			void runTab(void) { }
 			void onButtonPress(uint16_t pressed, Buttons* buttons) { }
 			void paintWidget(Display* d) { }
@@ -309,7 +309,7 @@ bool RecipOS::boot(void) {
 				serviceInterval = 1000; // Woof every second
 			}
 			void onMessage(int mid, std::string dest, void* mbox) { }
-			void paintTab(Display* d) { }
+			void paintTab(Display* d, bool repaint) { }
 			void runTab(void) { }
 			void onButtonPress(uint16_t pressed, Buttons* buttons) { }
 			void paintWidget(Display* d) { }
